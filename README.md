@@ -7,4 +7,4 @@
 [UI/UX Design](https://www.figma.com/design/aIqn7FW2yZl6y0fXLARGa6/Booksmith?node-id=0-1&t=rrxlo6lBONaUEz3Q-1)
 
 
-[Gantt Chart] 
+[Gantt Chart] (https://cebuinstituteoftechnology-my.sharepoint.com/:x:/g/personal/lynnonlance_antor_cit_edu/EXQMLIMulBhFnxfeQHcIdCABsX_eZ0z-pirPkW6v-jjWQg?e=MZebyr)

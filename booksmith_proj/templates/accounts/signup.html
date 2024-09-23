@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css_files/signup.css' %}">
+
+</head>
+<body>
+    <h2 style="padding: 25px; font-size: 60px; font-family: Arial, sans-serif; margin-left: 100px;">BookSmith</h2>
+    {% csrf_token %}
+    
+    <form class="registration-form">
+        <h4 class="section">Personal Information</h4>
+        <hr>
+
+        <div class="form-group">
+            <input type="text" id="fname" name="fname" placeholder="First Name" required>
+            <input type="text" id="lname" name="lname" placeholder="Last Name" required>
+        </div>
+        <div class="form-group">
+            <input type="text" id="gender" name="gender" placeholder="Gender" required>
+            <input type="text" id="birthdate" name="birthdate" placeholder="Birthdate">
+        </div>
+        <div class="form-group-long">
+            <input type="email" id="email" name="email" placeholder="Email" required>
+        </div>
+        <br>
+        <h4 class="section">Account Information </h4>
+        <hr>
+        <div class="form-group-mid">
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <input type="password" id="pass1" name="pass1" placeholder="Password" required>
+            <input type="password" id="pass2" name="pass2" placeholder="Confirm Password" required>
+        </div>
+        <h4 class="section">Already have account?<a style="margin-left: 20px ;"href="#">Login</a></h4>
+        <button submit="submit" class="register-btn">Register</button>
+    </form>
+    <script type="text/javascript" src="{% static 'js_files/signup.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+.registration-form{
+    padding: 20px;
+}
+.section {
+    margin-left: 180px;
+}
+hr {
+    margin-left: 180px; 
+    color: grey;
+    width: 70%;
+}
+.form-group {
+    padding: 35px;
+    margin-left: 220px;
+}
+.form-group input {
+    margin-right: 20%; 
+    width: 310px;
+}
+.form-group-mid{
+    padding: 35px;
+    margin-left: 220px;
+}
+.form-group-mid input {
+    margin-right: 5%; 
+}
+.form-group-long {
+    padding: 35px;
+    margin-left: 220px;
+}
+.form-group-long input{
+    width: 71%;
+}
+.form-pass {
+    padding: 25px;
+    margin-left: 47%;
+}
+.form-pass input {
+    margin-right: 20%; 
+}
+
+input {
+    border: 0px solid #ccc;
+}
+input[type="text"] {
+    font-size: 18px;
+    border-bottom: 1px solid black;
+    color: black;
+    &::placeholder {
+        color: black;
+    }
+}
+input[type="email"] {
+    font-size: 21px;
+    border-bottom: 1px solid black;
+    color: black;
+    &::placeholder {
+        color: black;
+    }
+}
+input[type="password"] {
+    font-size: 21px;
+    border-bottom: 1px solid black;
+    color: black;
+    &::placeholder {
+        color: black;
+    }
+}
+.register-btn {
+    margin-top: 30px;
+    margin-left: 40%;
+    text-align: center;
+    width: 250px;
+    background-color: #b30000; /* Dark red background */
+    color: white; /* White text */
+    border: 2px solid #666; /* Gray border */
+    border-radius: 60px; /* Rounded corners */
+    padding: 10px 30px; 
+    font-size: 16px;
+    cursor: pointer; 
+}
+.register-btn:hover {
+    background-color: #a00000; /* Slightly darker red on hover */
+}
+

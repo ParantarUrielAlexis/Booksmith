@@ -72,20 +72,57 @@ input[type="password"] {
         color: black;
     }
 }
+input[type="date"] {
+    font-size: 21px;
+    border-bottom: 1px solid black;
+    color: black;
+    &::placeholder {
+        color: black;
+    }
+}
 .register-btn {
     margin-top: 30px;
     margin-left: 40%;
     text-align: center;
     width: 250px;
-    background-color: #b30000; /* Dark red background */
-    color: white; /* White text */
-    border: 2px solid #666; /* Gray border */
-    border-radius: 60px; /* Rounded corners */
+    background-color: #b30000;
+    color: white; 
+    border: 2px solid #666; 
+    border-radius: 60px; 
     padding: 10px 30px; 
     font-size: 16px;
     cursor: pointer; 
 }
 .register-btn:hover {
-    background-color: #a00000; /* Slightly darker red on hover */
+    background-color: #a00000; 
 }
 
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    margin-left: 35%;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 310px; 
+    z-index: 1000;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+    background-color: #f0f0f0;
+}
+
+
+#gender {
+    cursor: pointer;
+    position: relative;
+}

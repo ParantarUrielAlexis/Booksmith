@@ -6,6 +6,7 @@
     <title>Sign up</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css_files/signup.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 </head>
 <body>
@@ -21,8 +22,14 @@
             <input type="text" id="lname" name="lname" placeholder="Last Name" required>
         </div>
         <div class="form-group">
-            <input type="text" id="gender" name="gender" placeholder="Gender" required>
-            <input type="text" id="birthdate" name="birthdate" placeholder="Birthdate">
+            <input type="text" id="gender" name="gender" placeholder="Gender" readonly required>
+            <ul class="dropdown-menu">
+                <li data-value="male">Male</li>
+                <li data-value="female">Female</li>
+                <li data-value="other">Other</li>
+            </ul>
+            <input type="date" id="birthdate" name="birthdate" placeholder="Birthdate">
+
         </div>
         <div class="form-group-long">
             <input type="email" id="email" name="email" placeholder="Email" required>
@@ -39,5 +46,6 @@
         <button submit="submit" class="register-btn">Register</button>
     </form>
     <script type="text/javascript" src="{% static 'js_files/signup.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 </html>

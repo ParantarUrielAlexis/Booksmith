@@ -1,0 +1,15 @@
+ <div class="form-group">
+            <input type="text" id="gender" name="gender" placeholder="Gender" readonly required>
+            <ul class="dropdown-menu">
+                <li data-value="male">Male</li>
+                <li data-value="female">Female</li>
+                <li data-value="other">Other</li>
+            </ul>
+            <input type="date" id="birthdate" name="birthdate" placeholder="Birthdate">
+
+        </div>
+
+VIEWS BIRTHDATE GET AGE
+ birthdate = datetime.strptime(request.POST['birthdate'], '%Y-%m-%d').date()
+        today = datetime.today().date()
+        age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))

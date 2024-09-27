@@ -7,46 +7,39 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css_files/signup.css' %}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
 </head>
 <body>
-    <h2 style="padding: 25px; font-size: 60px; font-family: Arial, sans-serif; margin-left: 100px;">BookSmith</h2>
+    <div class="header">
+        <img src="{% static 'images\booksmith_logo.png' %}" alt="BookSmith Logo">
+        
+        <ul><a href="#">Home</a></ul>
+        <ul><a href="#">Shop</a></ul>
+        <ul><a href="#">About Us</a></ul>
+        <ul><a href="#">Contact Us</a></ul>
+        
+    </div>
+    <h2 style="padding: 25px; font-size: 60px; font-family: Arial, sans-serif; justify-content: center; text-align: center; margin-top: 30px">BookSmith</h2>
    
-    
     <form class="registration-form" method="post">
         {% csrf_token %}
-        <h4 class="section">Personal Information</h4>
-        <hr>
-
+       
         <div class="form-group">
-            <input type="text" id="fname" name="fname" placeholder="First Name" required>
-            <input type="text" id="lname" name="lname" placeholder="Last Name" required>
-        </div>
-        <div class="form-group">
-            <input type="text" id="gender" name="gender" placeholder="Gender" readonly required>
-            <ul class="dropdown-menu">
-                <li data-value="male">Male</li>
-                <li data-value="female">Female</li>
-                <li data-value="other">Other</li>
-            </ul>
-            <input type="date" id="birthdate" name="birthdate" placeholder="Birthdate">
-
-        </div>
-        <div class="form-group-long">
+            <input type="text" id="username" name="username" placeholder="Username" required>
             <input type="email" id="email" name="email" placeholder="Email" required>
         </div>
         <br>
-        <h4 class="section">Account Information </h4>
-        <hr>
-        <div class="form-group-mid">
-            <input type="text" id="username" name="username" placeholder="Username" required>
+        <div class="form-group">
+            
             <input type="password" id="pass1" name="pass1" placeholder="Password" required>
             <input type="password" id="pass2" name="pass2" placeholder="Confirm Password" required>
         </div>
-        <h4 class="section">Already have account?<a style="margin-left: 20px ;"href="#">Login</a></h4>
-        <button type="submit" class="register-btn">Register</button>
+        <div class="section">
+            <h4 style="margin-left: 30px;">Already have account?<a style="margin-left: 10px ;"href="#">Login</a></h4>
+            <button type="submit" class="register-btn">Register</button>
+        </div>
     </form>
     <script type="text/javascript" src="{% static 'js_files/signup.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>

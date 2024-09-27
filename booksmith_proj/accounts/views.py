@@ -10,10 +10,6 @@ def home(request):
 
 def signup(request):
     if request.method == "POST":
-        fname = request.POST['fname']
-        lname = request.POST['lname']
-        gender = request.POST['gender']
-        birthdate = request.POST['birthdate']
         email = request.POST['email']
         username = request.POST['username']
         pass1 = request.POST['pass1']
@@ -30,22 +26,9 @@ def signup(request):
         if pass1 != pass2:
             messages.error(request, "Password does not match.")
             return redirect('signup')
-        
-        birthdate = datetime.strptime(request.POST['birthdate'], '%Y-%m-%d').date()
-        today = datetime.today().date()
-        age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
-
-        if age < 18:
-            messages.error(request, "Must be 18 plus")
-            return redirect('signup')
 
         myuser = User.objects.create_user(username, email,pass1)
-        myuser.first_name = fname
-        myuser.last_name = lname
         myuser.save()
-
-        profile = Profile(user=myuser, gender=gender,birthdate=birthdate)
-        profile.save()
 
         messages.success(request, "Successfully Registered.")
 

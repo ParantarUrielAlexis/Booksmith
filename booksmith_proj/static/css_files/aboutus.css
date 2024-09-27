@@ -1,0 +1,42 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+.description{
+    padding: 10px;
+    font-size: 17px;
+    margin-left: 200px;
+    margin-top: 70px;
+    width: 75%;
+}
+.founders{
+    margin-left: 200px;
+    padding: 10px;
+}
+.founders img{
+    width: 400px;
+    height: 400px;
+    margin-right: 220px;
+}
+.names{
+    display: flex;
+    padding: 10px;
+    margin-left: 320px;
+    gap: 500px;
+}
+.description-founder{
+    padding: 10px;
+    font-size: 17px;
+    margin-left: 200px;
+    margin-top: 20px;
+    width: 75%;
+}
+.description2{
+    padding: 10px;
+    font-size: 17px;
+    margin-left: 200px;
+    margin-top: 10px;
+    width: 75%;
+}

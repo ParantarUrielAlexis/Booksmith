@@ -1,0 +1,75 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+.center-body{
+    display: flex;
+    gap: 200px;
+}
+
+.left-side{
+    padding: 10px;
+    font-size: 19px;
+    margin-left: 200px;
+    margin-top: 50px;
+    width: 30%;
+}
+textarea[type="text"] {
+    font-size: 21px;
+    border: 2px solid black;
+    color: black;
+    width: 400px;
+    height: 200px;
+    resize: none;
+    box-sizing: border-box;
+    padding: 10px;
+    &::placeholder {
+        color: black;
+        text-align: start;
+    }
+}
+input[type="email"] {
+    padding: 10px;
+    font-size: 21px;
+    border: 2px solid black;
+    width: 400px;
+    color: black;
+    &::placeholder {
+        color: black;
+    }
+}
+.right-side{
+    margin-top: 50px;
+}
+.register-btn {
+    margin-top: 10px;
+    text-align: center;
+    width: 400px;
+    background-color: #b30000;
+    color: white; 
+    border: 2px solid #666; 
+    border-radius: 60px; 
+    padding: 10px 30px; 
+    font-size: 16px;
+    cursor: pointer; 
+}
+.register-btn:hover {
+    background-color: #a00000; 
+}
+.socmed-container{
+    display: flex;
+    gap: 100px;
+    margin-top: 350px;
+}
+.socmed img{
+    height: 40px;
+    width: 40px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+.footer-design{
+    padding: 20px;
+    background-color: #b30000;
+}

@@ -36,4 +36,7 @@ def signup(request):
     return render(request, "accounts/signup.html")
 
 def aboutus(request):
-    return render(request, "accounts/aboutus.html")
+    return render(request, "aboutus.html")
+
+def contactus(request):
+    return render(request, "contactus.html")

@@ -47,7 +47,7 @@ input {
     border: 0px solid #ccc;
 }
 input[type="text"] {
-    font-size: 18px;
+    font-size: 21px;
     border-bottom: 1px solid black;
     color: black;
     &::placeholder {

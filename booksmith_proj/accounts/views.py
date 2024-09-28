@@ -5,6 +5,9 @@ from django.contrib.auth import authenticate, login, logout
 from datetime import datetime
 from .models import Profile
 # Create your views here.
+
+# this could conflict with your main page, so check
+# this is not used btw
 def home(request):
     return render(request, "accounts/index.html")
 
@@ -22,15 +25,15 @@ def signup(request):
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists.")
             return redirect('signup')
-        
+
         if User.objects.filter(email=email).exists():
             messages.error(request, "Email already exists.")
             return redirect('signup')
-        
+
         if pass1 != pass2:
             messages.error(request, "Password does not match.")
             return redirect('signup')
-        
+
         birthdate = datetime.strptime(request.POST['birthdate'], '%Y-%m-%d').date()
         today = datetime.today().date()
         age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))

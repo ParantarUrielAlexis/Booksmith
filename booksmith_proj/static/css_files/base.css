@@ -1,0 +1,162 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Satoshi-Bold", Arial, sans-serif;
+}
+
+/* Outer container to center the navbar */
+.navbar-container {
+  display: flex;
+  justify-content: center;
+  padding: 50px 0; /* Optional padding for spacing around the navbar */
+}
+
+/* Navbar container */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  font-family: Arial;
+
+  max-width: 1200px; /* Set max-width to control navbar width */
+  width: 90%; /* Adjust width to keep navbar centered */
+}
+
+/* Left side of the navbar */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* Space between logo and links */
+}
+
+/* Logo */
+.logo img {
+  height: 30px; /* Adjust as needed */
+}
+
+/* Links inside the navbar */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-links a {
+  font-size: 16px;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  position: relative;
+  transition: color 0.6s;
+}
+
+/* Add underline effect on hover using pseudo-element */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: rgb(0, 0, 0);
+  transition: width 0.6s;
+}
+
+/* Add the underline on hover */
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* The dropdown container */
+.dropdown {
+  position: relative;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
+  font-size: 16px;
+  border: none;
+  outline: none;
+  color: rgb(0, 0, 0);
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  position: relative;
+  transition: color 0.3s;
+}
+
+/* Add underline effect on dropdown button hover */
+.dropdown .dropbtn::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: rgb(0, 0, 0);
+  transition: width 0.6s;
+}
+
+/* Add the underline on hover */
+.dropdown:hover .dropbtn::after {
+  width: 100%;
+}
+
+/* Dropdown content (hidden by default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Right side of the navbar (login/signup buttons) */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-btn,
+.signup-btn {
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.login-btn {
+  background-color: white;
+  color: #bd0000;
+  font-weight: bold;
+  padding: 12px 20px;
+}
+
+.signup-btn {
+  background-color: #bd0000;
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px;
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}My Website{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css_files/base.css' %}" />
+  </head>
+  <body>
+    <header class="navbar-container">
+      <div class="navbar">
+        <div class="nav-left">
+          <div class="logo">
+            <a href="#"
+              ><img src="{% static 'images/logo.png' %}" alt="Logo"
+            /></a>
+          </div>
+          <nav class="nav-links">
+            <a href="#home">Home</a>
+            <div class="dropdown">
+              <button class="dropbtn">
+                Shop
+                <i class="fa fa-caret-down"></i>
+              </button>
+              <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+              </div>
+            </div>
+            <a href="#about">About us</a>
+            <a href="#contact">Contact us</a>
+          </nav>
+        </div>
+        <div class="nav-right">
+          <button class="login-btn">Log-in</button>
+          <button class="signup-btn">Sign-up</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Placeholder for content injected by child templates -->
+    <div class="container">
+      {% block content %}
+      <!-- Content from child templates will go here -->
+      {% endblock %}
+    </div>
+
+    <footer>
+      <p>Footer content</p>
+    </footer>
+  </body>
+</html>

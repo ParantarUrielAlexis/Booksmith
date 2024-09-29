@@ -1,43 +1,81 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css_files/aboutus.css' %}">
-</head>
-<body>
-    <h2 style="justify-content: right; text-align: right; padding: 30px; margin-right: 170px; font-size: 35px;margin-top: 60px;">About Us</h2>
-    <h2 style="padding: 10px; font-size: 60px; font-family: Arial, sans-serif; justify-content: center; text-align: center;">BookSmith</h2>
-    <h3 style="padding: 15px; justify-content: center; text-align: center; color: rgb(145, 145, 145);">"Forging Stories One Page at a Time"</h3>
-    <div class="description">
-        <p>Welcome to BookSmith, your go-to destination for free online reading!</p>
-        <br>
-        <p>At BookSmith, we understand the value of a great read. Our mission is to provide a platform where book lovers can access a diverse selection of titles, from timeless classics to the latest bestsellers all for a reasonable price. Whether you’re looking to dive into a captivating novel or explore insightful non-fiction, BookSmith has something for everyone.</p>
-        <br>
-        <h3><strong>Founders</strong></h3>
-    </div>
-    <div class="founders">
-        <img src="{% static 'images\lance.jpg' %}" alt="lance">
-        <img src="{% static 'images\uriel.jpg' %}" alt="uriel">
-    </div>
-    <div class="names">
-        <h2>Lance Antor</h2>
-        <h2>Uriel Parantar</h2>
-    </div>
-    <div class="description-founder">
-        <p>BookSmith was founded by Lance Antor and Uriel Parantar, who believes in the power of stories to inspire and educate. With a vision to create a premium reading experience, We established BookSmith to connect readers with high-quality literature that enriches lives.</p>
-        <br>
-        <h3><strong>Vision</strong></h3>
-    </div>
-    <div class="description2">
-        <p>We believe that reading should be a rewarding experience. By providing a platform where readers can discover and enjoy quality literature, we aim to foster a culture of reading and lifelong learning.</p>
-        <br>
-        <p>Thank you for choosing BookSmith as your reading companion. Happy reading!</p>
-        <br>
-    </div>
-   
-    
-</body>
-</html>
+{% extends 'base.html' %} {% load static %} {% block title %}About Us
+{%endblock%} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css_files/aboutus.css' %}" />
+{% endblock %} {% block content %}
+<h2
+  style="
+    justify-content: right;
+    text-align: right;
+    padding: 30px;
+    margin-right: 170px;
+    font-size: 35px;
+    margin-top: 60px;
+  "
+>
+  About Us
+</h2>
+<h2
+  style="
+    padding: 10px;
+    font-size: 60px;
+    font-family: Arial, sans-serif;
+    justify-content: center;
+    text-align: center;
+  "
+>
+  BookSmith
+</h2>
+<h3
+  style="
+    padding: 15px;
+    justify-content: center;
+    text-align: center;
+    color: rgb(145, 145, 145);
+  "
+>
+  "Forging Stories One Page at a Time"
+</h3>
+<div class="description">
+  <p>Welcome to BookSmith, your go-to destination for free online reading!</p>
+  <br />
+  <p>
+    At BookSmith, we understand the value of a great read. Our mission is to
+    provide a platform where book lovers can access a diverse selection of
+    titles, from timeless classics to the latest bestsellers all for a
+    reasonable price. Whether you’re looking to dive into a captivating novel or
+    explore insightful non-fiction, BookSmith has something for everyone.
+  </p>
+  <br />
+  <h3><strong>Founders</strong></h3>
+</div>
+<div class="founders">
+  <img src="{% static 'images/lance.jpg' %}" alt="Lance" />
+  <img src="{% static 'images/uriel.jpg' %}" alt="Uriel" />
+</div>
+<div class="names">
+  <h2>Lance Antor</h2>
+  <h2>Uriel Parantar</h2>
+</div>
+<div class="description-founder">
+  <p>
+    BookSmith was founded by Lance Antor and Uriel Parantar, who believe in the
+    power of stories to inspire and educate. With a vision to create a premium
+    reading experience, we established BookSmith to connect readers with
+    high-quality literature that enriches lives.
+  </p>
+  <br />
+  <h3><strong>Vision</strong></h3>
+</div>
+<div class="description2">
+  <p>
+    We believe that reading should be a rewarding experience. By providing a
+    platform where readers can discover and enjoy quality literature, we aim to
+    foster a culture of reading and lifelong learning.
+  </p>
+  <br />
+  <p>
+    Thank you for choosing BookSmith as your reading companion. Happy reading!
+  </p>
+  <br />
+</div>
+{% endblock %}

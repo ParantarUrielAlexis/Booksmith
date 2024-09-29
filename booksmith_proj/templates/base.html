@@ -14,11 +14,11 @@
         <div class="nav-left">
           <div class="logo">
             <a href="#"
-              ><img src="{% static 'images/logo.png' %}" alt="Logo"
+              ><img src="{% static 'images/booksmith_logo.png' %}" alt="Logo"
             /></a>
           </div>
           <nav class="nav-links">
-            <a href="#home">Home</a>
+            <a href="{% url 'landing_page' %}">Home</a>
             <div class="dropdown">
               <button class="dropbtn">
                 Shop
@@ -30,13 +30,23 @@
                 <a href="#">Link 3</a>
               </div>
             </div>
-            <a href="#about">About us</a>
-            <a href="#contact">Contact us</a>
+            <a href="{% url 'aboutus' %}">About us</a>
+            <a href="{% url 'contactus' %}">Contact us</a>
           </nav>
         </div>
         <div class="nav-right">
-          <button class="login-btn">Log-in</button>
-          <button class="signup-btn">Sign-up</button>
+          <button
+            class="login-btn"
+            onclick="window.location.href='{% url 'signin' %}'"
+          >
+            Log-in
+          </button>
+          <button
+            class="signup-btn"
+            onclick="window.location.href='{% url 'signup' %}'"
+          >
+            Sign-up
+          </button>
         </div>
       </div>
     </header>

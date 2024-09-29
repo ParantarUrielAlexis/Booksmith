@@ -1,56 +1,82 @@
-{% extends 'accounts/base.html' %}
+{% extends 'base.html' %} {% load static %} {% block title %}Sign Up
+{%endblock%} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css_files/signup.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+/>
+{% endblock %} {% block content %}
+<h2
+  style="
+    padding: 25px;
+    font-size: 60px;
+    font-family: Arial, sans-serif;
+    justify-content: center;
+    text-align: center;
+    margin-top: 30px;
+  "
+>
+  BookSmith
+</h2>
 
-{% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign up</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css_files/signup.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-</head>
-<body>
-    
-    <h2 style="padding: 25px; font-size: 60px; font-family: Arial, sans-serif; justify-content: center; text-align: center; margin-top: 30px">BookSmith</h2>
-   
-    <form class="registration-form" method="post">
-        {% csrf_token %}
-       
-        <div class="form-group">
-            <input type="text" id="username" name="username" placeholder="Username" required>
-            <input type="email" id="email" name="email" placeholder="Email" required>
-        </div>
-        <br>
-        <div class="form-group">
-            
-            <input type="password" id="pass1" name="pass1" placeholder="Password" required>
-            <input type="password" id="pass2" name="pass2" placeholder="Confirm Password" required>
-        </div>
-        <div class="section">
-            <h4 style="margin-left: 30px;">Already have account?<a style="margin-left: 10px ;"href="{% url 'signin' %}">Login</a></h4>
-            <button type="submit" class="register-btn">Register</button>
-        </div>
-    </form>
-    <script type="text/javascript" src="{% static 'js_files/signup.js' %}"></script>
-    <script>
-        {% if messages %}
-        {% for message in messages %}
-            Swal.fire({
-                icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
-                title: '{{ message }}',
-                showConfirmButton: true,
-                timer: 3000
-            }).then(() => {
-                {% if message.tags == "success" %}
-                    window.location.href = "{% url 'signin' %}";
-                {% elif message.tags == "error" %}
-                {% endif %}
-            });
-        {% endfor %}
-    {% endif %}
-    </script>
-</body>
-</html>
+<form class="registration-form" method="post">
+  {% csrf_token %}
+  <div class="form-group">
+    <input
+      type="text"
+      id="username"
+      name="username"
+      placeholder="Username"
+      required
+    />
+    <input type="email" id="email" name="email" placeholder="Email" required />
+  </div>
+  <br />
+  <div class="form-group">
+    <input
+      type="password"
+      id="pass1"
+      name="pass1"
+      placeholder="Password"
+      required
+    />
+    <input
+      type="password"
+      id="pass2"
+      name="pass2"
+      placeholder="Confirm Password"
+      required
+    />
+  </div>
+  <div class="section">
+    <h4 style="margin-left: 30px">
+      Already have an account?<a
+        style="margin-left: 10px"
+        href="{% url 'signin' %}"
+        >Login</a
+      >
+    </h4>
+    <button type="submit" class="register-btn">Register</button>
+  </div>
+</form>
+
+{% endblock %} {% block extra_js %}
+<script type="text/javascript" src="{% static 'js_files/signup.js' %}"></script>
+<script>
+  {% if messages %}
+  {% for message in messages %}
+      Swal.fire({
+          icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+          title: '{{ message }}',
+          showConfirmButton: true,
+          timer: 3000
+      }).then(() => {
+          {% if message.tags == "success" %}
+              window.location.href = "{% url 'signin' %}";
+          {% elif message.tags == "error" %}
+          {% endif %}
+      });
+  {% endfor %}
+  {% endif %}
+</script>
 {% endblock %}

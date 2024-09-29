@@ -1,45 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css_files/contactus.css' %}">
-</head>
-<body>
-    <h2 style="justify-content: left; text-align: left; padding: 30px; margin-left: 170px; font-size: 35px;margin-top: 100px;">Contact Us</h2>
-     <div class="center-body">
-        <div class="left-side">
-            <p>We’d love to hear from you! Whether you have questions, feedback, or just want to connect, feel free to reach out.</p>
-            <div class="socmed-container">
-                <h2>Follow Us</h2>
-                <h2>Support</h2>
-            </div>
-            <div class="socmed">
-                <img src="{% static 'images\facebook_logo.png' %}" alt="BookSmith Logo">
-                <img src="{% static 'images\instagram_logo.png' %}" alt="BookSmith Logo">
-                <a style="margin-left: 70px;" href="#">booksmith@gmai.com</a>
-            </div>
-            
-        </div>
-        <div class="right-side">
-           <form class="feedback" method="post">
-            {% csrf_token %}
-            <div class="for-email">
-                <input type="email" id="email" name="email" placeholder="Email" required>
-            </div>
-            <br>
-            <div class="for-feedback">
-                <textarea type="text" id="feedback" name="feedback" placeholder="Feedback" required></textarea>
-            </div>
-            <button type="submit" class="register-btn">Register</button>
-            <br>
-            <br>
-            <p>Thank you for being a part of the BookSmith community!</p>
-           </form>
-        </div>
-     </div>
-     <div class="footer-design"></div>
-</body>
-</html>
+{% extends 'base.html' %} {% load static %} {% block title %}Contact Us
+{%endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css_files/contactus.css' %}" />
+{% endblock %} {% block content %}
+<h2
+  style="
+    justify-content: left;
+    text-align: left;
+    padding: 30px;
+    margin-left: 170px;
+    font-size: 35px;
+    margin-top: 100px;
+  "
+>
+  Contact Us
+</h2>
+<div class="center-body">
+  <div class="left-side">
+    <p>
+      We’d love to hear from you! Whether you have questions, feedback, or just
+      want to connect, feel free to reach out.
+    </p>
+    <div class="socmed-container">
+      <h2>Follow Us</h2>
+      <h2>Support</h2>
+    </div>
+    <div class="socmed">
+      <img src="{% static 'images/facebook_logo.png' %}" alt="Facebook Logo" />
+      <img
+        src="{% static 'images/instagram_logo.png' %}"
+        alt="Instagram Logo"
+      />
+      <a style="margin-left: 70px" href="#">booksmith@gmail.com</a>
+    </div>
+  </div>
+  <div class="right-side">
+    <form class="feedback" method="post">
+      {% csrf_token %}
+      <div class="for-email">
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="Email"
+          required
+        />
+      </div>
+      <br />
+      <div class="for-feedback">
+        <textarea
+          id="feedback"
+          name="feedback"
+          placeholder="Feedback"
+          required
+        ></textarea>
+      </div>
+      <button type="submit" class="register-btn">Submit</button>
+      <br />
+      <br />
+      <p>Thank you for being a part of the BookSmith community!</p>
+    </form>
+  </div>
+</div>
+<div class="footer-design"></div>
+{% endblock %}

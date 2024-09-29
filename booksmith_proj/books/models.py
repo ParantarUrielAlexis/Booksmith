@@ -11,6 +11,7 @@ class Book(models.Model):
     discount_percent = models.FloatField(default=0, validators=[MinValueValidator(0), MinValueValidator(100)])
     image_url = models.CharField(max_length=2083, default='', blank=True)  # Can be empty
     thumbnail_image_url = models.CharField(max_length=2083, default='', blank=True)  # New field for thumbnail
+    bestseller = models.BooleanField(default=False)  # This will flag best sellers
 
     def discounted_price(self):
         """

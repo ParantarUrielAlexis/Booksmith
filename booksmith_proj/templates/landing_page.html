@@ -2,35 +2,21 @@
 {%endblock %} {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css_files/landing_page.css' %}" />
 {% endblock %} {% block content %}
-<!-- Slider Section -->
+<!-- Slider Section for Best Sellers -->
 <div class="slider">
-  <!-- List Items -->
+  <h2>Best Sellers</h2>
   <div class="list">
-    <div class="item active">
-      <img src="{% static 'images/img2.jpg' %}" alt="Slider 01" />
-      <div class="content">
-        <p>Design</p>
-        <h2>Slider 01</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
-          neque? Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum,
-          ex.
-        </p>
+    <!-- Loop through best sellers and display each book -->
+    {% for book in best_sellers %}
+      <div class="item {% if forloop.first %}active{% endif %}">
+        <img src="{{ book.image_url }}" alt="{{ book.title }}" />
+        <div class="content">
+          <p>{{ book.category }}</p>
+          <h2>{{ book.title }}</h2>
+          <p>{{ book.description }}</p>
+        </div>
       </div>
-    </div>
-    <!-- Additional slider items can be added here -->
-    <div class="item active">
-      <img src="{% static 'images/img2.jpg' %}" alt="Slider 01" />
-      <div class="content">
-        <p>Design</p>
-        <h2>Slider 01</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore,
-          neque? Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum,
-          ex.
-        </p>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 
   <!-- Button Arrows -->
@@ -41,101 +27,76 @@
 
   <!-- Thumbnails -->
   <div class="thumbnail">
-    <div class="item active">
-      <img src="{% static 'images/tnimg2.jpg' %}" alt="Thumbnail 1" />
-      <div class="content">Name Slider 1</div>
-    </div>
-    <!-- Additional thumbnails can be added here -->
-    <div class="item active">
-      <img src="{% static 'images/tnimg2.jpg' %}" alt="Thumbnail 1" />
-      <div class="content">Name Slider 1</div>
-    </div>
+    <!-- Loop through best sellers for thumbnails -->
+    {% for book in best_sellers %}
+      <div class="item {% if forloop.first %}active{% endif %}">
+        <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+        <div class="content">{{ book.title }}</div>
+      </div>
+    {% endfor %}
   </div>
 </div>
 
-<!-- Recommended Section -->
+
 <div class="recommended-section">
   <h2>Recommended For You</h2>
   <p>
-    Explore these picks. We've selected these reads just for you—find your next
-    favorite at your own pace.
+    Explore these picks. We've selected these reads just for you—find your next favorite at your own pace.
   </p>
   <div class="books-container">
-    <div class="book-card">
-      <img src="{% static 'images/img2.jpg' %}" alt="Gone Girl" />
-      <div class="book-info">
-        <h3>Gone Girl</h3>
-        <p>$14.99</p>
-        <button>Add To Cart</button>
+    {% for book in recommended_books %}
+      <div class="book-card">
+        <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+        <div class="book-info">
+          <h3>{{ book.title }}</h3>
+          <p>${{ book.price|floatformat:2 }}</p>
+          <button>Add To Cart</button>
+        </div>
       </div>
-    </div>
-    <!-- Additional book cards can be added here -->
-    <div class="book-card">
-      <img src="{% static 'images/img2.jpg' %}" alt="Gone Girl" />
-      <div class="book-info">
-        <h3>Gone Girl</h3>
-        <p>$14.99</p>
-        <button>Add To Cart</button>
-      </div>
-    </div>
+    {% endfor %}
   </div>
 </div>
 
+
 <!-- Featured page -->
 <div class="container-feature">
-  <!-- Header with featured product and bottom message -->
   <div class="header-title">
     <h2>Featured Product</h2>
     <p class="bottom-message-header">
-      Check out our top pick of the moment—specially chosen to stand out.
-      Discover what makes it a must-have.
+      Check out our top pick of the moment—specially chosen to stand out. Discover what makes it a must-have.
     </p>
   </div>
 
-  <!-- Main Content: Left and Right Sections -->
   <div class="main-content">
     <div class="left-section">
       <div class="discover-bar">
         <span>DISCOVER</span>
         <span class="arrow">→</span>
       </div>
-      <img
-        src="{% static 'images/img2.jpg' %}"
-        alt="Gone Girl"
-        class="full-image"
-      />
+      <img src="{{ featured_book.image_url }}" alt="{{ featured_book.title }}" class="full-image" />
     </div>
-    <div class="right-section">
-      <h1>
-        Modern <br />
-        - Minimal
-      </h1>
 
-      <!-- Author and Category Section -->
+    <div class="right-section">
+      <h1>{{ featured_book.title }}</h1>
       <div class="author-category">
-        <span class="author">Kafka Mukamari</span>
-        <span class="category">Fantasy Fiction </span>
+        <span class="author">{{ featured_book.author }}</span>
+        <span class="category">{{ featured_book.category }}</span>
       </div>
       <p class="description">
-        Modernism is the single most important new style or philosophy of
-        architecture and design of the 20th century, associated with an
-        analytical approach to the function of buildings, a strictly rational
-        use of materials, an openness to structural innovation and the
-        elimination of ornament.
+        {{ featured_book.description }}
       </p>
-
-      <!-- Pricing Section -->
       <div class="price">
-        <span class="original-price"><s>$29.99</s></span>
-        <span class="discount-price">$19.99</span>
+        <span class="original-price"><s>${{ featured_book.price }}</s></span>
+        <span class="discount-price">${{ featured_book.get_discounted_price|floatformat:2 }}</span>
       </div>
-
       <div class="buttons">
         <button class="btn-buy">Buy Now</button>
         <button class="btn-details">See Details</button>
       </div>
     </div>
   </div>
+</div>
+
 
   {% endblock %} {% block extra_js %}
   <script src="{% static 'js_files/landing_page.js' %}"></script>

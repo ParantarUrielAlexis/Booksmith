@@ -4,11 +4,29 @@
     box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
+.header {
+    margin-top: 15px;
+    padding: 10px;
+    display: flex;
+}
+.header img{
+    margin-left: 60px;
+    width: 60px;
+    height: 60px;
+}
+.header ul {
+    margin-top: 20px;
+    margin-left: 50px;
+}
 .registration-form{
     padding: 20px;
 }
+.section h4{
+    font-size: 13px
+}
 .section {
-    margin-left: 180px;
+    margin-top: 80px;
+    margin-left: 40%;
 }
 hr {
     margin-left: 180px; 
@@ -17,39 +35,19 @@ hr {
 }
 .form-group {
     padding: 35px;
-    margin-left: 220px;
+    margin-left: 300px;
 }
 .form-group input {
-    margin-right: 20%; 
+    margin-right: 100px; 
     width: 310px;
 }
-.form-group-mid{
-    padding: 35px;
-    margin-left: 220px;
-}
-.form-group-mid input {
-    margin-right: 5%; 
-}
-.form-group-long {
-    padding: 35px;
-    margin-left: 220px;
-}
-.form-group-long input{
-    width: 71%;
-}
-.form-pass {
-    padding: 25px;
-    margin-left: 47%;
-}
-.form-pass input {
-    margin-right: 20%; 
-}
+
 
 input {
     border: 0px solid #ccc;
 }
 input[type="text"] {
-    font-size: 18px;
+    font-size: 21px;
     border-bottom: 1px solid black;
     color: black;
     &::placeholder {
@@ -81,8 +79,7 @@ input[type="date"] {
     }
 }
 .register-btn {
-    margin-top: 30px;
-    margin-left: 40%;
+    margin-top: 10px;
     text-align: center;
     width: 250px;
     background-color: #b30000;

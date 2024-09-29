@@ -4,90 +4,49 @@
     box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
-.header {
-    margin-top: 15px;
-    padding: 10px;
+.whole-body{
     display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh;
 }
-.header img{
-    margin-left: 60px;
-    width: 60px;
-    height: 60px;
-}
-.header ul {
-    margin-top: 20px;
-    margin-left: 50px;
-}
-.registration-form{
-    padding: 20px;
-}
+
 .section h4{
     font-size: 13px
 }
+.section a {
+    color: #a00000;
+}
 .section {
     margin-top: 80px;
-    margin-left: 40%;
+    margin-left: 200px;
 }
-hr {
-    margin-left: 180px; 
-    color: grey;
-    width: 70%;
+.left-side {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-.form-group {
-    padding: 35px;
-    margin-left: 300px;
-}
-.form-group input {
-    margin-right: 100px; 
-    width: 310px;
-}
-
-
-input {
-    border: 0px solid #ccc;
-}
-input[type="text"] {
-    font-size: 21px;
-    border-bottom: 1px solid black;
-    color: black;
-    &::placeholder {
-        color: black;
-    }
-}
-input[type="email"] {
-    font-size: 21px;
-    border-bottom: 1px solid black;
-    color: black;
-    &::placeholder {
-        color: black;
-    }
-}
-input[type="password"] {
-    font-size: 21px;
-    border-bottom: 1px solid black;
-    color: black;
-    &::placeholder {
-        color: black;
-    }
-}
-input[type="date"] {
-    font-size: 21px;
-    border-bottom: 1px solid black;
-    color: black;
-    &::placeholder {
-        color: black;
-    }
+.right-side{
+    flex: 1;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .register-btn {
     margin-top: 10px;
     text-align: center;
-    width: 250px;
+    width: 350px;
     background-color: #b30000;
     color: white; 
     border: 2px solid #666; 
     border-radius: 60px; 
     padding: 10px 30px; 
-    font-size: 16px;
+    font-size: 15px;
+    height: 45px;
     cursor: pointer; 
 }
 .register-btn:hover {
@@ -95,31 +54,27 @@ input[type="date"] {
 }
 
 
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    margin-left: 35%;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 310px; 
-    z-index: 1000;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+.input-group {
+  margin-top: 30px;
+  margin-left: 150px;
+  position: relative; /* This allows you to position the eye icon relative to the input field */
+  margin-bottom: 20px;
 }
 
-.dropdown-menu li {
-    padding: 10px;
-    cursor: pointer;
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.1em;
 }
 
-.dropdown-menu li:hover {
-    background-color: #f0f0f0;
+.input-group input {
+  width: 450px;
+  padding: 10px;
+  padding-right: 40px; /* This gives space for the eye icon */
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 10px;
 }
-
-
-#gender {
-    cursor: pointer;
-    position: relative;
+.extra-space{
+    padding: 50px;
 }

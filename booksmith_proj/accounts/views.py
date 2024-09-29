@@ -5,9 +5,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from datetime import datetime
 from .models import Profile
+from books.views import landing_page
 # Create your views here.
 def home(request):
-    return render(request, "accounts/index.html")
+    return render(request, "landing_page")
 
 def signup(request):
     if request.method == "POST":

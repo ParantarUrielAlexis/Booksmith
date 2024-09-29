@@ -15,6 +15,7 @@
       class="logo"
     />
   </div>
+  <hr>
   <div class="right-side">
     <h2>WELCOME BACK</h2>
     <p style="margin-top: 5px; color: grey">
@@ -39,7 +40,7 @@
           type="password"
           id="pass1"
           name="pass1"
-          placeholder="*********"
+          placeholder="********"
           required
         />
         <span class="toggle-password">
@@ -69,7 +70,7 @@
           timer: 3000
       }).then(() => {
           {% if message.tags == "success" %}
-              window.location.href = "{% url 'home' %}";
+              window.location.href = "{% url 'landing_page' %}";
           {% elif message.tags == "error" %}
           {% endif %}
       });

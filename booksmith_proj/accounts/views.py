@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse
 from datetime import datetime
 from .models import Profile
 # Create your views here.
@@ -31,9 +32,28 @@ def signup(request):
         myuser.save()
 
         messages.success(request, "Successfully Registered.")
-
+        
+        return redirect('signup')
 
     return render(request, "accounts/signup.html")
+
+def signin(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        pass1 = request.POST.get('pass1')
+
+        user = authenticate(username=username, password=pass1)
+        
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'You have successfully signed in!')
+            return render(request, 'accounts/signin.html')
+
+        else:
+            messages.error(request, 'Invalid Credentials')
+            return render(request, 'accounts/signin.html')
+        
+    return render(request, "accounts/signin.html")
 
 def aboutus(request):
     return render(request, "aboutus.html")

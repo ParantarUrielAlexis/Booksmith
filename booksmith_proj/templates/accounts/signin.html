@@ -1,10 +1,71 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SignIn</title>
+    <title>BookSmith Sign In</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css_files/signin.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
+   
+    <div class="container">
+        <div class="left-side">
+            <img src="{% static 'images/booksmith_logo2.png' %}" alt="BookSmith Logo" class="logo">
+        </div>
+        <div class="right-side">
+            <h2>WELCOME BACK</h2>
+            <p style="margin-top: 5px; color: grey;">Welcome back! please enter your details.</p>
+            <br><br><br>
+            <form action="/signin/" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your email" required>
+                </div>
+                <div class="input-group password-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="pass1" name="pass1" placeholder="*********" required>
+                    <span class="toggle-password">
+                        <i class="fa fa-eye" id="togglePassword"></i>
+                    </span>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="login-btn">Login</button>
+                </div>
+                <div class="register-link">
+                    <p>Don't have an account? <a href="{% url 'signup' %}">Register</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="{% static 'js_files/signin.js' %}"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        {% if messages %}
+        {% for message in messages %}
+            Swal.fire({
+                icon: '{% if message.tags == "success" %}success{% elif message.tags == "error" %}error{% else %}info{% endif %}',
+                title: '{{ message }}',
+                showConfirmButton: true,
+                timer: 3000
+            }).then(() => {
+                {% if message.tags == "success" %}
+                    window.location.href = "{% url 'home' %}";
+                {% elif message.tags == "error" %}
+                {% endif %}
+            });
+        {% endfor %}
+    {% endif %}
+    </script>
 </body>
 </html>
+
+{% endblock %}

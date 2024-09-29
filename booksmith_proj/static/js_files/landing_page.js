@@ -80,3 +80,5 @@ thumbnails.forEach((thumbnail, index) => {
 //     behavior: "smooth",
 //   });
 // });
+
+// Sample data array for featured products

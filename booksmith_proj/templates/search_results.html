@@ -1,4 +1,7 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %}Search Page
+{%endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css_files/search_results.css' %}" />
+{% endblock %} {% block content %}
 <h2>Search Results for "{{ query }}"</h2>
 <div class="books-container">
   {% if search_results %} {% for book in search_results %}
@@ -6,7 +9,9 @@
     <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
     <div class="book-info">
       <h3>{{ book.title }}</h3>
-      <p>${{ book.price|floatformat:2 }}</p>
+      <p class="author">{{ book.author }}</p>
+      <!-- Author added here -->
+      <p class="price">${{ book.price|floatformat:2 }}</p>
       <button>Add To Cart</button>
     </div>
   </div>

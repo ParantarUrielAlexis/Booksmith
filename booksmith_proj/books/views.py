@@ -1,11 +1,13 @@
 from django.shortcuts import render
 from .models import Book
+import random
 
 def landing_page(request):
-    # Get a featured book (e.g., the first book or a random one)
-    featured_book = Book.objects.first()  # Or use `random()` or any filtering logic
-    recommended_books = Book.objects.all()[:4]  # Example to get 4 recommended books
-    best_sellers = Book.objects.filter(bestseller=True)  # Fetch best sellers
+
+    books = list(Book.objects.all())
+    featured_book = random.choice(books) if books else None
+    recommended_books = Book.objects.order_by('?')[:4]
+    best_sellers = Book.objects.order_by('?').filter(bestseller=True)  # Fetch best sellers
 
     context = {
         'featured_book': featured_book,

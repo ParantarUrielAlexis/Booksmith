@@ -8,7 +8,8 @@
 /* Outer container to center the navbar */
 .navbar-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* Stack the navbar and search bar vertically */
+  align-items: center;
   padding: 50px 0; /* Optional padding for spacing around the navbar */
 }
 
@@ -22,8 +23,9 @@
   border-bottom: 1px solid #e0e0e0;
   font-family: Arial;
 
-  max-width: 1200px; /* Set max-width to control navbar width */
-  width: 90%; /* Adjust width to keep navbar centered */
+  width: 100%; /* Make navbar full-width */
+  max-width: 1200px; /* Control max-width for responsive design */
+  margin: 0 auto; /* Center the navbar */
 }
 
 /* Left side of the navbar */
@@ -136,6 +138,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-right: 20px; /* Ensures it's aligned with the right edge */
 }
 
 .login-btn,
@@ -164,4 +167,63 @@
 .container {
   width: 100%; /* Ensure it takes full width */
   margin: auto; /* Center the container */
+}
+
+/* Search bar styling */
+.search-bar-container {
+  display: flex;
+  justify-content: flex-end; /* Align the search bar to the right */
+  width: 100%; /* Match width of the navbar */
+  max-width: 1200px; /* Keep search bar aligned with navbar */
+  margin-top: 10px; /* Add spacing between navbar and search bar */
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 0 10px;
+  background-color: #fff;
+  width: 500px;
+  height: 50px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+}
+
+.search-bar input[type="text"] {
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 16px;
+  flex-grow: 1;
+  background-color: transparent;
+  color: #333;
+}
+
+.search-bar button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #999;
+}
+
+.search-bar button i {
+  font-size: 18px;
+}
+
+.search-bar input[type="text"]::placeholder {
+  color: #bbb;
+}
+
+/* Hover and focus states for the search bar */
+.search-bar:hover {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.search-bar input[type="text"]:focus {
+  outline: none;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }

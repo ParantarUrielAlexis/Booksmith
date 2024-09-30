@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Search Results for "{{ query }}"</h2>
+<div class="books-container">
+  {% if search_results %} {% for book in search_results %}
+  <div class="book-card">
+    <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+    <div class="book-info">
+      <h3>{{ book.title }}</h3>
+      <p>${{ book.price|floatformat:2 }}</p>
+      <button>Add To Cart</button>
+    </div>
+  </div>
+  {% endfor %} {% else %}
+  <p>No books found matching your search.</p>
+  {% endif %}
+</div>
+{% endblock %}

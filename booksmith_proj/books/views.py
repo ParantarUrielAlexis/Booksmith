@@ -14,3 +14,10 @@ def landing_page(request):
     }
 
     return render(request, 'landing_page.html', context)
+
+
+
+def search_books(request):
+    query = request.GET.get('q')
+    search_results = Book.objects.filter(title__icontains=query) if query else []
+    return render(request, 'search_results.html', {'search_results': search_results, 'query': query})

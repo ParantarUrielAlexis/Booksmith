@@ -6,6 +6,10 @@
     <title>{% block title %}{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css_files/base.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
     {% block extra_css %}{% endblock %}
   </head>
   <body>
@@ -13,9 +17,9 @@
       <div class="navbar">
         <div class="nav-left">
           <div class="logo">
-            <a href="#"
-              ><img src="{% static 'images/booksmith_logo.png' %}" alt="Logo"
-            /></a>
+            <a href="#">
+              <img src="{% static 'images/booksmith_logo.png' %}" alt="Logo" />
+            </a>
           </div>
           <nav class="nav-links">
             <a href="{% url 'landing_page' %}">Home</a>
@@ -34,7 +38,9 @@
             <a href="{% url 'contactus' %}">Contact us</a>
           </nav>
         </div>
+
         <div class="nav-right">
+          <!-- Login and Signup Buttons -->
           <button
             class="login-btn"
             onclick="window.location.href='{% url 'signin' %}'"
@@ -49,13 +55,18 @@
           </button>
         </div>
       </div>
+      <!-- Search Bar Placed Below Navbar -->
+      <div class="search-bar-container">
+        <form action="{% url 'search_books' %}" method="GET" class="search-bar">
+          <input type="text" name="q" placeholder="Search Books Here" />
+          <button type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
     </header>
 
     <div class="container">{% block content %}{% endblock %}</div>
-
-    <!-- <footer>
-      <p>Footer content</p>
-    </footer> -->
 
     {% block extra_js %}{% endblock %}
   </body>

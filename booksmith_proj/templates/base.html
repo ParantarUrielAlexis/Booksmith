@@ -60,6 +60,7 @@
             </button>
             <div class="profile-dropdown-content">
               <a href="{% url 'profile' %}">Profile</a>
+              {% csrf_token %}
               <a href="{% url 'logout' %}">Log Out</a>
             </div>
           </div>

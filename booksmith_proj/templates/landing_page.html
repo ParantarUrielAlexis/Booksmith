@@ -91,7 +91,6 @@
 
 
 
-<!-- Featured page -->
 <div class="container-feature">
   <div class="header-title">
     <h2>Featured Product</h2>
@@ -118,10 +117,17 @@
       <p class="description">
         {{ featured_book.description }}
       </p>
+
+      <!-- Price Section: Check if there is a discount -->
       <div class="price">
-        <span class="original-price"><s>${{ featured_book.price }}</s></span>
-        <span class="discount-price">${{ featured_book.get_discounted_price|floatformat:2 }}</span>
+        {% if featured_book.discount_percent > 0 %}
+          <span class="original-price"><s>${{ featured_book.price|floatformat:2 }}</s></span>
+          <span class="discount-price">${{ featured_book.discounted_price|floatformat:2 }}</span>
+        {% else %}
+          <span class="discount-price">${{ featured_book.price|floatformat:2 }}</span>
+        {% endif %}
       </div>
+
       <div class="buttons">
         <button class="btn-buy">Buy Now</button>
         <button class="btn-details">See Details</button>
@@ -129,6 +135,7 @@
     </div>
   </div>
 </div>
+
 
 
   {% endblock %} {% block extra_js %}

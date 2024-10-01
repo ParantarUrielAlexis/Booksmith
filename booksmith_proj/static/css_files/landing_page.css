@@ -490,6 +490,7 @@ svg {
 .original-price {
   text-decoration: line-through; /* Strikethrough for original price */
   color: #999; /* Color for the original price */
+  margin-right: 12px;
 }
 
 .discount-price {

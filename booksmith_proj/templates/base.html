@@ -60,8 +60,10 @@
             </button>
             <div class="profile-dropdown-content">
               <a href="{% url 'profile' %}">Profile</a>
-              {% csrf_token %}
-              <a href="{% url 'logout' %}">Log Out</a>
+              <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Log Out</button>
+              </form>
             </div>
           </div>
           {% else %}

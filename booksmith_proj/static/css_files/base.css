@@ -227,3 +227,66 @@
   outline: none;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
+
+/* Profile Picture in Navbar */
+.profile-pic {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.profile-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.profile-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  right: 0;
+}
+
+.profile-dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.profile-dropdown:hover .profile-dropdown-content {
+  display: block;
+}
+
+/* Cart Icon */
+.cart-icon {
+  position: relative;
+  margin-right: 20px;
+  font-size: 18px;
+  color: #bd0000;
+  text-decoration: none;
+}
+
+.cart-icon .cart-count {
+  font-size: 14px;
+  background-color: #bd0000;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+}

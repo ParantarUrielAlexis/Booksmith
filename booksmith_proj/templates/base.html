@@ -17,7 +17,7 @@
       <div class="navbar">
         <div class="nav-left">
           <div class="logo">
-            <a href="#">
+            <a href="{% url 'landing_page' %}">
               <img src="{% static 'images/booksmith_logo.png' %}" alt="Logo" />
             </a>
           </div>
@@ -40,7 +40,31 @@
         </div>
 
         <div class="nav-right">
-          <!-- Login and Signup Buttons -->
+          {% if user.is_authenticated %}
+          <!-- If the user is logged in -->
+          <a href="{% url 'cart' %}" class="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">({{ cart.items.count }})</span>
+          </a>
+
+          <!-- Profile Dropdown for User -->
+          <div class="profile-dropdown">
+            <button class="profile-btn">
+              <!-- Display profile image if it exists, else use a default avatar -->
+              <img
+                src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default_avatar.png' %}{% endif %}"
+                alt="Profile Picture"
+                class="profile-pic"
+              />
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="profile-dropdown-content">
+              <a href="{% url 'profile' %}">Profile</a>
+              <a href="{% url 'logout' %}">Log Out</a>
+            </div>
+          </div>
+          {% else %}
+          <!-- If the user is NOT logged in -->
           <button
             class="login-btn"
             onclick="window.location.href='{% url 'signin' %}'"
@@ -53,8 +77,10 @@
           >
             Sign-up
           </button>
+          {% endif %}
         </div>
       </div>
+
       <!-- Search Bar Placed Below Navbar -->
       <div class="search-bar-container">
         <form action="{% url 'search_books' %}" method="GET" class="search-bar">

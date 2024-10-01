@@ -135,15 +135,67 @@ svg {
   position: absolute;
   inset: auto 10px 10px 10px;
 }
+/* Highlight the price */
+.highlight-price {
+  font-size: 1.5em; /* Make the price larger */
+  color: #000000; /* Highlight with a bright color */
+  font-weight: bold;
+  background-color: #ffee00; /* Slight background color to emphasize it */
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+/* Discount percentage styling */
+.discount-percent {
+  font-size: 1.2em; /* Slightly smaller than the price */
+  color: #ff5733; /* Bright red color to attract attention */
+  font-weight: bold;
+  margin-left: 10px; /* Add some space between price and discount percentage */
+}
+/* Button styles */
+.price-buttons {
+  margin-top: 20px; /* Add some space between price and buttons */
+}
+
+.price-buttons .btn {
+  background-color: #bd2000; /* Button background color */
+  color: #ffffff; /* Button text color */
+  border: none;
+  padding: 20px 20px;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  margin-right: 10px; /* Add space between buttons */
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effects for buttons */
+.price-buttons .btn:hover {
+  background-color: #921901; /* Darken the button on hover */
+}
+
+/* Additional styling for specific buttons if needed */
+.price-buttons .add-to-cart {
+  font-weight: bold;
+}
+
+.price-buttons .see-details {
+  background-color: white;
+  color: #bd2000;
+  font-weight: bold;
+}
+
+.price-buttons .see-details:hover {
+  background-color: #eee;
+}
+
+/* Ensure price and buttons look good on mobile */
 @media screen and (max-width: 678px) {
-  .thumbnail {
-    justify-content: start;
+  .highlight-price {
+    font-size: 1.2em;
   }
-  .slider .list .item .content h2 {
-    font-size: 60px;
-  }
-  .arrows {
-    top: 10%;
+  .price-buttons .btn {
+    padding: 8px 15px;
+    font-size: 0.9em;
   }
 }
 
@@ -195,7 +247,7 @@ svg {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.808);
   color: #fff;
   text-align: center;
   padding: 10px;
@@ -203,7 +255,7 @@ svg {
 }
 
 .book-card:hover .book-info {
-  background: rgba(0, 0, 0, 0.8);
+  background: rgb(0, 0, 0);
 }
 
 .book-info h3 {
@@ -212,16 +264,33 @@ svg {
 }
 
 .book-info p {
+  display: inline;
   margin: 5px 0;
-  font-size: 14px;
-  color: #e63946;
+  padding: 5px 10px;
+  font-size: 18px;
+  font-weight: bold;
+
+  color: #bd2000;
+}
+
+.book-info p s {
+  color: #727171;
+  font-size: 16px;
+  margin: 0 auto;
+}
+
+.book-info p {
+  margin: 0 auto;
+  font-size: 18px;
+  font-weight: bold;
+  color: #bd2000;
 }
 
 .book-info button {
-  background-color: #e63946;
+  background-color: #bd2000;
   color: #fff;
   border: none;
-  padding: 5px 10px;
+  padding: 15px 20px;
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
@@ -321,7 +390,7 @@ svg {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Ensure vertical centering */
+
   align-items: center; /* Ensure horizontal centering */
   padding: 40px;
   background-color: white;
@@ -332,6 +401,9 @@ svg {
 .right-section h1 {
   font-size: 4rem;
   line-height: 1.2;
+  color: #000000;
+  background-color: #fbf719;
+  padding: 8px 15px;
 }
 
 .description {
@@ -350,7 +422,7 @@ svg {
 
 .buttons .btn-buy,
 .buttons .btn-details {
-  background-color: #333;
+  background-color: #bd2000;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -361,7 +433,15 @@ svg {
 }
 
 .buttons .btn-details {
-  background-color: #e63946;
+  background-color: #f8f8f8;
+  color: #bd2000;
+  font-weight: bold;
+}
+
+.buttons .btn-details:hover {
+  background-color: #f0eded;
+  color: #bd2000;
+  font-weight: bold;
 }
 
 .social-links {
@@ -380,11 +460,22 @@ svg {
 /* Author and Category Section */
 .author-category {
   display: flex; /* Use flexbox for alignment */
-  justify-content: space-between; /* Space out the category and author */
-  width: 50%; /* Ensure full width */
+  justify-content: center; /* Space out the category and author */
+  width: 80%; /* Ensure full width */
   margin-top: 20px; /* Space above the author/category */
   font-size: 1rem; /* Font size */
   color: #555; /* Color for text */
+}
+
+.author {
+  background-color: #006800;
+  padding: 10px 15px;
+  color: rgb(255, 255, 255);
+}
+
+.category {
+  padding: 10px 15px;
+  font-weight: bold;
 }
 
 /* Pricing Section */
@@ -403,5 +494,5 @@ svg {
 
 .discount-price {
   font-weight: bold; /* Bold for the discount price */
-  color: #e74c3c; /* Different color for the discount price */
+  color: #bd2000; /* Different color for the discount price */
 }

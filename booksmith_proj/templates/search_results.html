@@ -9,9 +9,17 @@
     <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
     <div class="book-info">
       <h3>{{ book.title }}</h3>
-      <p class="author">{{ book.author }}</p>
-      <!-- Author added here -->
-      <p class="price">${{ book.price|floatformat:2 }}</p>
+
+      <!-- Check if the book has a discount -->
+      {% if book.discount_percent > 0 %}
+      <p><s>${{ book.price|floatformat:2 }}</s></p>
+      <br />
+      <p>${{ book.discounted_price|floatformat:2 }}</p>
+      {% else %}
+      <p>${{ book.price|floatformat:2 }}</p>
+      {% endif %}
+
+      <br /><br />
       <button>Add To Cart</button>
     </div>
   </div>

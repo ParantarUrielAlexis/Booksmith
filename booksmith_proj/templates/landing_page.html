@@ -119,22 +119,48 @@
 
 {% block extra_js %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{% static 'js_files/landing_page.js' %}"></script>
+
 <script>
-    function addToCart(bookId) {
-        $.ajax({
-            url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),  
-            method: "POST",
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}"  
-            },
-            success: function(response) {
-                alert('Item added to cart!');  
-            },
-            error: function(xhr) {
-                alert('Error adding item to cart: ' + xhr.responseText);
-            }
-        });
-    }
+  function addToCart(bookId) {
+      var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
+
+      if (!isAuthenticated) {
+          // Trigger SweetAlert for non-authenticated users
+          Swal.fire({
+              icon: 'warning',
+              title: 'Not Logged In',
+              text: 'Please log in to add items to your cart.',
+          })
+          return;  // Stop execution if not authenticated
+      }
+
+      // Proceed with adding to cart for authenticated users
+      $.ajax({
+          url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
+          method: "POST",
+          headers: {
+              "X-CSRFToken": "{{ csrf_token }}"  
+          },
+          success: function(response) {
+              // Trigger SweetAlert for successful addition
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Success!',
+                  text: 'Item added to cart.',
+                  confirmButtonText: 'OK'
+              });
+          },
+          error: function(xhr) {
+              // Trigger SweetAlert for errors
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Error adding item to cart: ' + xhr.responseText
+              });
+          }
+      });
+  }
 </script>
 {% endblock %}

@@ -39,6 +39,7 @@ def signup(request):
     
     if request.user.is_authenticated:
         return redirect('landing_page') 
+        
     
     return render(request, "accounts/signup.html")
 

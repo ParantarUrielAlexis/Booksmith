@@ -13,6 +13,7 @@ def landing_page(request):
         'featured_book': featured_book,
         'recommended_books': recommended_books,
         'best_sellers': best_sellers,  # Pass best sellers to template
+        'is_authenticated': request.user.is_authenticated
     }
 
     return render(request, 'landing_page.html', context)

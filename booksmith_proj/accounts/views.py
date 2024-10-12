@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from datetime import datetime
-from .models import Profile, Cart
+from .models import Profile, Book, CartItem
+from django.views.decorators.http import require_POST
 from books.views import landing_page
 # Create your views here.
 def home(request):
@@ -35,7 +36,10 @@ def signup(request):
         messages.success(request, "Successfully Registered.")
 
         return redirect('signup')
-
+    
+    if request.user.is_authenticated:
+        return redirect('landing_page') 
+    
     return render(request, "accounts/signup.html")
 
 def signin(request):
@@ -55,7 +59,8 @@ def signin(request):
             return render(request, 'accounts/signin.html')
 
     if request.user.is_authenticated:
-        return redirect('landing_page')  # Redirect to the landing page or desired page
+        return redirect('landing_page') 
+    
 
     return render(request, "accounts/signin.html")
 
@@ -66,20 +71,49 @@ def contactus(request):
     return render(request, "contactus.html")
 
 def cart_view(request):
-    # Fetch all cart items for the current user
-    cart_items = Cart.objects.filter(user=request.user)
+    if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user)
+        total_price = sum(item.book.price * item.quantity for item in cart_items)
 
-    # Optionally, calculate the total price
-    total_price = sum(item.book.price * item.quantity for item in cart_items)
+        context = {
+            'cart_items': cart_items,
+            'total_price': total_price,
+        }
+        return render(request, 'accounts/cart.html', context)
+    else:
+        return redirect('login')
 
-    # Pass the cart items and total price to the template
-    return render(request, 'cart.html', {
-        'cart_items': cart_items,
-        'total_price': total_price,
-    })
 
 
 def profile_view(request):
     return render(request, 'profile.html', {
-        'user': request.user,  # Pass the logged-in user object to the template
+        'user': request.user,  
     })
+
+
+@require_POST
+def add_to_cart(request, book_id):
+    if request.user.is_authenticated:
+        book = Book.objects.get(id=book_id)  
+        cart_item, created = CartItem.objects.get_or_create(
+            user=request.user,
+            book=book,
+            defaults={'quantity': 1}  
+        )
+        
+        if not created:
+            cart_item.quantity += 1
+            cart_item.save()
+
+        return JsonResponse({'message': 'Item added to cart!'})
+    return JsonResponse({'error': 'User is not authenticated.'}, status=403)
+
+def remove_from_cart(request, book_id):
+    if request.method == "POST":
+        cart_item = get_object_or_404(CartItem, book__id=book_id, user=request.user)
+        
+        cart_item.delete()
+
+        return JsonResponse({'success': True, 'message': 'Item removed from cart.'})
+    
+    return redirect('cart')

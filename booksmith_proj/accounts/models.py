@@ -16,10 +16,11 @@ class Profile(models.Model):
 # butngan sad nako profile view, kay sa accounts mani (di rana kailangan for now)
 # and then naa nay carts.html sa accounts/cart.html nimo
 # eh pa chuy2 nalang
-class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Link cart to user
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)  # Link the book
-    added_on = models.DateTimeField(auto_now_add=True)
+    
+class CartItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_items")  # Add related_name
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="cart_items")  # Add related_name
+    quantity = models.PositiveIntegerField(default=1)  
 
     def __str__(self):
-        return f"{self.user.username}'s cart item: {self.book.title}"
+        return f"{self.quantity} of {self.book.title}"

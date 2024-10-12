@@ -1,7 +1,11 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Landing Page
-{%endblock %} {% block extra_css %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Landing Page{% endblock %}
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'css_files/landing_page.css' %}" />
-{% endblock %} {% block content %}
+{% endblock %}
+{% block content %}
 <!-- Slider Section for Best Sellers -->
 <div class="slider">
   <h2>Best Sellers</h2>
@@ -13,18 +17,14 @@
         <div class="content">
           <p>{{ book.category }}</p>
           <h2>{{ book.title }}</h2>
-          <br><br><br>
           <p>{{ book.description }}</p>
-          <br><br><br>
 
           <!-- Price section with a span for highlighting -->
           {% if book.discount_percent > 0 %}
             <p><s>${{ book.price|floatformat:2 }}</s></p>
-            <br><br><br>
             <p>
               <span class="highlight-price">${{ book.discounted_price|floatformat:2 }}</span>
-              <!-- Display discount percentage -->
-              <span class="discount-percent">{{ book.discount_percent|floatformat:2}}% off</span>
+              <span class="discount-percent">{{ book.discount_percent|floatformat:2 }}% off</span>
             </p>
           {% else %}
             <p><span class="highlight-price">${{ book.price|floatformat:2 }}</span></p>
@@ -32,11 +32,10 @@
 
           <!-- Buttons below price -->
           <div class="price-buttons">
-            <button class="btn add-to-cart">Add to Cart</button>
+            <button class="btn add-to-cart" onclick="addToCart({{ book.id }})">Add to Cart</button>
             <button class="btn see-details">See Details</button>
           </div>
         </div>
-
       </div>
     {% endfor %}
   </div>
@@ -49,7 +48,6 @@
 
   <!-- Thumbnails -->
   <div class="thumbnail">
-    <!-- Loop through best sellers for thumbnails -->
     {% for book in best_sellers %}
       <div class="item {% if forloop.first %}active{% endif %}">
         <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
@@ -58,47 +56,33 @@
   </div>
 </div>
 
-
-
 <div class="recommended-section">
   <h2>Recommended For You</h2>
-  <p>
-    Explore these picks. We've selected these reads just for you—find your next favorite at your own pace.
-  </p>
+  <p>Explore these picks. We've selected these reads just for you—find your next favorite at your own pace.</p>
   <div class="books-container">
     {% for book in recommended_books %}
     <div class="book-card">
       <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
       <div class="book-info">
         <h3>{{ book.title }}</h3>
-
-        <!-- Check if the book has a discount -->
         {% if book.discount_percent > 0 %}
           <p><s>${{ book.price|floatformat:2 }}</s></p>
-          <br>
           <p>${{ book.discounted_price|floatformat:2 }}</p>
         {% else %}
           <p>${{ book.price|floatformat:2 }}</p>
         {% endif %}
-
-        <br><br>
-        <button>Add To Cart</button>
+        <button class="btn add-to-cart" onclick="addToCart({{ book.id }})">Add to Cart</button>
       </div>
     </div>
     {% endfor %}
   </div>
 </div>
 
-
-
 <div class="container-feature">
   <div class="header-title">
     <h2>Featured Product</h2>
-    <p class="bottom-message-header">
-      Check out our top pick of the moment—specially chosen to stand out. Discover what makes it a must-have.
-    </p>
+    <p class="bottom-message-header">Check out our top pick of the moment—specially chosen to stand out. Discover what makes it a must-have.</p>
   </div>
-
   <div class="main-content">
     <div class="left-section">
       <div class="discover-bar">
@@ -114,11 +98,7 @@
         <span class="author">{{ featured_book.author }}</span>
         <span class="category">{{ featured_book.category }}</span>
       </div>
-      <p class="description">
-        {{ featured_book.description }}
-      </p>
-
-      <!-- Price Section: Check if there is a discount -->
+      <p class="description">{{ featured_book.description }}</p>
       <div class="price">
         {% if featured_book.discount_percent > 0 %}
           <span class="original-price"><s>${{ featured_book.price|floatformat:2 }}</s></span>
@@ -127,7 +107,6 @@
           <span class="discount-price">${{ featured_book.price|floatformat:2 }}</span>
         {% endif %}
       </div>
-
       <div class="buttons">
         <button class="btn-buy">Buy Now</button>
         <button class="btn-details">See Details</button>
@@ -136,9 +115,26 @@
   </div>
 </div>
 
+{% endblock %}
 
-
-  {% endblock %} {% block extra_js %}
-  <script src="{% static 'js_files/landing_page.js' %}"></script>
-  {% endblock %}
-</div>
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js_files/landing_page.js' %}"></script>
+<script>
+    function addToCart(bookId) {
+        $.ajax({
+            url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),  
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"  
+            },
+            success: function(response) {
+                alert('Item added to cart!');  
+            },
+            error: function(xhr) {
+                alert('Error adding item to cart: ' + xhr.responseText);
+            }
+        });
+    }
+</script>
+{% endblock %}

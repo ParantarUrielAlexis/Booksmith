@@ -29,9 +29,9 @@
                 <i class="fa fa-caret-down"></i>
               </button>
               <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+                {% for category in categories %}
+                <a href="{% url 'category_books' category %}">{{ category }}</a>
+                {% endfor %}
               </div>
             </div>
             <a href="{% url 'aboutus' %}">About us</a>

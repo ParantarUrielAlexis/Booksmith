@@ -1,0 +1,18 @@
+{% extends 'base.html' %} {% block title %}Books in {{ category }}{% endblock %}
+{% block content %}
+<h1>Books in {{ category }}</h1>
+<div class="books-grid">
+  {% for book in books %}
+  <div class="book-item">
+    <a href="{% url 'product_detail' book.pk %}">
+      <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+      <h2>{{ book.title }}</h2>
+    </a>
+    <p>{{ book.author }}</p>
+    <p>${{ book.discounted_price }}</p>
+  </div>
+  {% empty %}
+  <p>No books available in this category.</p>
+  {% endfor %}
+</div>
+{% endblock %}

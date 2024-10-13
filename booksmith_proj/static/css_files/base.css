@@ -79,6 +79,17 @@
   position: relative;
 }
 
+.dropdown-content {
+  display: none; /* Keep hidden initially */
+  position: absolute; /* Position it absolutely to prevent overlap */
+  background-color: white; /* Background color of the dropdown */
+  min-width: 300px; /* Minimum width of dropdown */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+  z-index: 1000; /* Ensure dropdown is on top */
+  /* Add padding if needed */
+  padding: 20px; /* Space within dropdown */
+}
+
 /* Dropdown button */
 .dropdown .dropbtn {
   font-size: 16px;
@@ -108,17 +119,6 @@
 .dropdown:hover .dropbtn::after {
   width: 100%;
 }
-
-/* Dropdown content (hidden by default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
 /* Links inside the dropdown */
 .dropdown-content a {
   color: black;

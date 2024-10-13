@@ -44,13 +44,13 @@
           <!-- If the user is logged in -->
           <a href="{% url 'cart' %}" class="cart-icon">
             <i class="fas fa-shopping-cart"></i>
-            <span class="cart-count">({{ cart.items.count }})</span>
+            <!-- Show cart item count -->
+            <span class="cart-count">({{ cart_item_count }})</span>
           </a>
 
           <!-- Profile Dropdown for User -->
           <div class="profile-dropdown">
             <button class="profile-btn">
-              <!-- Display profile image if it exists, else use a default avatar -->
               <img
                 src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default_avatar.png' %}{% endif %}"
                 alt="Profile Picture"

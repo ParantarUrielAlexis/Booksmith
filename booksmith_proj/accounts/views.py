@@ -66,19 +66,37 @@ def signin(request):
     return render(request, "accounts/signin.html")
 
 def aboutus(request):
+    cart_item_count = 0
+    if request.user.is_authenticated:
+        cart_item_count = CartItem.objects.filter(user=request.user).count()
+        
+        context = {
+            'cart_item_count': cart_item_count
+        }
+        return render(request, 'aboutus.html', context)
     return render(request, "aboutus.html")
 
 def contactus(request):
+    cart_item_count = 0
+    if request.user.is_authenticated:
+        cart_item_count = CartItem.objects.filter(user=request.user).count()
+        context = {
+            'cart_item_count': cart_item_count
+        }
+        return render(request, 'contactus.html', context)
     return render(request, "contactus.html")
 
 def cart_view(request):
+    cart_item_count = 0
     if request.user.is_authenticated:
+        cart_item_count = CartItem.objects.filter(user=request.user).count()
         cart_items = CartItem.objects.filter(user=request.user)
         total_price = sum(item.book.price * item.quantity for item in cart_items)
 
         context = {
             'cart_items': cart_items,
             'total_price': total_price,
+            'cart_item_count': cart_item_count
         }
         return render(request, 'accounts/cart.html', context)
     else:

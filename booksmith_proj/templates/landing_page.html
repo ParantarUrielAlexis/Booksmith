@@ -151,43 +151,49 @@
 
 <script>
   function addToCart(bookId) {
-      var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
+    var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
 
-      if (!isAuthenticated) {
-          // Trigger SweetAlert for non-authenticated users
-          Swal.fire({
-              icon: 'warning',
-              title: 'Not Logged In',
-              text: 'Please log in to add items to your cart.',
-          })
-          return;  // Stop execution if not authenticated
-      }
+    if (!isAuthenticated) {
+        // Trigger SweetAlert for non-authenticated users
+        Swal.fire({
+            icon: 'warning',
+            title: 'Not Logged In',
+            text: 'Please log in to add items to your cart.',
+        });
+        return;  // Stop execution if not authenticated
+    }
 
-      // Proceed with adding to cart for authenticated users
-      $.ajax({
-          url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
-          method: "POST",
-          headers: {
-              "X-CSRFToken": "{{ csrf_token }}"
-          },
-          success: function(response) {
-              // Trigger SweetAlert for successful addition
-              Swal.fire({
-                  icon: 'success',
-                  title: 'Success!',
-                  text: 'Item added to cart.',
-                  confirmButtonText: 'OK'
-              });
-          },
-          error: function(xhr) {
-              // Trigger SweetAlert for errors
-              Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: 'Error adding item to cart: ' + xhr.responseText
-              });
-          }
-      });
-  }
+    // Proceed with adding to cart for authenticated users
+    $.ajax({
+        url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        success: function(response) {
+            if (response.message) {
+                // Trigger SweetAlert for successful addition
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Item added to cart.',
+                    confirmButtonText: 'OK'
+                });
+                // Update the cart count dynamically
+                $(".cart-count").text('(' + response.cart_item_count + ')');
+            }
+        },
+        error: function(xhr) {
+            // Handle error (when item is already in the cart)
+            var response = JSON.parse(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: response.error ? response.error : 'An error occurred.',
+            });
+        }
+    });
+}
+
 </script>
 {% endblock %}

@@ -111,21 +111,34 @@ def profile_view(request):
 
 
 @require_POST
+@require_POST
 def add_to_cart(request, book_id):
     if request.user.is_authenticated:
-        book = Book.objects.get(id=book_id)  
+        try:
+            book = Book.objects.get(id=book_id)  # Get the book based on the ID
+        except Book.DoesNotExist:
+            return JsonResponse({'error': 'Book not found.'}, status=404)
+
+        # Check if the cart item already exists for the user and this book
         cart_item, created = CartItem.objects.get_or_create(
             user=request.user,
             book=book,
-            defaults={'quantity': 1}  
+            defaults={'quantity': 1}  # Set default quantity if a new cart item is created
         )
         
         if not created:
-            cart_item.quantity += 1
-            cart_item.save()
+            # If the cart item already exists, return an error message
+            return JsonResponse({'error': 'Already in the cart.'}, status=400)
+        
+        # Calculate the updated cart item count
+        cart_item_count = CartItem.objects.filter(user=request.user).count()
 
-        return JsonResponse({'message': 'Item added to cart!'})
+        # If the item is newly created, return a success message along with the cart count
+        return JsonResponse({'message': 'Item added to cart!', 'cart_item_count': cart_item_count})
+    
     return JsonResponse({'error': 'User is not authenticated.'}, status=403)
+
+    
 
 def remove_from_cart(request, book_id):
     if request.method == "POST":

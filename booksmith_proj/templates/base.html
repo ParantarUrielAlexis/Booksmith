@@ -59,7 +59,7 @@
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="profile-dropdown-content">
-              <a href="{% url 'profile' %}">Profile</a>
+              <a href="{% url 'profile_view' %}">Profile</a>
               <form method="POST" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="logout-btn">Log Out</button>

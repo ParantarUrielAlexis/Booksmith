@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Profile
+{%endblock%} {% block extra_css %}
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'css_files/profile.css' %}" />
+<link
+  href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css"
+  rel="stylesheet"
+/>
+{% endblock %} {% block content %}
+<div class="container profile-page">
+  <div class="profile-card">
+    <!-- Profile content -->
+    <div class="image">
+      <img
+        src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default_avatar.png' %}{% endif %}"
+        alt="Profile Picture"
+        class="profile-img"
+      />
+    </div>
+    <div class="text-data">
+      <span class="name">{{ user.username }}</span>
+      <span class="job">{{ profile.gender }}</span>
+      <!-- You can replace or add more fields -->
+    </div>
+    <div class="media-buttons">
+      <a href="#" style="background: #4267b2" class="link"
+        ><i class="bx bxl-facebook"></i
+      ></a>
+      <a href="#" style="background: #1da1f2" class="link"
+        ><i class="bx bxl-twitter"></i
+      ></a>
+      <a href="#" style="background: #e1306c" class="link"
+        ><i class="bx bxl-instagram"></i
+      ></a>
+      <a href="#" style="background: #ff0000" class="link"
+        ><i class="bx bxl-youtube"></i
+      ></a>
+    </div>
+    <div class="buttons">
+      <button
+        class="button"
+        onclick="window.location.href='{% url 'update_profile' %}'"
+      >
+        Update Profile
+      </button>
+    </div>
+    <div class="analytics">
+      <div class="data">
+        <i class="bx bx-heart"></i><span class="number">60k</span>
+      </div>
+      <div class="data">
+        <i class="bx bx-message-rounded"></i><span class="number">20k</span>
+      </div>
+      <div class="data">
+        <i class="bx bx-share"></i><span class="number">12k</span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}{% endblock %}

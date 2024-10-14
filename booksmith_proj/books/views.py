@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Book
 from accounts.models import CartItem
+from django.db.models import Q
 import random
 
 def landing_page(request):
@@ -31,7 +32,11 @@ def landing_page(request):
 
 def search_books(request):
     query = request.GET.get('q')
-    search_results = Book.objects.filter(title__icontains=query) if query else []
+    if query:
+        # Use Q objects to filter by title OR author
+        search_results = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query))
+    else:
+        search_results = []
     return render(request, 'search_results.html', {'search_results': search_results, 'query': query})
 
 def product_detail(request, book_id):

@@ -167,6 +167,8 @@
 .container {
   width: 100%; /* Ensure it takes full width */
   margin: auto; /* Center the container */
+  justify-content: center;
+  align-items: center;
 }
 
 /* Search bar styling */
@@ -230,8 +232,8 @@
 
 /* Profile Picture in Navbar */
 .profile-pic {
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
   margin-right: 10px;

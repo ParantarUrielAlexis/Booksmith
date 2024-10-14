@@ -7,6 +7,8 @@ from datetime import datetime
 from .models import Profile, Book, CartItem
 from django.views.decorators.http import require_POST
 from books.views import landing_page
+from django.contrib.auth.decorators import login_required
+from .forms import ProfileUpdateForm
 # Create your views here.
 def home(request):
     return render(request, "landing_page")
@@ -36,11 +38,11 @@ def signup(request):
         messages.success(request, "Successfully Registered.")
 
         return redirect('signup')
-    
+
     if request.user.is_authenticated:
-        return redirect('landing_page') 
-        
-    
+        return redirect('landing_page')
+
+
     return render(request, "accounts/signup.html")
 
 def signin(request):
@@ -60,8 +62,8 @@ def signin(request):
             return render(request, 'accounts/signin.html')
 
     if request.user.is_authenticated:
-        return redirect('landing_page') 
-    
+        return redirect('landing_page')
+
 
     return render(request, "accounts/signin.html")
 
@@ -69,7 +71,7 @@ def aboutus(request):
     cart_item_count = 0
     if request.user.is_authenticated:
         cart_item_count = CartItem.objects.filter(user=request.user).count()
-        
+
         context = {
             'cart_item_count': cart_item_count
         }
@@ -105,8 +107,8 @@ def cart_view(request):
 
 
 def profile_view(request):
-    return render(request, 'profile.html', {
-        'user': request.user,  
+    return render(request, 'accounts/profile.html', {
+        'user': request.user,
     })
 
 
@@ -125,27 +127,42 @@ def add_to_cart(request, book_id):
             book=book,
             defaults={'quantity': 1}  # Set default quantity if a new cart item is created
         )
-        
+
         if not created:
             # If the cart item already exists, return an error message
             return JsonResponse({'error': 'Already in the cart.'}, status=400)
-        
+
         # Calculate the updated cart item count
         cart_item_count = CartItem.objects.filter(user=request.user).count()
 
         # If the item is newly created, return a success message along with the cart count
         return JsonResponse({'message': 'Item added to cart!', 'cart_item_count': cart_item_count})
-    
+
     return JsonResponse({'error': 'User is not authenticated.'}, status=403)
 
-    
+
 
 def remove_from_cart(request, book_id):
     if request.method == "POST":
         cart_item = get_object_or_404(CartItem, book__id=book_id, user=request.user)
-        
+
         cart_item.delete()
 
         return JsonResponse({'success': True, 'message': 'Item removed from cart.'})
-    
+
     return redirect('cart')
+
+
+@login_required
+def update_profile(request):
+    profile = request.user.profile  # Get the current user's profile
+
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()  # Save the updated profile data
+            return redirect('profile_view')  # Redirect to the profile page after successful update
+    else:
+        form = ProfileUpdateForm(instance=profile)
+
+    return render(request, 'accounts/update_profile_picture.html', {'form': form, 'profile': profile})

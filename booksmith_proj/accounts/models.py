@@ -4,8 +4,8 @@ from books.models import Book
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    gender = models.CharField(max_length=10)
-    birthdate = models.DateField()
+    gender = models.CharField(max_length=10, null=True, blank=True)
+    birthdate = models.DateField(null=True, blank=True)
     image = models.ImageField(upload_to='profile_pics', default='default_avatar.png')
     bio = models.TextField(blank=True)  # Optional bio field
 

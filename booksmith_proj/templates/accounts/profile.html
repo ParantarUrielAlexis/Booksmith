@@ -37,8 +37,12 @@
       ></a>
     </div>
     <div class="buttons">
-      <button class="button">Subscribe</button>
-      <button class="button">Message</button>
+      <button
+        class="button"
+        onclick="window.location.href='{% url 'update_profile' %}'"
+      >
+        Update Profile
+      </button>
     </div>
     <div class="analytics">
       <div class="data">

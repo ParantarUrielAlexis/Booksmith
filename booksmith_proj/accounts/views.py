@@ -13,13 +13,18 @@ from .forms import ProfileUpdateForm
 def home(request):
     return render(request, "landing_page")
 
+from django.db import IntegrityError
+
 def signup(request):
     if request.method == "POST":
         email = request.POST['email']
         username = request.POST['username']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
+        gender = request.POST.get('gender')  # Get gender from the form
+        birthdate = request.POST.get('birthdate')  # Get birthdate from the form
 
+        # Check if the username or email already exists
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists.")
             return redirect('signup')
@@ -29,21 +34,34 @@ def signup(request):
             return redirect('signup')
 
         if pass1 != pass2:
-            messages.error(request, "Password does not match.")
+            messages.error(request, "Passwords do not match.")
             return redirect('signup')
 
-        myuser = User.objects.create_user(username, email,pass1)
-        myuser.save()
+        try:
+            # Create the User
+            myuser = User.objects.create_user(username=username, email=email, password=pass1)
+            myuser.save()
 
-        messages.success(request, "Successfully Registered.")
+            # Check if the profile already exists to avoid duplicate creation
+            if not Profile.objects.filter(user=myuser).exists():
+                Profile.objects.create(user=myuser, gender=gender, birthdate=birthdate)
 
-        return redirect('signup')
+            # Display a success message when the user and profile are created successfully
+            messages.success(request, "Successfully Registered.")
+            return redirect('signup')
+
+        except IntegrityError as e:
+            # Handle IntegrityError if profile or user creation fails
+            messages.error(request, f"An error occurred: {str(e)}")
+            return redirect('signup')
 
     if request.user.is_authenticated:
         return redirect('landing_page')
 
-
     return render(request, "accounts/signup.html")
+
+
+
 
 def signin(request):
     if request.method == "POST":

@@ -140,7 +140,13 @@
   gap: 10px;
   margin-right: 20px; /* Ensures it's aligned with the right edge */
 }
-
+.logout-btn{
+  margin-left: 100px;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  font-size: 10px;
+}
 .login-btn,
 .signup-btn {
   padding: 5px 10px;

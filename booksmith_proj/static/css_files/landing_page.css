@@ -497,3 +497,71 @@ svg {
   font-weight: bold; /* Bold for the discount price */
   color: #bd2000; /* Different color for the discount price */
 }
+
+
+/*js file.css for animation
+.image-carior {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: inherit;
+  width: 100%;
+  height: 300px;
+  border-radius: inherit;
+  display: none;
+}
+
+.image-carior.active {
+  display: block;
+  z-index: 5;
+}
+
+/* Keyframes for each item */
+.item:nth-child(1) .image-carior.active {
+  animation: first 0.8s ease-in-out;
+}
+
+.item:nth-child(2) .image-carior.active {
+  animation: second 0.8s ease-in-out;
+}
+
+.item:nth-child(3) .image-carior.active {
+  animation: third 0.8s ease-in-out;
+}
+
+.item:nth-child(4) .image-carior.active {
+  animation: fourth 0.8s ease-in-out;
+}
+
+/* Keyframe animations */
+@keyframes first {
+  to {
+    transform: scale(0.8);
+    top: -305px;
+    left: 925px;
+  }
+}
+
+@keyframes second {
+  to {
+    transform: scale(0.8);
+    top: -305px;
+    left: 605px;
+  }
+}
+
+@keyframes third {
+  to {
+    transform: scale(0.8);
+    top: -305px;
+    left: 277px;
+  }
+}
+
+@keyframes fourth {
+  to {
+    transform: scale(0.8);
+    top: -305px;
+    left: -45px;
+  }
+}

@@ -57,10 +57,12 @@
                 <span>Order Total</span>
                 <span>${{ total_price|floatformat:2 }}</span>
             </div>
-            <button class="btn checkout-btn">CHECKOUT</button>
+            <button class="btn checkout-btn" onclick="window.location.href='{% url 'checkout' %}'">CHECKOUT</button>
+
         </div>
     </div>
 </div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

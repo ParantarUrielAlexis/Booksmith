@@ -121,7 +121,36 @@ def cart_view(request):
         return render(request, 'accounts/cart.html', context)
     else:
         return redirect('login')
+    
+    
+@login_required
+def checkout(request):
+    # If it's a POST request, handle the payment form submission
+    if request.method == 'POST':
+        # Retrieve payment data (e.g., card details, PayPal, etc.)
+        payment_method = request.POST.get('payment')
+        card_name = request.POST.get('card_name')
+        card_number = request.POST.get('card_number')
+        expiry = request.POST.get('expiry')
+        cvv = request.POST.get('cvv')
 
+        # Add your logic here to process the payment
+        # For now, we'll just redirect to a 'success' page
+        return redirect('payment_success')  # You need to create this URL and view
+
+    # Context to pass to the template
+    cart_item_count = 0
+    if request.user.is_authenticated:
+        cart_item_count = CartItem.objects.filter(user=request.user).count()
+        cart_items = CartItem.objects.filter(user=request.user)
+        total_price = sum(item.book.price * item.quantity for item in cart_items)
+
+        context = {
+            'cart_items': cart_items,
+            'total_price': total_price,
+            'cart_item_count': cart_item_count
+        }
+    return render(request, 'accounts/checkout.html', context)
 
 
 def profile_view(request):
@@ -130,7 +159,6 @@ def profile_view(request):
     })
 
 
-@require_POST
 @require_POST
 def add_to_cart(request, book_id):
     if request.user.is_authenticated:

@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css_files/checkout.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<h1>Checkout</h1>
+<div class="checkout-container">
+    <div class="left-side">
+        <div class="payment-method">
+            <h3>Payment Method</h3>
+            <form>
+                <label>
+                    <input type="radio" name="payment" value="gcash" required checked>
+                    <img class="gcash-logo" src="{% static 'images/gcash_logo.png' %}" alt="Payment Gateway" class="payment-logo">
+                </label>
+                <label>
+                    <input type="radio" name="payment" value="paypal" required>
+                    <img src="{% static 'images/paypal_logo.jpg' %}" alt="PayPal" class="payment-logo">
+                </label>
+            </form>
+        </div>
+        <h2 class="h2-details">Payment Details</h2>
+        <!-- Payment Details Section -->
+        <div class="payment-details" id="payment-details" style="display: none;">
+            <form>
+                <input type="text" name="card_name" placeholder="Enter Name on Card" required>
+                <input type="text" name="card_number" placeholder="Card Number" required>
+                <div class="card-info">
+                    <input type="text" name="expiry" placeholder="Expiration" required>
+                    <input type="text" name="cvv" placeholder="CVV Code" required>
+                </div>
+                <p>
+                    By Clicking
+                    <span class="confirm-link">Confirm Payment</span>
+                    I agree to the companies terms and services.
+                </p>
+            </form>
+        </div>
+        <div class="payment-details2" id="payment-details2" style="display: block;"> <!-- Display GCash payment details by default -->
+            <form>
+                <input type="text" name="card_name" placeholder="Enter Account Name" required>
+                <input type="text" name="card_number" placeholder="Enter Gcash Number" required>
+                <p>
+                    By Clicking
+                    <span class="confirm-link">Confirm Payment</span>
+                    I agree to the companies terms and services.
+                </p>
+            </form>
+        </div>
+
+        <!-- Confirm Payment Button -->
+        <button class="btn confirm-payment-btn">Confirm Payment</button>
+    </div>
+
+    <div class="right-side">
+        <div class="order-summary">
+            <div class="header-title">
+                <h3>Order Summary</h3>
+            </div>
+            <div class="summary-item">
+                <span>Subtotal</span>
+                <ul class="price-list">
+                    {% for item in cart_items %}
+                    <li>${{ item.book.price|floatformat:2 }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <hr>
+            <div class="summary-item">
+                <span>Order Total</span>
+                <span>${{ total_price|floatformat:2 }}</span>
+            </div>
+        </div>
+
+        <div class="cart-summary">
+            <div class="header-title">
+                 <h3>Cart Summary</h3>
+            </div>
+            <ul>
+                {% for item in cart_items %}
+                <li class="cart-summary-item">
+                    <img src="{{ item.book.image_url }}" alt="{{ item.book.title }}" class="cart-summary-image">
+                    <div class="cart-summary-details">
+                        <span>{{ item.book.title }}</span>
+                        <span>${{ item.book.price|floatformat:2 }}</span>
+                        <div class="cart-summary-actions">
+                            <button class="btn edit-btn" onclick="window.location.href='{% url 'cart' %}'">Edit</button>
+                            <button onclick="removeFromCart({{ item.book.id }})" class="remove-btn">Remove</button>
+                        </div>
+                    </div>
+                </li>                
+                {% endfor %}
+            </ul>
+        </div>               
+    </div>
+    
+</div>
+<footer>
+    
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // Function to toggle payment details based on selected payment method
+    $('input[name="payment"]').on('change', function() {
+        var selectedPayment = $(this).val();
+
+        if (selectedPayment === 'paypal') {
+            $('#payment-details').slideDown();  // Show PayPal payment details
+            $('#payment-details2').slideUp();   // Hide GCash payment details
+        } else if (selectedPayment === 'gcash') {
+            $('#payment-details').slideUp();    // Hide PayPal payment details
+            $('#payment-details2').slideDown(); // Show GCash payment details
+        } else {
+            // Hide both if none are selected
+            $('#payment-details').slideUp();
+            $('#payment-details2').slideUp();
+        }
+    });
+
+    // Trigger change event on page load to show the default selected payment details
+    $(document).ready(function() {
+        $('input[name="payment"]:checked').trigger('change');
+    });
+
+    // Remove item from cart function
+    function removeFromCart(bookId) {
+        $.ajax({
+            url: "{% url 'remove_from_cart' 0 %}".replace('0', bookId),
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            success: function(response) {
+                alert('Item removed from cart!');
+                location.reload();
+            },
+            error: function(xhr) {
+                alert('Error removing item from cart: ' + xhr.responseText);
+            }
+        });
+    }
+</script>
+{% endblock %}

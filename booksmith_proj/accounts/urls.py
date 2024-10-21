@@ -19,4 +19,5 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile_view'),
     path('profile/update/', update_profile, name='update_profile'),
     path('accounts/logout/', auth_views.LogoutView.as_view(next_page='landing_page'), name='logout'),
+    path('update_cart_quantity/<int:book_id>/<str:action>/', views.update_cart_quantity, name='update_cart_quantity'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

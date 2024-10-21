@@ -159,7 +159,6 @@ def profile_view(request):
     })
 
 
-@require_POST
 def add_to_cart(request, book_id):
     if request.user.is_authenticated:
         try:
@@ -175,17 +174,17 @@ def add_to_cart(request, book_id):
         )
 
         if not created:
-            # If the cart item already exists, return an error message
-            return JsonResponse({'error': 'Already in the cart.'}, status=400)
+            # If the cart item already exists, increase the quantity
+            cart_item.quantity += 1
+            cart_item.save()
 
         # Calculate the updated cart item count
         cart_item_count = CartItem.objects.filter(user=request.user).count()
 
-        # If the item is newly created, return a success message along with the cart count
+        # Return a success message along with the updated cart count
         return JsonResponse({'message': 'Item added to cart!', 'cart_item_count': cart_item_count})
 
     return JsonResponse({'error': 'User is not authenticated.'}, status=403)
-
 
 
 def remove_from_cart(request, book_id):
@@ -212,3 +211,34 @@ def update_profile(request):
         form = ProfileUpdateForm(instance=profile)
 
     return render(request, 'accounts/update_profile_picture.html', {'form': form, 'profile': profile})
+
+
+@require_POST
+def update_cart_quantity(request, book_id, action):
+    if request.user.is_authenticated:
+        try:
+            cart_item = CartItem.objects.get(user=request.user, book_id=book_id)
+        except CartItem.DoesNotExist:
+            return JsonResponse({'error': 'Item not found in the cart.'}, status=404)
+
+        # Check the action (increase or decrease)
+        if action == 'increase':
+            cart_item.quantity += 1
+        elif action == 'decrease':
+            if cart_item.quantity > 1:
+                cart_item.quantity -= 1
+            else:
+                return JsonResponse({'error': 'Quantity cannot be less than 1.'}, status=400)
+
+        cart_item.save()
+
+        # Recalculate the total price after the update
+        total_price = sum(item.book.price * item.quantity for item in CartItem.objects.filter(user=request.user))
+
+        return JsonResponse({
+            'message': f'Quantity {action}d successfully!',
+            'new_quantity': cart_item.quantity,
+            'total_price': total_price
+        })
+
+    return JsonResponse({'error': 'User not authenticated.'}, status=403)

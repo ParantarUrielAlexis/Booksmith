@@ -1,26 +1,75 @@
- <div class="form-group">
-            <input type="text" id="gender" name="gender" placeholder="Gender" readonly required>
-            <ul class="dropdown-menu">
-                <li data-value="male">Male</li>
-                <li data-value="female">Female</li>
-                <li data-value="other">Other</li>
-            </ul>
-            <input type="date" id="birthdate" name="birthdate" placeholder="Birthdate">
+ERROR HANDLING FOR ITEMS ALREADY IN THE CART
+<script>
+    function addToCart(bookId) {
+      var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
 
-        </div>
+      if (!isAuthenticated) {
+          // Trigger SweetAlert for non-authenticated users
+          Swal.fire({
+              icon: 'warning',
+              title: 'Not Logged In',
+              text: 'Please log in to add items to your cart.',
+          });
+          return;  // Stop execution if not authenticated
+      }
 
-VIEWS BIRTHDATE GET AGE
- birthdate = datetime.strptime(request.POST['birthdate'], '%Y-%m-%d').date()
-        today = datetime.today().date()
-        age = today.year - birthdate.year - ((today.month, today.day) < (birthdate.month, birthdate.day))
+      // Proceed with adding to cart for authenticated users
+      $.ajax({
+          url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
+          method: "POST",
+          headers: {
+              "X-CSRFToken": "{{ csrf_token }}"
+          },
+          success: function(response) {
+              if (response.message) {
+                  // Trigger SweetAlert for successful addition
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Success!',
+                      text: 'Item added to cart.',
+                      confirmButtonText: 'OK'
+                  });
+                  // Update the cart count dynamically
+                  $(".cart-count").text('(' + response.cart_item_count + ')');
+              }
+          },
+          error: function(xhr) {
+              // Handle error (when item is already in the cart)
+              var response = JSON.parse(xhr.responseText);
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: response.error ? response.error : 'An error occurred.',
+              });
+          }
+      });
+  }
+</script>
 
+VIEWS FOR ERROR HANDLING
+@require_POST
+def add_to_cart(request, book_id):
+    if request.user.is_authenticated:
+        try:
+            book = Book.objects.get(id=book_id)  # Get the book based on the ID
+        except Book.DoesNotExist:
+            return JsonResponse({'error': 'Book not found.'}, status=404)
 
-<div class="header">
-        <img src="{% static 'images\booksmith_logo.png' %}" alt="BookSmith Logo">
-        
-        <ul><a href="#">Home</a></ul>
-        <ul><a href="#">Shop</a></ul>
-        <ul><a href="#">About Us</a></ul>
-        <ul><a href="#">Contact Us</a></ul>
-        
-    </div> 
+        # Check if the cart item already exists for the user and this book
+        cart_item, created = CartItem.objects.get_or_create(
+            user=request.user,
+            book=book,
+            defaults={'quantity': 1}  # Set default quantity if a new cart item is created
+        )
+
+        if not created:
+            # If the cart item already exists, return an error message
+            return JsonResponse({'error': 'Already in the cart.'}, status=400)
+
+        # Calculate the updated cart item count
+        cart_item_count = CartItem.objects.filter(user=request.user).count()
+
+        # If the item is newly created, return a success message along with the cart count
+        return JsonResponse({'message': 'Item added to cart!', 'cart_item_count': cart_item_count})
+
+    return JsonResponse({'error': 'User is not authenticated.'}, status=403)

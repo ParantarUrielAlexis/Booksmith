@@ -28,7 +28,13 @@
                             <span class="item-author">{{ item.book.author }}</span>
                         </div>
                     </div>
-                    <span class="item-quantity">{{ item.quantity }}</span>
+                    <div class="item-quantity">
+                        <button class="btn-quantity" 
+                                onclick="updateCart({{ item.book.id }}, 'decrease')"
+                                {% if item.quantity == 1 %}disabled{% endif %}>-</button>
+                        <span>{{ item.quantity }}</span>
+                        <button class="btn-quantity" onclick="updateCart({{ item.book.id }}, 'increase')">+</button>
+                    </div>
                     <div class="item-actions">
                         <span class="item-price">${{ item.book.price|floatformat:2 }}</span>
                         <button class="btn-remove" onclick="removeFromCart({{ item.book.id }})">Remove</button>
@@ -82,7 +88,6 @@
             }
         });
     }
-
     function removeFromCart(bookId) {
         $.ajax({
             url: "{% url 'remove_from_cart' 0 %}".replace('0', bookId),
@@ -96,6 +101,26 @@
             },
             error: function(xhr) {
                 alert('Error removing item from cart: ' + xhr.responseText);
+            }
+        });
+    }
+
+    function updateCart(bookId, action) {
+        $.ajax({
+            url: "{% url 'update_cart_quantity' 0 'increase' %}".replace('0', bookId).replace('increase', action),
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            success: function(response) {
+                if (response.message) {
+                    // Update the cart UI accordingly (like updating the quantity and total price)
+                    alert(response.message);
+                    location.reload();  // Reload the page to reflect the updated quantity
+                }
+            },
+            error: function(xhr) {
+                alert('Error updating cart: ' + xhr.responseText);
             }
         });
     }

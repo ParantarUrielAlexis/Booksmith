@@ -14,7 +14,7 @@
     <div class="left-side">
         <div class="payment-method">
             <h3>Payment Method</h3>
-            <form>
+            <form id="payment-form">
                 <label>
                     <input type="radio" name="payment" value="gcash" required checked>
                     <img class="gcash-logo" src="{% static 'images/gcash_logo.png' %}" alt="Payment Gateway" class="payment-logo">
@@ -84,26 +84,25 @@
             </div>
             <ul>
                 {% for item in cart_items %}
-                <li class="cart-summary-item">
+                <li class="cart-summary-item" id="cart-item-{{ item.book.id }}">
                     <img src="{{ item.book.image_url }}" alt="{{ item.book.title }}" class="cart-summary-image">
                     <div class="cart-summary-details">
-                        <span>{{ item.book.title }}</span>
+                        <span>{{ item.book.title }} <span class="quantity">(x{{ item.quantity }})</span></span>
                         <span>${{ item.book.price|floatformat:2 }}</span>
                         <div class="cart-summary-actions">
                             <button class="btn edit-btn" onclick="window.location.href='{% url 'cart' %}'">Edit</button>
                             <button onclick="removeFromCart({{ item.book.id }})" class="remove-btn">Remove</button>
                         </div>
                     </div>
+                    
                 </li>                
                 {% endfor %}
             </ul>
         </div>               
     </div>
-    
 </div>
-<footer>
-    
-</footer>
+
+<footer></footer>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -117,10 +116,6 @@
         } else if (selectedPayment === 'gcash') {
             $('#payment-details').slideUp();    // Hide PayPal payment details
             $('#payment-details2').slideDown(); // Show GCash payment details
-        } else {
-            // Hide both if none are selected
-            $('#payment-details').slideUp();
-            $('#payment-details2').slideUp();
         }
     });
 
@@ -129,7 +124,7 @@
         $('input[name="payment"]:checked').trigger('change');
     });
 
-    // Remove item from cart function
+    // Remove item from cart function with DOM update (no reload)
     function removeFromCart(bookId) {
         $.ajax({
             url: "{% url 'remove_from_cart' 0 %}".replace('0', bookId),
@@ -145,6 +140,36 @@
                 alert('Error removing item from cart: ' + xhr.responseText);
             }
         });
+    }
+
+    // Update cart quantity dynamically
+    function updateCart(bookId, action) {
+        // Ensure action and bookId are passed correctly in the URL
+        let url = "{% url 'update_cart_quantity' 0 'increase' %}".replace('0', bookId).replace('increase', action);
+
+        $.ajax({
+            url: url,
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            success: function(response) {
+                if (response.new_quantity) {
+                    // Update quantity and prices in the cart
+                    $('#cart-item-' + bookId + ' .cart-summary-details span').text('$' + response.new_quantity);
+                    updateOrderSummary(response.total_price);  // Update total price
+                }
+            },
+            error: function(xhr) {
+                alert('Error updating cart quantity: ' + xhr.responseText);
+            }
+        });
+    }
+
+
+    // Update the order summary dynamically
+    function updateOrderSummary(newTotal) {
+        $('.order-summary .summary-item span:last-child').text('$' + newTotal.toFixed(2));
     }
 </script>
 {% endblock %}

@@ -151,7 +151,7 @@
 <script src="{% static 'js_files/landing_page.js' %}"></script>
 
 <script>
-    function addToCart(bookId) {
+  function addToCart(bookId) {
       var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
 
       if (!isAuthenticated) {
@@ -172,28 +172,23 @@
               "X-CSRFToken": "{{ csrf_token }}"
           },
           success: function(response) {
-              if (response.message) {
-                  // Trigger SweetAlert for successful addition
-                  Swal.fire({
-                      icon: 'success',
-                      title: 'Success!',
-                      text: 'Item added to cart.',
-                      confirmButtonText: 'OK'
-                  });
-                  // Update the cart count dynamically
-                  $(".cart-count").text('(' + response.cart_item_count + ')');
-              }
+              // Trigger SweetAlert for successful addition
+              Swal.fire({
+                  icon: 'success',
+                  title: 'Success!',
+                  text: 'Item added to cart.',
+                  confirmButtonText: 'OK'
+              });
+              // Update the cart count dynamically
+              $(".cart-count").text('(' + response.cart_item_count + ')');
           },
           error: function(xhr) {
-              // Handle error (when item is already in the cart)
-              var response = JSON.parse(xhr.responseText);
-              Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: response.error ? response.error : 'An error occurred.',
-              });
+              // Simply ignore errors, allowing multiple additions
+              // Optionally, you could log the error to the console
+              console.error('Error adding item to cart:', xhr);
           }
       });
   }
 </script>
+
 {% endblock %}

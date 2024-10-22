@@ -112,9 +112,25 @@ def contactus(request):
 def cart_view(request):
     cart_item_count = 0
     if request.user.is_authenticated:
-        cart_item_count = CartItem.objects.filter(user=request.user).count()
         cart_items = CartItem.objects.filter(user=request.user)
-        total_price = sum(item.book.price * item.quantity for item in cart_items)
+        cart_item_count = cart_items.count()
+
+        # Initialize total price
+        total_price = 0
+
+        # Loop through each cart item to calculate new price
+        for item in cart_items:
+            # Condition to check if the user wants more than 1
+            if item.quantity > 1:
+                new_price = item.book.price * item.quantity
+            else:
+                new_price = item.book.price
+            
+            # Add this new price to the total
+            total_price += new_price
+
+            # Assign new_price to the item to use it in the template
+            item.new_price = new_price
 
         context = {
             'cart_items': cart_items,
@@ -126,34 +142,51 @@ def cart_view(request):
         return redirect('login')
 
 
+
+from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
+
 @login_required
 def checkout(request):
-    # If it's a POST request, handle the payment form submission
+    # Handle POST request for payment submission
     if request.method == 'POST':
-        # Retrieve payment data (e.g., card details, PayPal, etc.)
         payment_method = request.POST.get('payment')
         card_name = request.POST.get('card_name')
         card_number = request.POST.get('card_number')
         expiry = request.POST.get('expiry')
         cvv = request.POST.get('cvv')
 
-        # Add your logic here to process the payment
-        # For now, we'll just redirect to a 'success' page
-        return redirect('payment_success')  # You need to create this URL and view
+        # Add logic here for processing the payment
+        # Redirect to success page after payment processing
+        return redirect('payment_success')
 
     # Context to pass to the template
     cart_item_count = 0
     if request.user.is_authenticated:
-        cart_item_count = CartItem.objects.filter(user=request.user).count()
         cart_items = CartItem.objects.filter(user=request.user)
-        total_price = sum(item.book.price * item.quantity for item in cart_items)
+        cart_item_count = cart_items.count()
 
+        # Initialize total price
+        total_price = 0
+
+        # Loop through each cart item to calculate new price
+        for item in cart_items:
+            # Calculate new price based on quantity
+            item.new_price = item.book.price * item.quantity
+            total_price += item.new_price  # Add to total price
+
+        # Prepare context with cart items and total price
         context = {
             'cart_items': cart_items,
             'total_price': total_price,
             'cart_item_count': cart_item_count
         }
-    return render(request, 'accounts/checkout.html', context)
+
+        return render(request, 'accounts/checkout.html', context)
+
+    # Redirect to login page if user is not authenticated
+    return redirect('login')
+
 
 
 def profile_view(request):

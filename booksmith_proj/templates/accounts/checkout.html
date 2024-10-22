@@ -97,7 +97,7 @@
         <span>Subtotal</span>
         <ul class="price-list">
           {% for item in cart_items %}
-          <li>${{ item.book.price|floatformat:2 }}</li>
+          <li>${{ item.new_price|floatformat:2 }}</li>
           {% endfor %}
         </ul>
       </div>

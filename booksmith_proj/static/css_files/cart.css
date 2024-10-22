@@ -113,9 +113,10 @@
 }
 
 .item-image {
-  width: 100px;
+  width: 70px;
   height: 100px;
   object-fit: cover;
+  border-radius: 10px;
   margin-right: 10px; 
 }
 
@@ -136,6 +137,6 @@
 .btn-quantity{
   border: 1px solid black;
   border-radius: 50px ;
-  height: 20px;
-  width: 20px;
+  height: 17px;
+  width: 17px;
 }

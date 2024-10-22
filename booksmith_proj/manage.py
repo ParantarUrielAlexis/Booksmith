@@ -24,5 +24,10 @@ if __name__ == '__main__':
 
 
 
-#username: booksmithadmin
+#username: uriel
 #password: booksmith123
+
+
+# normal acc
+# robert
+#robert123

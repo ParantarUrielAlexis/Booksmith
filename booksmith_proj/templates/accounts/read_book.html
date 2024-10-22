@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% load static %} {% block title %}Read
+{{book.title}}{% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css_files/readbook.css' %}" />
+{% endblock %} {% block content %}
+<h1>{{ book.title }}</h1>
+
+<div class="book-reader-container">
+  <div class="book-content" id="book-content">
+    <!-- The entire book content will be injected here -->
+    {{ html_content|safe }}
+  </div>
+</div>
+
+{% endblock %}

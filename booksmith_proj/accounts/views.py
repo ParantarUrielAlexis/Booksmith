@@ -7,8 +7,11 @@ from datetime import datetime
 from .models import Profile, Book, CartItem
 from django.views.decorators.http import require_POST
 from books.views import landing_page
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileUpdateForm
+from .utils import convert_pdf_to_html  # Import your utility function
+
 # Create your views here.
 def home(request):
     return render(request, "landing_page")
@@ -121,8 +124,8 @@ def cart_view(request):
         return render(request, 'accounts/cart.html', context)
     else:
         return redirect('login')
-    
-    
+
+
 @login_required
 def checkout(request):
     # If it's a POST request, handle the payment form submission
@@ -242,3 +245,41 @@ def update_cart_quantity(request, book_id, action):
         })
 
     return JsonResponse({'error': 'User not authenticated.'}, status=403)
+
+
+
+@login_required
+@csrf_exempt
+def confirm_payment(request):
+    if request.method == "POST":
+        # Assuming you're passing cart items and total from your frontend
+        cart_items = CartItem.objects.filter(user=request.user)
+
+        # Add the books from the cart to the user's profile
+        profile = Profile.objects.get(user=request.user)
+        for item in cart_items:
+            profile.bought_books.add(item.book)
+
+        # Clear the cart
+        cart_items.delete()
+
+        # Redirect to profile page or a success page
+        return redirect('profile_view')  # Make sure you have a 'profile' view and URL
+    return render(request, 'checkout.html')
+
+
+
+
+
+def read_book(request, book_id):
+    book = Book.objects.get(id=book_id)
+    html_content = ""
+
+    if book.pdf_file:
+        pdf_path = book.pdf_file.path  # Path to the PDF file
+        html_content = convert_pdf_to_html(pdf_path)
+
+    return render(request, 'accounts/read_book.html', {'book': book, 'html_content': html_content})
+
+
+

@@ -20,4 +20,8 @@ urlpatterns = [
     path('profile/update/', update_profile, name='update_profile'),
     path('accounts/logout/', auth_views.LogoutView.as_view(next_page='landing_page'), name='logout'),
     path('update_cart_quantity/<int:book_id>/<str:action>/', views.update_cart_quantity, name='update_cart_quantity'),
+    path('confirm-payment/', views.confirm_payment, name='confirm_payment'),
+    path('read-book/<int:book_id>/', views.read_book, name='read_book'),
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -57,4 +57,21 @@
     </div>
   </div>
 </div>
+
+<br /><br /><br />
+
+<div class="books-container">
+  {% for book in user.profile.bought_books.all %}
+  <div class="book-card">
+    <a href="{% url 'read_book' book.id %}">
+      <!-- Removed the page number -->
+      <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+      <span>{{ book.title }}</span>
+    </a>
+  </div>
+  {% empty %}
+  <p>No books purchased yet.</p>
+  {% endfor %}
+</div>
+
 {% endblock %} {% block extra_js %}{% endblock %}

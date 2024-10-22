@@ -8,6 +8,8 @@ class Profile(models.Model):
     birthdate = models.DateField(null=True, blank=True)
     image = models.ImageField(upload_to='profile_pics', default='default_avatar.png')
     bio = models.TextField(blank=True)  # Optional bio field
+    bought_books = models.ManyToManyField(Book, blank=True)
+
 
     def __str__(self):
         return self.user.username

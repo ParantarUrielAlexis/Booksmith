@@ -11,6 +11,8 @@ class Book(models.Model):
     image_url = models.CharField(max_length=2083, default='', blank=True)
     thumbnail_image_url = models.CharField(max_length=2083, default='', blank=True)
     bestseller = models.BooleanField(default=False)
+    pdf_file = models.FileField(upload_to='pdf_files/', null=True, blank=True)  # Store PDF files
+
 
     def discounted_price(self):
         if self.price is None:

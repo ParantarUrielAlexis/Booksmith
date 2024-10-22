@@ -14,10 +14,11 @@
         <p>{{ book.category }}</p>
         <h2>{{ book.title }}</h2>
         <p>{{ book.description }}</p>
-
+        <br /><br />
         <!-- Price section with a span for highlighting -->
         {% if book.discount_percent > 0 %}
         <p><s>${{ book.price|floatformat:2 }}</s></p>
+        <br /><br />
         <p>
           <span class="highlight-price"
             >${{ book.discounted_price|floatformat:2 }}</span

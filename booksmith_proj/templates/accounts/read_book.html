@@ -9,6 +9,17 @@
     <!-- The entire book content will be injected here -->
     {{ html_content|safe }}
   </div>
+
+  <!-- Pagination Controls -->
+  <div class="reader-navigation">
+    <button id="prev-btn" class="btn" onclick="prevPage()">Previous</button>
+    <span id="page-counter"
+      >Page <span id="current-page">1</span> of
+      <span id="total-pages">1</span></span
+    >
+    <button id="next-btn" class="btn" onclick="nextPage()">Next</button>
+  </div>
 </div>
 
-{% endblock %}
+<script src="{% static 'js_files/pagination.js' %}"></script>
+{% endblock %} // pagination.js

@@ -140,3 +140,8 @@
   height: 17px;
   width: 17px;
 }
+.disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  pointer-events: none;
+}

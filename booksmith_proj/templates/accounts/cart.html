@@ -65,7 +65,11 @@
                 <span>Order Total</span>
                 <span>${{ total_price|floatformat:2 }}</span>
             </div>
-            <button class="btn checkout-btn" onclick="window.location.href='{% url 'checkout' %}'">CHECKOUT</button>
+            <button class="btn checkout-btn {% if not cart_items %}disabled{% endif %}" 
+                    onclick="if({% if cart_items %}true{% else %}false{% endif %}) window.location.href='{% url 'checkout' %}'" 
+                    {% if not cart_items %}disabled{% endif %}>
+                CHECKOUT
+            </button>
 
         </div>
     </div>

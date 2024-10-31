@@ -9,14 +9,14 @@ from django.views.decorators.http import require_POST
 from books.views import landing_page
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.db import IntegrityError
 from .forms import ProfileUpdateForm
-from .utils import convert_pdf_to_html  # Import your utility function
+from .utils import convert_pdf_to_html  
 
 # Create your views here.
 def home(request):
     return render(request, "landing_page")
 
-from django.db import IntegrityError
 
 def signup(request):
     if request.method == "POST":
@@ -142,9 +142,6 @@ def cart_view(request):
         return redirect('login')
 
 
-
-from django.shortcuts import redirect, render
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def checkout(request):

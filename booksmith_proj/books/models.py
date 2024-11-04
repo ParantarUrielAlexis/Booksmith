@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+
 class Book(models.Model):
     title = models.CharField(max_length=100)
     category = models.CharField(max_length=30, default=None, blank=False)

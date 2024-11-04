@@ -6,7 +6,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     gender = models.CharField(max_length=10, null=True, blank=True)
     birthdate = models.DateField(null=True, blank=True)
-    image = models.ImageField(upload_to='profile_pics', default='default_avatar.png')
+    image = models.ImageField(null=True, blank=True, upload_to='profile_pics')
     bio = models.TextField(blank=True)  # Optional bio field
     bought_books = models.ManyToManyField(Book, blank=True)
 

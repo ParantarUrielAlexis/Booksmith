@@ -56,3 +56,8 @@ def product_detail(request, book_id):
 def category_books(request, category):
     books = Book.objects.filter(category=category)  # Filter books by the category
     return render(request, 'category_books.html', {'books': books, 'category': category})
+
+
+
+
+

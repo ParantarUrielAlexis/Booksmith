@@ -46,6 +46,7 @@
           >
             See Details
           </button>
+          {% if book not in user.profile.bought_books.all %}
           <button
             class="btn wishlist-btn {% if book in user.profile.wishlist.all %}wishlisted{% endif %}"
             onclick="toggleWishlist({{ book.id }})"
@@ -53,6 +54,12 @@
           >
             <i class="fas fa-heart"></i>
           </button>
+          {% else %}
+          <!-- Icon and label indicating the book has been purchased -->
+          <span class="already-bought">
+            <i class="fas fa-check-circle"></i> Purchased
+          </span>
+          {% endif %}
         </div>
       </div>
     </div>

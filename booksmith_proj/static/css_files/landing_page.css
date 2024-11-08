@@ -587,3 +587,8 @@ svg {
 .btn.wishlist-btn.wishlisted {
   color: #ff3b3b; /* Highlight color for wishlisted books */
 }
+
+.already-bought {
+  color: #28a745; /* Green color to indicate success */
+  font-weight: bold;
+}

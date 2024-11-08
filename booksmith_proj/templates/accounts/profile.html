@@ -20,7 +20,7 @@
     <div class="text-data">
       <span class="name">{{ user.username }}</span>
       <span class="job">{{ profile.gender }}</span>
-      <!-- You can replace or add more fields -->
+      <!-- Additional fields can go here -->
     </div>
 
     <div class="buttons">
@@ -36,17 +36,38 @@
 
 <br /><br /><br />
 
+<!-- Section for Purchased Books -->
+<h2>Purchased Books</h2>
 <div class="books-container">
   {% for book in user.profile.bought_books.all %}
   <div class="book-card">
     <a href="{% url 'read_book' book.id %}">
-      <!-- Removed the page number -->
       <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
       <span>{{ book.title }}</span>
     </a>
   </div>
   {% empty %}
   <p>No books purchased yet.</p>
+  {% endfor %}
+</div>
+
+<br /><br />
+
+<!-- Section for Wishlisted Books -->
+<h2>Wishlisted Books</h2>
+<div class="books-container">
+  {% for book in user.profile.wishlist.all %}
+  <div class="book-card">
+    <a href="{% url 'product_detail' book.id %}">
+      <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+      <span>{{ book.title }}</span>
+    </a>
+    <button class="btn wishlist-btn wishlisted">
+      <i class="fas fa-heart"></i> Wishlisted
+    </button>
+  </div>
+  {% empty %}
+  <p>No books wishlisted yet.</p>
   {% endfor %}
 </div>
 

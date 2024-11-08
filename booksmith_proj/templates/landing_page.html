@@ -161,47 +161,48 @@
 <script src="{% static 'js_files/landing_page.js' %}"></script>
 
 <script>
-    function addToCart(bookId) {
-        var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
+      function addToCart(bookId) {
+          var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
 
-        if (!isAuthenticated) {
-            // Trigger SweetAlert for non-authenticated users
-            Swal.fire({
-                icon: 'warning',
-                title: 'Not Logged In',
-                text: 'Please log in to add items to your cart.',
-            });
-            return;  // Stop execution if not authenticated
-        }
+          if (!isAuthenticated) {
+              // Trigger SweetAlert for non-authenticated users
+              Swal.fire({
+                  icon: 'warning',
+                  title: 'Not Logged In',
+                  text: 'Please log in to add items to your cart.',
+              });
+              return;  // Stop execution if not authenticated
+          }
 
-        // Proceed with adding to cart for authenticated users
-        $.ajax({
-            url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
-            method: "POST",
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}"
-            },
-            success: function(response) {
-                // Trigger SweetAlert for successful addition
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Item added to cart.',
-                    confirmButtonText: 'OK'
-                });
-                // Update the cart count dynamically
-                $(".cart-count").text('(' + response.cart_item_count + ')');
-            },
-            error: function(xhr) {
-                // Simply ignore errors, allowing multiple additions
-                // Optionally, you could log the error to the console
-                console.error('Error adding item to cart:', xhr);
-            }
-        });
-    }
+          // Proceed with adding to cart for authenticated users
+          $.ajax({
+              url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
+              method: "POST",
+              headers: {
+                  "X-CSRFToken": "{{ csrf_token }}"
+              },
+              success: function(response) {
+                  // Trigger SweetAlert for successful addition
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Success!',
+                      text: 'Item added to cart.',
+                      confirmButtonText: 'OK'
+                  });
+                  // Update the cart count dynamically
+                  $(".cart-count").text('(' + response.cart_item_count + ')');
+              },
+              error: function(xhr) {
+                  // Simply ignore errors, allowing multiple additions
+                  // Optionally, you could log the error to the console
+                  console.error('Error adding item to cart:', xhr);
+              }
+          });
+      }
 
-    function toggleWishlist(bookId) {
+      function toggleWishlist(bookId) {
       var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+
 
       if (!isAuthenticated) {
           Swal.fire({
@@ -212,25 +213,44 @@
           return;
       }
 
+
+
       $.ajax({
-        url: "{% url 'toggle_wishlist' 0 %}".replace('0', bookId),
-        method: "POST",
-        headers: {
-            "X-CSRFToken": "{{ csrf_token }}",
-        },
-        success: function(response) {
-            const button = document.querySelector(`.wishlist-btn[data-id="${bookId}"]`);
-            // Toggle the 'wishlisted' class based on response status
-            if (response.status === "added") {
-                button.classList.add("wishlisted");
-            } else if (response.status === "removed") {
-                button.classList.remove("wishlisted");
-            }
-        },
-        error: function(xhr) {
-            console.error("Error toggling wishlist:", xhr);
-        },
-    });
+          url: "{% url 'toggle_wishlist' 0 %}".replace('0', bookId),
+          method: "POST",
+          headers: {
+              "X-CSRFToken": "{{ csrf_token }}",
+          },
+          success: function(response) {
+              const button = document.querySelector(`.wishlist-btn[data-id="${bookId}"]`);
+
+              if (response.status === "added") {
+                  button.classList.add("wishlisted");
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Added to Wishlist!',
+                      text: 'The book has been added to your wishlist.',
+                      confirmButtonText: 'OK'
+                  });
+              } else if (response.status === "removed") {
+                  button.classList.remove("wishlisted");
+                  Swal.fire({
+                      icon: 'info',
+                      title: 'Removed from Wishlist',
+                      text: 'The book has been removed from your wishlist.',
+                      confirmButtonText: 'OK'
+                  });
+              }
+          },
+          error: function(xhr) {
+              console.error("Error toggling wishlist:", xhr);
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Something went wrong. Please try again.',
+              });
+          },
+      });
   }
 </script>
 

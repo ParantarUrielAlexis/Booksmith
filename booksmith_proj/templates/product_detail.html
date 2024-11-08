@@ -1,5 +1,9 @@
-{% extends 'base.html' %} {% load static %} {% block title %} Product
-Detail{%endblock %} {% block extra_css %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Product Detail {%endblock %} 
+
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'css_files/product_detail.css' %}" />
 {% endblock %} {% block content %}
 
@@ -21,6 +25,65 @@ Detail{%endblock %} {% block extra_css %}
       <div class="description">{{ book.description }}</div>
     </div>
   </div>
+  <div class="title-review">
+    <h1>User Reviews</h1>
+  </div>
+  <div class="reviews">
+    {% for review in reviews %}
+        <div class="review-item">
+            <div class="review-header">
+                <p><strong>{{ review.user.username }}:</strong></p>
+
+                <!-- Render stars based on the rating -->
+                <div class="stars">
+                    {% for i in "12345" %}
+                        <span class="star {% if review.rating >= i|add:0 %}highlighted{% endif %}">&#9733;</span>
+                    {% endfor %}
+                </div>
+
+                <!-- Only show the delete button if the logged-in user is the review owner -->
+                {% if review.user == user %}
+                    <form method="POST" action="{% url 'delete_review' review.pk %}" style="display:inline;" class="delete-form">
+                        {% csrf_token %}
+                        <button type="button" class="delete-btn" onclick="confirmDelete({{ review.pk }})">Delete</button>
+                    </form>
+                {% endif %}
+            </div>
+
+            <p>{{ review.comment }}</p>
+            <small>{{ review.created_at }}</small>
+        </div>
+    {% empty %}
+        <p>No reviews yet. Be the first to review this book!</p>
+    {% endfor %}
+</div>
+
+
+
+  {% if user.is_authenticated %}
+  <div class="title-review">
+    <h1>Rate this book</h1>
+  </div>
+  <form method="post" class="review-form">
+      {% csrf_token %}
+      <div class="rating">
+        <div class="stars">
+            {% for i in "12345" %}
+                <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" {% if form.rating.value|stringformat:"i" == i %}checked{% endif %} />
+                <label for="star{{ i }}" title="{{ i }} star" class="star">&#9733;</label>
+            {% endfor %}
+        </div>
+    </div>    
+      <div class="comment">
+          {{ form.comment }}
+      </div>
+      <button type="submit">Submit Review</button>
+  </form>
+
+  {% else %}
+    <p>Please <a href="{% url 'login' %}">log in</a> to write a review.</p>
+  {% endif %}
+
 
   <div class="title">Similar Products</div>
   <div class="listProduct">
@@ -38,4 +101,54 @@ Detail{%endblock %} {% block extra_css %}
 </div>
 
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const stars = document.querySelectorAll(".stars label.star");
+    let selectedRating = 0; // Store the selected rating
+
+    stars.forEach((star, index) => {
+        // Handle mouseover to highlight up to the current star
+        star.addEventListener("mouseover", () => {
+            stars.forEach((s, i) => {
+                s.style.color = i <= index ? "#f5b301" : "#ccc"; // Highlight up to hovered star
+            });
+        });
+
+        // Reset highlight when mouse leaves the stars area
+        star.addEventListener("mouseout", () => {
+            stars.forEach((s, i) => {
+                s.style.color = i < selectedRating ? "#f5b301" : "#ccc"; // Restore highlight up to selectedRating
+            });
+        });
+
+        // Handle click to set the selected rating and keep it highlighted
+        star.addEventListener("click", () => {
+            selectedRating = index + 1; // Update selectedRating to current star
+            stars.forEach((s, i) => {
+                s.style.color = i < selectedRating ? "#f5b301" : "#ccc"; // Set persistent color up to selected rating
+            });
+        });
+    });
+});
+function confirmDelete(reviewId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This review will be permanently deleted.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, keep it',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If confirmed, submit the form
+                document.querySelector('.delete-form').submit();
+            } else {
+                // If canceled, do nothing
+                return false;
+            }
+        });
+    }
+</script>
 {% endblock %}

@@ -1,7 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Book
-from accounts.models import CartItem
+from accounts.models import CartItem, Profile
 from django.db.models import Q
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
 import random
 
 def landing_page(request):
@@ -59,5 +62,28 @@ def category_books(request, category):
 
 
 
+@login_required
+def toggle_wishlist(request, book_id):
+    profile = request.user.profile
+    book = get_object_or_404(Book, id=book_id)
+
+    if book in profile.wishlist.all():
+        profile.wishlist.remove(book)
+        return JsonResponse({'status': 'removed'})
+    else:
+        profile.wishlist.add(book)
+        return JsonResponse({'status': 'added'})
 
 
+@login_required
+def add_to_wishlist(request, book_id):
+    try:
+        profile = Profile.objects.get(user=request.user)
+        book = Book.objects.get(id=book_id)
+        profile.wishlist.add(book)
+        profile.save()
+        return JsonResponse({'message': 'Book added to wishlist'})
+    except Book.DoesNotExist:
+        return JsonResponse({'error': 'Book not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

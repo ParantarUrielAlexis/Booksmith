@@ -7,4 +7,6 @@ urlpatterns = [
     path('search/', views.search_books, name='search_books'),
     path('products/<int:book_id>/', views.product_detail, name='product_detail'),
     path('category/<str:category>/', views.category_books, name='category_books'),
+    path('toggle-wishlist/<int:book_id>/', views.toggle_wishlist, name='toggle_wishlist'),
+    path('add-to-wishlist/<int:book_id>/', views.add_to_wishlist, name='add_to_wishlist'),
 ]

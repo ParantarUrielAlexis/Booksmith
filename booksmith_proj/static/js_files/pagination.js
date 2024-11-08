@@ -1,7 +1,30 @@
 const contentContainer = document.getElementById("book-content");
 let currentPage = 1;
-const pageSize = 500; // Character count per page (adjust as necessary)
-let totalPages = Math.ceil(contentContainer.innerText.length / pageSize);
+const pageSize = 500; // Approximate character count per page
+let pages = [];
+
+// Initialize pagination by splitting content by paragraphs
+function initializePagination() {
+  // Get full content and split by paragraphs
+  const fullContent = contentContainer.innerText.trim();
+  const paragraphs = fullContent.split("\n");
+
+  // Group paragraphs into pages
+  let pageContent = "";
+  paragraphs.forEach((paragraph) => {
+    if ((pageContent + paragraph).length <= pageSize) {
+      pageContent += paragraph + "\n";
+    } else {
+      pages.push(pageContent.trim());
+      pageContent = paragraph + "\n";
+    }
+  });
+  if (pageContent) pages.push(pageContent.trim());
+
+  // Set the total pages and display the first page
+  totalPages = pages.length;
+  showPage(currentPage);
+}
 
 // Update page counter display
 function updatePageCounter() {
@@ -9,16 +32,9 @@ function updatePageCounter() {
   document.getElementById("total-pages").textContent = totalPages;
 }
 
-// Paginate content and display the specified page
+// Display the specified page content
 function showPage(page) {
-  // Calculate start and end indices
-  const start = (page - 1) * pageSize;
-  const end = page * pageSize;
-
-  // Slice the text content and display the required section
-  contentContainer.innerText = contentContainer
-    .getAttribute("data-full-content")
-    .slice(start, end);
+  contentContainer.innerText = pages[page - 1];
 
   // Disable buttons at boundaries
   document.getElementById("prev-btn").disabled = page === 1;
@@ -45,15 +61,7 @@ function prevPage() {
 
 // Initialize pagination and set up keyboard navigation
 document.addEventListener("DOMContentLoaded", () => {
-  // Store the entire book content in a data attribute for easy slicing
-  contentContainer.setAttribute(
-    "data-full-content",
-    contentContainer.innerText
-  );
-
-  // Initialize pagination
-  totalPages = Math.ceil(contentContainer.innerText.length / pageSize);
-  showPage(currentPage);
+  initializePagination();
 
   // Add keyboard navigation
   document.addEventListener("keydown", (event) => {

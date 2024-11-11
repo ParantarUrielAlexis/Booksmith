@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import Book
 from accounts.models import CartItem, Profile
 from django.db.models import Q
@@ -87,3 +87,11 @@ def add_to_wishlist(request, book_id):
         return JsonResponse({'error': 'Book not found'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+def mark_discount_seen(request, book_id):
+    if request.user.is_authenticated:
+        profile = request.user.profile
+        book = get_object_or_404(Book, id=book_id)
+        profile.seen_discounted_books.add(book)
+    return redirect('product_detail.html', book_id=book_id)

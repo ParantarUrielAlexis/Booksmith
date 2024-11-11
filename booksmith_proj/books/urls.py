@@ -9,4 +9,6 @@ urlpatterns = [
     path('category/<str:category>/', views.category_books, name='category_books'),
     path('toggle-wishlist/<int:book_id>/', views.toggle_wishlist, name='toggle_wishlist'),
     path('add-to-wishlist/<int:book_id>/', views.add_to_wishlist, name='add_to_wishlist'),
+    path('mark_discount_seen/<int:book_id>/', views.mark_discount_seen, name='mark_discount_seen'),
+
 ]

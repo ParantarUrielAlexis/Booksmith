@@ -10,6 +10,7 @@ class Profile(models.Model):
     bio = models.TextField(blank=True)  # Optional bio field
     bought_books = models.ManyToManyField(Book, blank=True, related_name="buyers")
     wishlist = models.ManyToManyField(Book, blank=True, related_name="wishlisted_by")
+    seen_discounted_books = models.ManyToManyField(Book, related_name="seen_by", blank=True)
 
     def __str__(self):
         return self.user.username

@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from .forms import ProfileUpdateForm
-from .utils import convert_pdf_to_html  
+from .utils import convert_pdf_to_html
 
 # Create your views here.
 def home(request):
@@ -125,7 +125,7 @@ def cart_view(request):
                 new_price = item.book.price * item.quantity
             else:
                 new_price = item.book.price
-            
+
             # Add this new price to the total
             total_price += new_price
 
@@ -310,6 +310,9 @@ def read_book(request, book_id):
         html_content = convert_pdf_to_html(pdf_path)
 
     return render(request, 'accounts/read_book.html', {'book': book, 'html_content': html_content})
+
+
+
 
 
 

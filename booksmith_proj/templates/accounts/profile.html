@@ -22,7 +22,6 @@
       <span class="job">{{ profile.gender }}</span>
       <!-- Additional fields can go here -->
     </div>
-
     <div class="buttons">
       <button
         class="button"
@@ -34,41 +33,55 @@
   </div>
 </div>
 
-<br /><br /><br />
+<section class="books-section">
+  <div class="books-container">
+    {% for book in user.profile.wishlist.all %}
+    <div class="book-card">
+      <a href="{% url 'product_detail' book.id %}">
+        <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+      </a>
 
-<!-- Section for Purchased Books -->
-<h2>Purchased Books</h2>
-<div class="books-container">
-  {% for book in user.profile.bought_books.all %}
-  <div class="book-card">
-    <a href="{% url 'read_book' book.id %}">
-      <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
-      <span>{{ book.title }}</span>
-    </a>
+      {% if book in user.profile.bought_books.all %}
+      <!-- Purchased Book - Display "Purchased" Button -->
+      <button class="btn purchased-btn" disabled>
+        <i class="fas fa-check"></i> Purchased
+      </button>
+      {% else %}
+      <!-- Wishlist Button -->
+      <button class="btn wishlist-btn">
+        <i class="fas fa-heart"></i> Wishlisted
+      </button>
+      {% endif %}
+    </div>
+    {% empty %}
+    <p>No books wishlisted yet.</p>
+    {% endfor %}
   </div>
-  {% empty %}
-  <p>No books purchased yet.</p>
-  {% endfor %}
-</div>
+</section>
 
-<br /><br />
+{% endblock %} {% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Loop through each book card
+    const bookCards = document.querySelectorAll(".book-card");
 
-<!-- Section for Wishlisted Books -->
-<h2>Wishlisted Books</h2>
-<div class="books-container">
-  {% for book in user.profile.wishlist.all %}
-  <div class="book-card">
-    <a href="{% url 'product_detail' book.id %}">
-      <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
-      <span>{{ book.title }}</span>
-    </a>
-    <button class="btn wishlist-btn wishlisted">
-      <i class="fas fa-heart"></i> Wishlisted
-    </button>
-  </div>
-  {% empty %}
-  <p>No books wishlisted yet.</p>
-  {% endfor %}
-</div>
+    bookCards.forEach((card) => {
+      // Get the "wishlisted" and "purchased" buttons
+      const wishlistBtn = card.querySelector(".wishlist-btn");
+      const purchasedBtn = card.querySelector(".purchased-btn");
 
-{% endblock %} {% block extra_js %}{% endblock %}
+      // Check if the book is purchased
+      if (
+        wishlistBtn &&
+        purchasedBtn &&
+        wishlistBtn.classList.contains("wishlisted")
+      ) {
+        // Hide the wishlist button if the book is purchased
+        wishlistBtn.style.display = "none";
+        purchasedBtn.style.display = "block"; // Show the purchased button
+      }
+    });
+  });
+</script>
+
+{% endblock %}

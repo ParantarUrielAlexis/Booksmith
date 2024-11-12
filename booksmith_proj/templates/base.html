@@ -61,11 +61,11 @@
             <!-- Notification Content -->
             <div class="notification-content">
               {% if discounted_books %}
-              <p>Discounted Wishlisted Books:</p>
+
               <ul>
                 {% for book in discounted_books %}
                 <li>
-                  <a href="{% url 'product_detail' book.id %}">
+                  <a href="{% url 'mark_discount_seen' book.id %}">
                     {{ book.title }} - {{ book.discount_percent }}% off
                   </a>
                 </li>

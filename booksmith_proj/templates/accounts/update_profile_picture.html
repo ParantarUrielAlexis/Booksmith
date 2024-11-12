@@ -41,8 +41,8 @@
             <div class="tab-pane fade active show" id="account-general">
               <div class="card-body media align-items-center">
                 <img
-                  src="{{ profile.image.url }}"
-                  alt
+                  src="{% if profile.image %}{{ profile.image.url }}{% else %}{% static 'images/default_avatar.png' %}{% endif %}"
+                  alt="Profile Picture"
                   class="d-block ui-w-80"
                 />
                 <div class="media-body ml-4">

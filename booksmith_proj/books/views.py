@@ -94,4 +94,4 @@ def mark_discount_seen(request, book_id):
         profile = request.user.profile
         book = get_object_or_404(Book, id=book_id)
         profile.seen_discounted_books.add(book)
-    return redirect('product_detail.html', book_id=book_id)
+    return redirect('product_detail', book_id=book_id)

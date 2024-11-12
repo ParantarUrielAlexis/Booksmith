@@ -37,16 +37,20 @@
   <div class="books-container">
     {% for book in user.profile.wishlist.all %}
     <div class="book-card">
-      <a href="{% url 'product_detail' book.id %}">
+      {% if book in user.profile.bought_books.all %}
+      <!-- Redirect to Read Book page for Purchased Books -->
+      <a href="{% url 'read_book' book.id %}">
         <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
       </a>
-
-      {% if book in user.profile.bought_books.all %}
-      <!-- Purchased Book - Display "Purchased" Button -->
+      <!-- Display "Purchased" Button -->
       <button class="btn purchased-btn" disabled>
         <i class="fas fa-check"></i> Purchased
       </button>
       {% else %}
+      <!-- Redirect to Product Detail page for Wishlisted Books -->
+      <a href="{% url 'product_detail' book.id %}">
+        <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+      </a>
       <!-- Wishlist Button -->
       <button class="btn wishlist-btn">
         <i class="fas fa-heart"></i> Wishlisted

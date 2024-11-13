@@ -32,6 +32,7 @@
     {% for review in reviews %}
         <div class="review-item">
             <div class="review-header">
+                <img class="review-profile"src="{% if review.user.profile.image %}{{ review.user.profile.image.url }}{% else %}{% static 'images/default_avatar.png' %}{% endif %}" alt="{{ review.user.username }}'s profile picture" class="profile-picture">
                 <p><strong>{{ review.user.username }}:</strong></p>
 
                 <!-- Render stars based on the rating -->
@@ -52,37 +53,35 @@
 
             <p>{{ review.comment }}</p>
             <small>{{ review.created_at }}</small>
+            
         </div>
     {% empty %}
         <p>No reviews yet. Be the first to review this book!</p>
     {% endfor %}
 </div>
-
-
-
   {% if user.is_authenticated %}
   <div class="title-review">
-    <h1>Rate this book</h1>
+      <h1>Rate this book</h1>
   </div>
-  <form method="post" class="review-form">
+  <form method="post" class="review-form" onsubmit="return validateReviewForm()">
       {% csrf_token %}
       <div class="rating">
-        <div class="stars">
-            {% for i in "12345" %}
-                <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" {% if form.rating.value|stringformat:"i" == i %}checked{% endif %} />
-                <label for="star{{ i }}" title="{{ i }} star" class="star">&#9733;</label>
-            {% endfor %}
-        </div>
-    </div>    
+          <div class="stars">
+              {% for i in "12345" %}
+                  <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" {% if form.rating.value|stringformat:"i" == i %}checked{% endif %} />
+                  <label for="star{{ i }}" title="{{ i }} star" class="star">&#9733;</label>
+              {% endfor %}
+          </div>
+      </div>    
       <div class="comment">
           {{ form.comment }}
       </div>
       <button type="submit">Submit Review</button>
   </form>
-
   {% else %}
-    <p>Please <a href="{% url 'login' %}">log in</a> to write a review.</p>
+  <p>Please <a href="{% url 'login' %}">log in</a> to write a review.</p>
   {% endif %}
+
 
 
   <div class="title">Similar Products</div>
@@ -132,23 +131,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 function confirmDelete(reviewId) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'This review will be permanently deleted.',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // If confirmed, submit the form
-                document.querySelector('.delete-form').submit();
-            } else {
-                // If canceled, do nothing
-                return false;
-            }
-        });
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'This review will be permanently deleted.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Submit the specific form based on the review ID
+            document.querySelector(`form[action='/delete_review/${reviewId}/']`).submit();
+        } else {
+            // If canceled, do nothing
+            return false;
+        }
+    });
+}
+function validateReviewForm() {
+    // Get all radio buttons with the name "rating"
+    const ratingRadios = document.querySelectorAll('input[name="rating"]');
+    let ratingSelected = false;
+
+    // Check if any radio button is checked
+    for (let i = 0; i < ratingRadios.length; i++) {
+        if (ratingRadios[i].checked) {
+            ratingSelected = true;
+            break;
+        }
     }
+
+    // If no rating is selected, show an alert and prevent form submission
+    if (!ratingSelected) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Please select a rating',
+            text: 'You need to select a rating before submitting your review.',
+        });
+        return false; // Prevent form submission
+    }
+
+    // If a rating is selected, allow form submission
+    return true;
+}
+
 </script>
 {% endblock %}

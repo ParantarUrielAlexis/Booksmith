@@ -314,3 +314,10 @@ h3 {
   justify-content: left;
   text-align: left;
 }
+.reviews .review-profile {
+  position: relative;
+  height: 50px;  
+  width: 50px;  
+  border-radius: 50%;
+  margin-right: 10px;
+}

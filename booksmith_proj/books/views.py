@@ -39,9 +39,11 @@ def product_detail(request, book_id):
         cart_item_count = CartItem.objects.filter(user=request.user).count()
 
     book = get_object_or_404(Book, pk=book_id)
-    reviews = book.reviews.all()  # Retrieve all reviews for the book
+    reviews = book.reviews.filter(parent__isnull=True)  # Get only top-level reviews (no replies)
     similar_books = Book.objects.exclude(pk=book_id)[:4]  # Get similar books
 
+    form = ReviewForm()
+    
     # Handle review form submission
     if request.method == "POST":
         if request.user.is_authenticated:
@@ -67,16 +69,17 @@ def product_detail(request, book_id):
     }
     return render(request, 'product_detail.html', context)
 
+
 def delete_review(request, review_id):
     # Fetch the review object
     review = get_object_or_404(Review, pk=review_id)
 
     # Check if the logged-in user is the owner of the review
     if review.user == request.user:
-        review.delete()  # Delete the review from the database
-        return redirect('product_detail', book_id=review.book.id)  # Redirect to the product detail page
-    
-    # If the user is not the owner, redirect to product detail with a message
+        review.delete()  # Delete the specific review from the database
+        return redirect('product_detail', book_id=review.book.id)  # Redirect to the product detail page with the correct book ID
+
+    # If the user is not the owner, redirect to product detail
     return redirect('product_detail', book_id=review.book.id)
 
 def category_books(request, category):

@@ -10,6 +10,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
+
     {% block extra_css %}{% endblock %}
   </head>
   <body>
@@ -47,6 +48,34 @@
             <!-- Show cart item count -->
             <span class="cart-count">({{ cart_item_count }})</span>
           </a>
+
+          <div class="notification-bell">
+            <button class="notification-btn">
+              <i class="fas fa-bell"></i>
+              {% if discounted_books %}
+              <!-- Show a red dot if there are notifications -->
+              <span class="notification-dot"></span>
+              {% endif %}
+            </button>
+
+            <!-- Notification Content -->
+            <div class="notification-content">
+              {% if discounted_books %}
+
+              <ul>
+                {% for book in discounted_books %}
+                <li>
+                  <a href="{% url 'mark_discount_seen' book.id %}">
+                    {{ book.title }} - {{ book.discount_percent }}% off
+                  </a>
+                </li>
+                {% endfor %}
+              </ul>
+              {% else %}
+              <p>No new notifications</p>
+              {% endif %}
+            </div>
+          </div>
 
           <!-- Profile Dropdown for User -->
           <div class="profile-dropdown">
@@ -98,5 +127,26 @@
     <div class="container">{% block content %}{% endblock %}</div>
 
     {% block extra_js %}{% endblock %}
+
+    <script>
+      // Toggle notifications on bell icon click
+      document.addEventListener("DOMContentLoaded", function () {
+        const notificationBtn = document.querySelector(".notification-btn");
+        const notificationContent = document.querySelector(
+          ".notification-content"
+        );
+
+        notificationBtn.addEventListener("click", function (event) {
+          event.stopPropagation();
+          notificationContent.style.display =
+            notificationContent.style.display === "block" ? "none" : "block";
+        });
+
+        // Hide notifications when clicking outside
+        document.addEventListener("click", function () {
+          notificationContent.style.display = "none";
+        });
+      });
+    </script>
   </body>
 </html>

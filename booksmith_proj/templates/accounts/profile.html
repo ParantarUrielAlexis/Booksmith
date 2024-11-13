@@ -20,21 +20,7 @@
     <div class="text-data">
       <span class="name">{{ user.username }}</span>
       <span class="job">{{ profile.gender }}</span>
-      <!-- You can replace or add more fields -->
-    </div>
-    <div class="media-buttons">
-      <a href="#" style="background: #4267b2" class="link"
-        ><i class="bx bxl-facebook"></i
-      ></a>
-      <a href="#" style="background: #1da1f2" class="link"
-        ><i class="bx bxl-twitter"></i
-      ></a>
-      <a href="#" style="background: #e1306c" class="link"
-        ><i class="bx bxl-instagram"></i
-      ></a>
-      <a href="#" style="background: #ff0000" class="link"
-        ><i class="bx bxl-youtube"></i
-      ></a>
+      <!-- Additional fields can go here -->
     </div>
     <div class="buttons">
       <button
@@ -44,34 +30,62 @@
         Update Profile
       </button>
     </div>
-    <div class="analytics">
-      <div class="data">
-        <i class="bx bx-heart"></i><span class="number">60k</span>
-      </div>
-      <div class="data">
-        <i class="bx bx-message-rounded"></i><span class="number">20k</span>
-      </div>
-      <div class="data">
-        <i class="bx bx-share"></i><span class="number">12k</span>
-      </div>
+  </div>
+</div>
+
+<section class="books-section">
+  <div class="books-container">
+    {% for book in user.profile.wishlist.all %}
+    <div class="book-card">
+      {% if book in user.profile.bought_books.all %}
+      <!-- Redirect to Read Book page for Purchased Books -->
+      <a href="{% url 'read_book' book.id %}">
+        <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+      </a>
+      <!-- Display "Purchased" Button -->
+      <button class="btn purchased-btn" disabled>
+        <i class="fas fa-check"></i> Purchased
+      </button>
+      {% else %}
+      <!-- Redirect to Product Detail page for Wishlisted Books -->
+      <a href="{% url 'product_detail' book.id %}">
+        <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+      </a>
+      <!-- Wishlist Button -->
+      <button class="btn wishlist-btn">
+        <i class="fas fa-heart"></i> Wishlisted
+      </button>
+      {% endif %}
     </div>
+    {% empty %}
+    <p>No books wishlisted yet.</p>
+    {% endfor %}
   </div>
-</div>
+</section>
 
-<br /><br /><br />
+{% endblock %} {% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Loop through each book card
+    const bookCards = document.querySelectorAll(".book-card");
 
-<div class="books-container">
-  {% for book in user.profile.bought_books.all %}
-  <div class="book-card">
-    <a href="{% url 'read_book' book.id %}">
-      <!-- Removed the page number -->
-      <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
-      <span>{{ book.title }}</span>
-    </a>
-  </div>
-  {% empty %}
-  <p>No books purchased yet.</p>
-  {% endfor %}
-</div>
+    bookCards.forEach((card) => {
+      // Get the "wishlisted" and "purchased" buttons
+      const wishlistBtn = card.querySelector(".wishlist-btn");
+      const purchasedBtn = card.querySelector(".purchased-btn");
 
-{% endblock %} {% block extra_js %}{% endblock %}
+      // Check if the book is purchased
+      if (
+        wishlistBtn &&
+        purchasedBtn &&
+        wishlistBtn.classList.contains("wishlisted")
+      ) {
+        // Hide the wishlist button if the book is purchased
+        wishlistBtn.style.display = "none";
+        purchasedBtn.style.display = "block"; // Show the purchased button
+      }
+    });
+  });
+</script>
+
+{% endblock %}

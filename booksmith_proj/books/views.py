@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Book, Review
-from accounts.models import CartItem
+from accounts.models import CartItem, Profile
 from django.db.models import Q
 from .forms import ReviewForm
 import random
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 def landing_page(request):
     books = list(Book.objects.all())
@@ -43,7 +45,7 @@ def product_detail(request, book_id):
     similar_books = Book.objects.exclude(pk=book_id)[:4]  # Get similar books
 
     form = ReviewForm()
-    
+
     # Handle review form submission
     if request.method == "POST":
         if request.user.is_authenticated:
@@ -85,3 +87,38 @@ def delete_review(request, review_id):
 def category_books(request, category):
     books = Book.objects.filter(category=category)  # Filter books by the category
     return render(request, 'category_books.html', {'books': books, 'category': category})
+
+
+@login_required
+def toggle_wishlist(request, book_id):
+    profile = request.user.profile
+    book = get_object_or_404(Book, id=book_id)
+
+    if book in profile.wishlist.all():
+        profile.wishlist.remove(book)
+        return JsonResponse({'status': 'removed'})
+    else:
+        profile.wishlist.add(book)
+        return JsonResponse({'status': 'added'})
+
+
+@login_required
+def add_to_wishlist(request, book_id):
+    try:
+        profile = Profile.objects.get(user=request.user)
+        book = Book.objects.get(id=book_id)
+        profile.wishlist.add(book)
+        profile.save()
+        return JsonResponse({'message': 'Book added to wishlist'})
+    except Book.DoesNotExist:
+        return JsonResponse({'error': 'Book not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+def mark_discount_seen(request, book_id):
+    if request.user.is_authenticated:
+        profile = request.user.profile
+        book = get_object_or_404(Book, id=book_id)
+        profile.seen_discounted_books.add(book)
+    return redirect('product_detail', book_id=book_id)

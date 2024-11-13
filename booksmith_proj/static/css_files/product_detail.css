@@ -138,3 +138,186 @@
     justify-content: center;
   }
 }
+
+.title-review{
+  justify-content: left;
+  text-align: left;
+  margin-top: 50px;
+}
+.title-review h1{
+  font-size: 22px;
+}
+
+.reviews {
+  margin: 20px auto;
+  padding: 15px;
+  justify-content: left;
+  text-align: left;
+  background-color: #f9f9f9; /* Light background for contrast */
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+.review-item {
+  border-bottom: 1px solid #e0e0e0; /* Divider between reviews */
+  padding: 10px 0; /* Spacing around each review */
+}
+
+.review-item:last-child {
+  border-bottom: none; /* Remove the border from the last item */
+}
+.reviews .review-item {
+  margin-bottom: 20px; /* Add vertical space between each review */
+  padding-bottom: 10px; /* Optionally, add padding to create some internal space */
+  border-bottom: 1px solid #ddd; /* Optional: Adds a subtle line to separate reviews */
+}
+.review-item p {
+  margin: 5px 0; /* Spacing between paragraphs */
+}
+
+.review-item strong {
+  color: #333; /* Darker color for the username */
+}
+
+.review-item small {
+  color: #999; /* Lighter color for timestamps */
+}
+.review-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1em; /* Adds space between elements */
+  width: 100%; /* Ensure the form takes up the full width */
+}
+
+.comment {
+  width: 100%; /* Ensures the comment div takes up full width */
+}
+
+.comment textarea {
+  width: 100%; /* Make textarea take the full width of the parent */
+  height: 150px; /* Set a minimum height for better appearance */
+  resize: vertical; /* Allow the user to resize vertically */
+  padding: 10px; /* Add padding for better text readability */
+  border: 1px solid #ccc; /* Border for the textarea */
+  border-radius: 5px; /* Rounded corners */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+.review-form .rating {
+  width: 100%; /* Ensures the rating stars align within full width */
+}
+
+.review-form button[type="submit"] {
+  align-self: flex-end; /* Aligns the button to the right */
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Example color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.review-form button[type="submit"]:hover {
+  background-color: #45a049; /* Slightly darker on hover */
+}
+
+
+
+
+.reviews .review-header {
+  display: flex;
+  align-items: center; /* Vertically aligns the stars and username */
+}
+.reviews .review-header .delete-btn {
+  margin-left: 1220px;
+}
+
+
+.reviews .review-header p {
+  margin-right: 10px; /* Space between the username and stars */
+}
+
+.delete-btn {
+  background-color: #f44336; /* Red background */
+  color: white; /* White text */
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: 5px;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f; /* Darker red on hover */
+}
+
+.stars {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.stars input {
+  display: none; /* Hide radio buttons */
+}
+.star {
+  font-size: 1.5em; /* Adjust the size of the star */
+  color: #ccc; /* Default color for unhighlighted stars */
+  margin-right: 5px; /* Add some space between stars */
+}
+
+.stars label.star {
+  font-size: 2em;
+  color: #ccc; /* Default color for unselected stars */
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.stars input:checked ~ label.star {
+  color: #f5b301; /* Gold color for selected stars */
+}
+.star.highlighted {
+    color: #f5b301; /* Highlighted color for stars (yellow or gold) */
+}
+
+
+
+
+button[type="submit"] {
+  background-color: #007BFF; /* Bootstrap primary color */
+  color: #fff; /* White text */
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+a {
+  color: #007BFF; /* Link color */
+  text-decoration: none; /* Remove underline */
+}
+
+a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
+h3 {
+  color: #333; /* Darker color for headings */
+}
+.comment{
+  justify-content: left;
+  text-align: left;
+}
+.reviews .review-profile {
+  position: relative;
+  height: 50px;  
+  width: 50px;  
+  border-radius: 50%;
+  margin-right: 10px;
+}

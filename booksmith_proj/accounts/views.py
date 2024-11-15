@@ -145,30 +145,31 @@ def cart_view(request):
 
 @login_required
 def checkout(request):
-    # Handle POST request for payment submission
-    if request.method == 'POST':
-        payment_method = request.POST.get('payment')
-        card_name = request.POST.get('card_name')
-        card_number = request.POST.get('card_number')
-        expiry = request.POST.get('expiry')
-        cvv = request.POST.get('cvv')
-
-        # Add logic here for processing the payment
-        # Redirect to success page after payment processing
-        return redirect('payment_success')
-
-    # Context to pass to the template
-    cart_item_count = 0
+    # Ensure the cart is not empty before proceeding
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
-        cart_item_count = cart_items.count()
+        if not cart_items.exists():
+            # If the cart is empty, show a warning message and redirect to the cart page
+            messages.warning(request, "Your cart is empty. Please add items before checking out.")
+            return redirect('cart')
+
+        # Handle POST request for payment submission
+        if request.method == 'POST':
+            payment_method = request.POST.get('payment')
+            card_name = request.POST.get('card_name')
+            card_number = request.POST.get('card_number')
+            expiry = request.POST.get('expiry')
+            cvv = request.POST.get('cvv')
+
+            # Add logic here for processing the payment
+            # Redirect to success page after payment processing
+            return redirect('payment_success')
 
         # Initialize total price
         total_price = 0
 
-        # Loop through each cart item to calculate new price
+        # Loop through each cart item to calculate the total price
         for item in cart_items:
-            # Calculate new price based on quantity
             item.new_price = item.book.price * item.quantity
             total_price += item.new_price  # Add to total price
 
@@ -176,7 +177,7 @@ def checkout(request):
         context = {
             'cart_items': cart_items,
             'total_price': total_price,
-            'cart_item_count': cart_item_count
+            'cart_item_count': cart_items.count()
         }
 
         return render(request, 'accounts/checkout.html', context)

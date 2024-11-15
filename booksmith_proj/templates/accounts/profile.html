@@ -35,10 +35,12 @@
 
 <section class="books-section">
   <div class="books-container">
-    {% for book in user.profile.wishlist.all %}
+    <!-- Display Purchased Books -->
+    {% if user.profile.bought_books.all %}
+    <!-- Display Purchased Books -->
+    {% for book in user.profile.bought_books.all %}
     <div class="book-card">
-      {% if book in user.profile.bought_books.all %}
-      <!-- Redirect to Read Book page for Purchased Books -->
+      <!-- Purchased Book - Redirect to Read Book page -->
       <a href="{% url 'read_book' book.id %}">
         <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
       </a>
@@ -46,8 +48,19 @@
       <button class="btn purchased-btn" disabled>
         <i class="fas fa-check"></i> Purchased
       </button>
-      {% else %}
-      <!-- Redirect to Product Detail page for Wishlisted Books -->
+    </div>
+    {% endfor %} {% else %}
+    <p>No books purchased yet.</p>
+    {% endif %}
+
+    <!-- Display Wishlisted Books (Excluding Purchased Ones) -->
+    {% if user.profile.wishlist.all %}
+    <!-- Display Wishlisted Books (Excluding Purchased Ones) -->
+    {% for book in user.profile.wishlist.all %}
+    <!-- Display Wishlisted Books (Excluding Purchased Ones) -->
+    {% if book not in user.profile.bought_books.all %}
+    <div class="book-card">
+      <!-- Wishlisted Book - Redirect to Product Detail page -->
       <a href="{% url 'product_detail' book.id %}">
         <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
       </a>
@@ -55,11 +68,10 @@
       <button class="btn wishlist-btn">
         <i class="fas fa-heart"></i> Wishlisted
       </button>
-      {% endif %}
     </div>
-    {% empty %}
+    {% endif %} {% endfor %} {% else %}
     <p>No books wishlisted yet.</p>
-    {% endfor %}
+    {% endif %}
   </div>
 </section>
 

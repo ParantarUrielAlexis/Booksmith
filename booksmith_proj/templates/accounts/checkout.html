@@ -32,27 +32,13 @@
     <!-- Payment Details Section -->
     <div class="payment-details" id="payment-details" style="display: none">
       <form>
+        <!-- PayPal Email Field -->
         <input
           type="text"
-          name="card_name"
-          placeholder="Enter Name on Card"
+          name="paypal_email"
+          placeholder="Enter PayPal Email"
           required
         />
-        <input
-          type="text"
-          name="card_number"
-          placeholder="Card Number"
-          required
-        />
-        <div class="card-info">
-          <input type="text" name="expiry" placeholder="Expiration" required />
-          <input type="text" name="cvv" placeholder="CVV Code" required />
-        </div>
-        <p>
-          By Clicking
-          <span class="confirm-link">Confirm Payment</span>
-          I agree to the companies terms and services.
-        </p>
       </form>
     </div>
     <div class="payment-details2" id="payment-details2" style="display: block">
@@ -70,19 +56,22 @@
           placeholder="Enter Gcash Number"
           required
         />
-        <p>
-          By Clicking
-          <span class="confirm-link">Confirm Payment</span>
-          I agree to the companies terms and services.
-        </p>
       </form>
     </div>
-
+    <p>
+      <label>
+        <input type="checkbox" id="terms-checkbox2" />
+        I agree to the companies terms and services.
+      </label>
+      By Clicking
+      <span class="confirm-link">Confirm Payment</span>
+      I agree to the companies terms and services.
+    </p>
     <!-- Confirm Payment Button -->
     <form action="{% url 'confirm_payment' %}" method="POST">
       {% csrf_token %}
       <!-- Payment method, user details, and other inputs -->
-      <button class="btn confirm-payment-btn" type="submit">
+      <button class="btn confirm-payment-btn" type="submit" onclick="validatePayment(event)">
         Confirm Payment
       </button>
     </form>
@@ -150,6 +139,7 @@
 
 <footer></footer>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   // Function to toggle payment details based on selected payment method
@@ -222,5 +212,118 @@
       "$" + newTotal.toFixed(2)
     );
   }
+  function validatePayment(event) {
+  let isValid = true; // Flag to check overall validity
+
+  // Validate the input fields in the visible payment details form
+  const visibleForm = $('.payment-details:visible, .payment-details2:visible');
+  const inputs = visibleForm.find('input[type="text"]');
+
+  // Check if all required fields are filled
+  inputs.each(function () {
+    if ($(this).val().trim() === '') {
+      isValid = false;
+      Swal.fire({
+        icon: 'warning',
+        title: 'Incomplete Payment Details',
+        text: 'Please fill out all required fields in the payment form.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d33',
+      });
+      event.preventDefault();
+      return false; // Exit the loop if any field is empty
+    }
+  });
+
+  // If any field is empty, stop further validation
+  if (!isValid) {
+    return;
+  }
+
+  // Get the selected payment method
+  const selectedPayment = $('input[name="payment"]:checked').val();
+
+  // Additional validation for GCash specific fields
+  if (selectedPayment === 'gcash') {
+    const gcashAccountName = visibleForm.find('input[name="card_name"]').val().trim();
+    const gcashNumber = visibleForm.find('input[name="card_number"]').val().trim();
+
+    // Validate that the account name does not contain any numbers
+    const nameContainsNumbers = /\d/.test(gcashAccountName);
+    if (nameContainsNumbers) {
+      isValid = false;
+      Swal.fire({
+        icon: 'warning',
+        title: 'Invalid Account Name',
+        text: 'The GCash account name should not contain numbers.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d33',
+      });
+      event.preventDefault();
+      return; // Stop further validation if the account name is invalid
+    }
+
+    // Validate that the GCash number is exactly 11 digits
+    if (gcashNumber.length !== 11 || !/^\d+$/.test(gcashNumber)) {
+      isValid = false;
+      Swal.fire({
+        icon: 'warning',
+        title: 'Invalid GCash Number',
+        text: 'Please Input a Valid GCash Number.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d33',
+      });
+      event.preventDefault();
+      return; // Stop further validation if the GCash number is invalid
+    }
+  }
+
+  // Additional validation for PayPal-specific fields
+  if (selectedPayment === 'paypal') {
+    const paypalEmail = visibleForm.find('input[name="paypal_email"]').val().trim();
+
+    // Validate that the PayPal email is in a correct email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(paypalEmail)) {
+      isValid = false;
+      Swal.fire({
+        icon: 'warning',
+        title: 'Invalid PayPal Email',
+        text: 'Please provide a valid PayPal email address.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#d33',
+      });
+      event.preventDefault();
+      return; // Stop further validation if the PayPal email is invalid
+    }
+  }
+
+  // Check if the terms checkbox is checked
+  const termsCheckbox = $("#terms-checkbox2");
+
+  if (!termsCheckbox.is(":checked")) {
+    isValid = false;
+    Swal.fire({
+      icon: 'warning',
+      title: 'Terms Agreement Required',
+      text: 'Please agree to the terms and services before confirming payment.',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#3085d6',
+    });
+    event.preventDefault();
+    return; // Stop submission if terms are not agreed
+  }
+
+  // If validation passes, allow the form to be submitted
+  if (!isValid) {
+    event.preventDefault();
+  }
+}
+
+// Attach validatePayment function to the form submission event
+$(document).ready(function () {
+  $('.confirm-payment-btn').on('click', validatePayment);
+});
+
 </script>
 {% endblock %}

@@ -3,148 +3,324 @@
   margin: auto;
   max-width: 90vw;
   text-align: center;
-  padding-top: 10px;
+  padding-top: 20px;
+  color: #333;
 }
-.title {
-  font-size: xx-large;
-  padding: 20px 0;
-}
-.listProduct .item img {
-  width: 90%;
-  filter: drop-shadow(0 50px 20px #0009);
-}
-.listProduct {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-}
-.listProduct .item {
-  background-color: #eeeee6;
-  padding: 20px;
-  border-radius: 20px;
-}
-.listProduct .item h2 {
-  font-weight: 500;
-  font-size: large;
-}
-.listProduct .item .price {
-  letter-spacing: 7px;
-  font-size: small;
-}
-/* detail page */
 
+/* Title */
+.title {
+  font-size: 2.5rem;
+  color: #333;
+  padding: 20px 0;
+  font-weight: 700;
+}
+
+/* Detail Page Layout */
 .detail {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 50px;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
   text-align: left;
+  justify-content: center;
 }
-.detail .image img {
-  width: 100%;
-}
+
 .detail .image {
-  position: relative;
+  display: flex;
+  justify-content: center;
 }
-.detail .image::before {
-  position: absolute;
-  width: 300px;
-  height: 300px;
-  content: "";
-  background-color: #94817733;
-  z-index: -1;
-  border-radius: 190px 100px 170px 180px;
-  left: calc(50% - 150px);
-  top: 50px;
+
+.detail .image img {
+  width: 60%;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
+
 .detail .name {
-  font-size: xxx-large;
-  padding: 40px 0 0 0;
-  margin: 0 0 10px 0;
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 0;
 }
+
 .detail .price {
   font-weight: bold;
-  font-size: x-large;
-  letter-spacing: 7px;
+  font-size: 1.8rem;
+  color: #333;
+  letter-spacing: 1px;
+  margin-right: 10px;
   margin-bottom: 20px;
 }
+
+.original-price {
+  color: #888; /* Light gray to show it's discounted */
+  text-decoration: line-through;
+  font-size: 1.5rem;
+}
+
+.discounted-price {
+  color: #000000; /* Your highlight red color */
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-left: 10px;
+  background-color: #ffee00;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+/* Button Styling */
 .detail .buttons {
   display: flex;
-  gap: 20px;
   margin-bottom: 20px;
 }
+
 .detail .buttons button {
-  background-color: #eee;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-family: Poppins, sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.detail .buttons .add-to-cart {
+  background-color: #bd2000;
+  color: white;
   border: none;
-  padding: 15px 20px;
-  border-radius: 20px;
-  font-family: Poppins;
-  font-size: large;
 }
-.detail .buttons svg {
-  width: 15px;
+.buttons .already-bought {
+  margin: 10px;
+
+  color: #28a745; /* Green color to indicate success */
+  font-weight: bold;
 }
-.detail .buttons span {
-  background-color: #555454;
-  width: 30px;
-  height: 30px;
-  display: flex;
-  justify-content: center;
+/* .detail .buttons .wishlist {
+  background-color: white;
+  color: #bd2000;
+  border: 2px solid #bd2000;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.detail .buttons .wishlist i {
+  margin-right: 8px;
+}
+
+.detail .buttons button:hover {
+  transform: scale(1.05);
+}
+
+.detail .buttons .wishlist:hover {
+  background-color: #bd2000;
+  color: white;
+} */
+
+/* Wishlist button styling */
+.wishlist {
+  margin-left: 10px;
+  background-color: transparent;
+  border: 2px solid #bd2000;
+  color: #bd2000;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 8px 20px;
+  border-radius: 30px;
+  display: inline-flex;
   align-items: center;
-  border-radius: 50%;
-  margin-left: 20px;
-}
-.detail .buttons button:nth-child(2) {
-  background-color: #2f2f2f;
-  display: flex;
   justify-content: center;
-  align-items: center;
-  color: #eee;
-  box-shadow: 0 10px 20px #2f2f2f77;
+  transition: all 0.3s ease-in-out;
+
+  cursor: pointer;
 }
+
+.wishlist i {
+  margin-right: 8px;
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect for the wishlist button */
+.wishlist:hover {
+  background-color: #bd2000;
+  color: white;
+}
+
+.wishlist:hover i {
+  transform: scale(1.2); /* Slight enlargement of the heart icon on hover */
+}
+
+/* When the book is added to the wishlist */
+.wishlisted {
+  background-color: #bd2000;
+  color: white;
+  border: 2px solid #bd2000;
+}
+
+.wishlisted i {
+  color: white; /* Change the heart color when the book is in the wishlist */
+  transform: scale(
+    1.2
+  ); /* Slight enlargement of the heart icon when wishlisted */
+}
+
+/* Smooth transition for the button */
+.wishlist,
+.wishlisted {
+  transition: background-color 0.3s, color 0.3s, border 0.3s, transform 0.3s;
+}
+
+/* Description */
 .detail .description {
   font-weight: 300;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.5;
 }
-/* // ipad */
+
+/* Responsive Styling for Tablets */
 @media only screen and (max-width: 992px) {
-  .listProduct {
-    grid-template-columns: repeat(3, 1fr);
-  }
   .detail {
     grid-template-columns: 40% 1fr;
   }
 }
 
-/* mobile */
+/* Responsive Styling for Mobile */
 @media only screen and (max-width: 768px) {
-  .listProduct {
-    grid-template-columns: repeat(2, 1fr);
-  }
   .detail {
     text-align: center;
     grid-template-columns: 1fr;
   }
+
   .detail .image img {
     width: unset;
     height: 40vh;
   }
+
   .detail .name {
-    font-size: x-large;
-    margin: 0;
+    font-size: 1.5rem;
   }
-  .detail .buttons button {
-    font-size: small;
-  }
+
   .detail .buttons {
     justify-content: center;
   }
 }
 
-.title-review{
+/* Title Style */
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* List of Similar Products */
+.listProduct {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(250px, 1fr)
+  ); /* Responsive grid */
+  gap: 20px;
+  margin-top: 30px;
+  padding: 0 20px;
+  justify-items: center; /* Centers the items horizontally */
+  align-items: center; /* Centers the items vertically */
+  max-width: 1200px; /* Optional: Limit the maximum width of the grid */
+  margin-left: auto; /* Centers the grid container */
+  margin-right: auto; /* Centers the grid container */
+}
+
+/* Individual Product Item */
+.listProduct .item {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  overflow: hidden; /* Ensure no overflow */
+}
+
+.listProduct .item:hover {
+  transform: translateY(-10px); /* Lift effect on hover */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Deeper shadow on hover */
+}
+
+/* Product Image */
+.listProduct .item img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover; /* Ensures image maintains aspect ratio without stretching */
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)); /* Soft shadow */
+  transition: filter 0.3s ease;
+}
+
+/* Hover Effect for Image */
+.listProduct .item:hover img {
+  filter: drop-shadow(
+    0 8px 16px rgba(0, 0, 0, 0.3)
+  ); /* Stronger shadow on hover */
+}
+
+/* Product Title */
+.listProduct .item h2 {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 15px 0;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+/* Hover Effect for Title */
+.listProduct .item:hover h2 {
+  color: #e74c3c; /* Red color on hover */
+}
+
+/* Product Price */
+.listProduct .item .price {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #555;
+  letter-spacing: 2px;
+  margin-top: 10px;
+  transition: color 0.3s ease;
+}
+
+/* Hover Effect for Price */
+.listProduct .item:hover .price {
+  color: #e74c3c; /* Red color on hover */
+}
+/* Style for the highlighted price (yellow for discounted price) */
+.highlight-price {
+  color: black; /* text color for discounted price */
+  background-color: yellow; /* background color for highlighted price */
+  padding: 5px; /* optional: add some padding around the price for better readability */
+  font-weight: bold; /* optional: make it bold to emphasize the price */
+}
+
+/* Style for the original price (strikethrough) */
+.s {
+  text-decoration: line-through;
+  color: #999; /* optional: make the original price grey */
+}
+
+/* Style for the discount percentage (red text) */
+.discount-percent {
+  color: red; /* discount percentage in red */
+  font-weight: bold; /* optional: make the discount percentage bold */
+  margin-left: 5px; /* optional: add some space between price and discount */
+}
+
+/* for the reviews section */
+
+.title-review {
   justify-content: left;
   text-align: left;
   margin-top: 50px;
 }
-.title-review h1{
+.title-review h1 {
   font-size: 22px;
 }
 
@@ -211,7 +387,7 @@
 .review-form button[type="submit"] {
   align-self: flex-end; /* Aligns the button to the right */
   padding: 10px 20px;
-  background-color: #4CAF50; /* Example color */
+  background-color: #4caf50; /* Example color */
   color: white;
   border: none;
   border-radius: 5px;
@@ -223,9 +399,6 @@
   background-color: #45a049; /* Slightly darker on hover */
 }
 
-
-
-
 .reviews .review-header {
   display: flex;
   align-items: center; /* Vertically aligns the stars and username */
@@ -233,7 +406,6 @@
 .reviews .review-header .delete-btn {
   margin-left: 1220px;
 }
-
 
 .reviews .review-header p {
   margin-right: 10px; /* Space between the username and stars */
@@ -278,14 +450,11 @@
   color: #f5b301; /* Gold color for selected stars */
 }
 .star.highlighted {
-    color: #f5b301; /* Highlighted color for stars (yellow or gold) */
+  color: #f5b301; /* Highlighted color for stars (yellow or gold) */
 }
 
-
-
-
 button[type="submit"] {
-  background-color: #007BFF; /* Bootstrap primary color */
+  background-color: #007bff; /* Bootstrap primary color */
   color: #fff; /* White text */
   border: none;
   padding: 10px 15px;
@@ -299,25 +468,21 @@ button[type="submit"]:hover {
 }
 
 a {
-  color: #007BFF; /* Link color */
+  color: #007bff; /* Link color */
   text-decoration: none; /* Remove underline */
-}
-
-a:hover {
-  text-decoration: underline; /* Underline on hover */
 }
 
 h3 {
   color: #333; /* Darker color for headings */
 }
-.comment{
+.comment {
   justify-content: left;
   text-align: left;
 }
 .reviews .review-profile {
   position: relative;
-  height: 50px;  
-  width: 50px;  
+  height: 50px;
+  width: 50px;
   border-radius: 50%;
   margin-right: 10px;
 }

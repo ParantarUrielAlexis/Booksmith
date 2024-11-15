@@ -2,7 +2,6 @@
 {%endblock %} {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css_files/landing_page.css' %}" />
 {% endblock %} {% block content %}
-<!-- Slider Section for Best Sellers -->
 <div class="slider">
   <h2>Best Sellers</h2>
   <div class="list">
@@ -46,6 +45,9 @@
           >
             See Details
           </button>
+
+          {% if user.is_authenticated %}
+          <!-- comment for formatting -->
           {% if book not in user.profile.bought_books.all %}
           <button
             class="btn wishlist-btn {% if book in user.profile.wishlist.all %}wishlisted{% endif %}"
@@ -59,7 +61,7 @@
           <span class="already-bought">
             <i class="fas fa-check-circle"></i> Purchased
           </span>
-          {% endif %}
+          {% endif %} {% endif %}
         </div>
       </div>
     </div>
@@ -103,9 +105,30 @@
         <p>${{ book.price|floatformat:2 }}</p>
         {% endif %}
         <br /><br />
-        <button class="btn add-to-cart" onclick="addToCart({{ book.id }})">
-          Add to Cart
-        </button>
+
+        <!-- Add to Cart and Wishlist buttons side by side -->
+        <div class="buttons-container">
+          <button class="btn add-to-cart" onclick="addToCart({{ book.id }})">
+            Add to Cart
+          </button>
+
+          <!-- Wishlist Button with checkmark if purchased -->
+          <button
+            class="btn wishlist-btn {% if book in user.profile.bought_books.all %}bought{% elif book in user.profile.wishlist.all %}wishlisted{% endif %}"
+            onclick="toggleWishlist({{ book.id }})"
+            data-id="{{ book.id }}"
+          >
+            {% if book in user.profile.bought_books.all %}
+            <i class="fas fa-check-circle"></i>
+            <!-- Checkmark if bought -->
+            {% else %}
+            <i
+              class="fas fa-heart {% if book in user.profile.wishlist.all %}wishlisted{% endif %}"
+            ></i>
+            <!-- Heart for wishlist -->
+            {% endif %}
+          </button>
+        </div>
       </div>
     </div>
     {% endfor %}
@@ -155,8 +178,18 @@
         {% endif %}
       </div>
       <div class="buttons">
-        <button class="btn-buy">Buy Now</button>
-        <button class="btn-details">See Details</button>
+        <!-- Add to Cart Button -->
+        <button class="btn-buy" onclick="addToCart({{ featured_book.id }})">
+          Add to Cart
+        </button>
+
+        <!-- See Details Button -->
+        <button
+          class="btn-details"
+          onclick="window.location.href='{% url 'product_detail' featured_book.pk %}'"
+        >
+          See Details
+        </button>
       </div>
     </div>
   </div>
@@ -248,6 +281,8 @@
                       confirmButtonText: 'OK'
                   });
               }
+
+
           },
           error: function(xhr) {
               console.error("Error toggling wishlist:", xhr);

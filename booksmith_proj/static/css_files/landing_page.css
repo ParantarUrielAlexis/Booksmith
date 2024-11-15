@@ -289,6 +289,11 @@ svg {
   color: #bd2000;
 }
 
+.buttons-container {
+  align-items: center;
+}
+
+/* Apply your existing button styles to both buttons */
 .book-info button {
   background-color: #bd2000;
   color: #fff;
@@ -297,11 +302,42 @@ svg {
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
-  transition: background-color 0.3s;
+  transition: background-color 0.1s;
+  align-items: center;
+  justify-content: center;
+  width: auto; /* Allow buttons to resize based on content */
+  height: 45px; /* Set a fixed height to ensure consistency */
 }
 
-.book-info button:hover {
-  background-color: #d62828;
+/* Icon size consistency */
+.book-info button i {
+  font-size: 20px; /* Set a consistent size for the icons */
+  margin-right: 10px; /* Space between icon and text */
+}
+
+.wishlist-btn.wishlisted i {
+  color: #bd2000; /* Red color for heart when wishlisted */
+}
+
+/* For disabled state (like after book is bought) */
+.wishlist-btn:disabled,
+.wishlist-btn.bought {
+  cursor: not-allowed;
+  opacity: 0.5; /* Make the button look inactive */
+}
+
+.wishlist-btn:disabled i,
+.wishlist-btn.bought i {
+  color: #28a745; /* Green color for checkmark when disabled */
+}
+
+.wishlist-btn i {
+  transition: color 0.3s;
+}
+
+/* Disable button when the book is bought */
+.wishlist-btn.bought {
+  pointer-events: none; /* Disable clicking */
 }
 
 /* Featured */

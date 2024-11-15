@@ -1,180 +1,332 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %} Product Detail {%endblock %} 
-
-{% block extra_css %}
+{% extends 'base.html' %} {% load static %} {% block title %} Product Detail
+{%endblock %} {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css_files/product_detail.css' %}" />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+/>
+
 {% endblock %} {% block content %}
 
+<br /><br /><br /><br />
 <div class="container">
-  <div class="title">PRODUCT DETAIL</div>
   <div class="detail">
     <div class="image">
       <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
     </div>
     <div class="content">
       <h1 class="name">{{ book.title }}</h1>
-      <div class="price">${{ book.price }}</div>
-      <div class="buttons">
-        <form method="POST" action="{% url 'add_to_cart' book.pk %}">
-          {% csrf_token %}
-          <button type="submit">Add To Cart</button>
-        </form>
+
+      <!-- Price logic with discount -->
+      {% if book.discount_percent > 0 %}
+      <div class="price">
+        <s class="original-price">${{ book.price|floatformat:2 }}</s>
+        <span class="discounted-price"
+          >${{ book.discounted_price|floatformat:2 }}</span
+        >
       </div>
+      {% else %}
+      <div class="price">${{ book.price|floatformat:2 }}</div>
+      {% endif %}
+
+      <div class="buttons">
+        {% csrf_token %}
+        <button class="btn add-to-cart" onclick="addToCart({{ book.id }})">
+          Add to Cart
+        </button>
+
+        {% if user.is_authenticated %}
+        <!-- Check if the book is purchased -->
+        {% if book in user.profile.bought_books.all %}
+        <span class="already-bought">
+          <i class="fas fa-check-circle"></i> Purchased
+        </span>
+        {% else %}
+        <button
+          type="button"
+          class="wishlist {% if book in user.profile.wishlist.all %}wishlisted{% endif %}"
+          onclick="toggleWishlist({{ book.id }})"
+          data-id="{{ book.id }}"
+        >
+          <i class="fas fa-heart"></i> Wishlist
+        </button>
+        {% endif %} {% endif %}
+      </div>
+
       <div class="description">{{ book.description }}</div>
     </div>
   </div>
-  <div class="title-review">
-    <h1>User Reviews</h1>
-  </div>
-  <div class="reviews">
-    {% for review in reviews %}
-        <div class="review-item">
-            <div class="review-header">
-                <img class="review-profile"src="{% if review.user.profile.image %}{{ review.user.profile.image.url }}{% else %}{% static 'images/default_avatar.png' %}{% endif %}" alt="{{ review.user.username }}'s profile picture" class="profile-picture">
-                <p><strong>{{ review.user.username }}:</strong></p>
-
-                <!-- Render stars based on the rating -->
-                <div class="stars">
-                    {% for i in "12345" %}
-                        <span class="star {% if review.rating >= i|add:0 %}highlighted{% endif %}">&#9733;</span>
-                    {% endfor %}
-                </div>
-
-                <!-- Only show the delete button if the logged-in user is the review owner -->
-                {% if review.user == user %}
-                    <form method="POST" action="{% url 'delete_review' review.pk %}" style="display:inline;" class="delete-form">
-                        {% csrf_token %}
-                        <button type="button" class="delete-btn" onclick="confirmDelete({{ review.pk }})">Delete</button>
-                    </form>
-                {% endif %}
-            </div>
-
-            <p>{{ review.comment }}</p>
-            <small>{{ review.created_at }}</small>
-            
-        </div>
-    {% empty %}
-        <p>No reviews yet. Be the first to review this book!</p>
-    {% endfor %}
 </div>
-  {% if user.is_authenticated %}
-  <div class="title-review">
-      <h1>Rate this book</h1>
-  </div>
-  <form method="post" class="review-form" onsubmit="return validateReviewForm()">
-      {% csrf_token %}
-      <div class="rating">
-          <div class="stars">
-              {% for i in "12345" %}
-                  <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" {% if form.rating.value|stringformat:"i" == i %}checked{% endif %} />
-                  <label for="star{{ i }}" title="{{ i }} star" class="star">&#9733;</label>
-              {% endfor %}
-          </div>
-      </div>    
-      <div class="comment">
-          {{ form.comment }}
-      </div>
-      <button type="submit">Submit Review</button>
-  </form>
-  {% else %}
-  <p>Please <a href="{% url 'login' %}">log in</a> to write a review.</p>
-  {% endif %}
 
-
-
-  <div class="title">Similar Products</div>
-  <div class="listProduct">
-    {% for similar_book in similar_books %}
-    <a href="{% url 'product_detail' similar_book.pk %}" class="item">
+<div class="title-review">
+  <h1>User Reviews</h1>
+</div>
+<div class="reviews">
+  {% for review in reviews %}
+  <div class="review-item">
+    <div class="review-header">
       <img
-        src="{{ similar_book.thumbnail_image_url }}"
-        alt="{{ similar_book.title }}"
+        class="review-profile"
+        src="{% if review.user.profile.image %}{{ review.user.profile.image.url }}{% else %}{% static 'images/default_avatar.png' %}{% endif %}"
+        alt="{{ review.user.username }}'s profile picture"
+        class="profile-picture"
       />
-      <h2>{{ similar_book.title }}</h2>
-      <div class="price">${{ similar_book.price }}</div>
-    </a>
-    {% endfor %}
+      <p><strong>{{ review.user.username }}:</strong></p>
+
+      <!-- Render stars based on the rating -->
+      <div class="stars">
+        {% for i in "12345" %}
+        <span
+          class="star {% if review.rating >= i|add:0 %}highlighted{% endif %}"
+          >&#9733;</span
+        >
+        {% endfor %}
+      </div>
+
+      <!-- Only show the delete button if the logged-in user is the review owner -->
+      {% if review.user == user %}
+      <form
+        method="POST"
+        action="{% url 'delete_review' review.pk %}"
+        style="display: inline"
+        class="delete-form"
+      >
+        {% csrf_token %}
+        <button
+          type="button"
+          class="delete-btn"
+          onclick="confirmDelete({{ review.pk }})"
+        >
+          Delete
+        </button>
+      </form>
+      {% endif %}
+    </div>
+
+    <p>{{ review.comment }}</p>
+    <small>{{ review.created_at }}</small>
   </div>
+  {% empty %}
+  <p>No reviews yet. Be the first to review this book!</p>
+  {% endfor %}
+</div>
+{% if user.is_authenticated %}
+<div class="title-review">
+  <h1>Rate this book</h1>
+</div>
+<form method="post" class="review-form" onsubmit="return validateReviewForm()">
+  {% csrf_token %}
+  <div class="rating">
+    <div class="stars">
+      {% for i in "12345" %}
+      <!-- comment for formatting -->
+      <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" {% if form.rating.value|stringformat:"i" == i %}checked{%endif %} />
+      <!-- comment for formatting -->
+      <label for="star{{ i }}" title="{{ i }} star" class="star">&#9733;</label>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="comment">{{ form.comment }}</div>
+  <button type="submit">Submit Review</button>
+</form>
+{% else %}
+<p>Please <a href="{% url 'login' %}">log in</a> to write a review.</p>
+{% endif %}
+
+<div class="title">Similar Products</div>
+<div class="listProduct">
+  {% for similar_book in similar_books %}
+  <a href="{% url 'product_detail' similar_book.pk %}" class="item">
+    <img
+      src="{{ similar_book.thumbnail_image_url }}"
+      alt="{{ similar_book.title }}"
+    />
+    <h2>{{ similar_book.title }}</h2>
+    <div class="price">
+      {% if similar_book.discount_percent > 0 %}
+      <p><s>${{ similar_book.price|floatformat:2 }}</s></p>
+      <br /><br />
+      <p>
+        <span class="highlight-price"
+          >${{ similar_book.discounted_price|floatformat:2 }}</span
+        >
+        <span class="discount-percent"
+          >{{ similar_book.discount_percent|floatformat:2 }}% off</span
+        >
+      </p>
+      {% else %}
+      <p>
+        <span class="highlight-price"
+          >${{ similar_book.price|floatformat:2 }}</span
+        >
+      </p>
+      {% endif %}
+    </div>
+  </a>
+  {% endfor %}
 </div>
 
+{% endblock %} {% block extra_js %}
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const stars = document.querySelectorAll(".stars label.star");
-    let selectedRating = 0; // Store the selected rating
+  document.addEventListener("DOMContentLoaded", () => {
+      const stars = document.querySelectorAll(".stars label.star");
+      let selectedRating = 0; // Store the selected rating
 
-    stars.forEach((star, index) => {
-        // Handle mouseover to highlight up to the current star
-        star.addEventListener("mouseover", () => {
-            stars.forEach((s, i) => {
-                s.style.color = i <= index ? "#f5b301" : "#ccc"; // Highlight up to hovered star
-            });
-        });
+      stars.forEach((star, index) => {
+          // Handle mouseover to highlight up to the current star
+          star.addEventListener("mouseover", () => {
+              stars.forEach((s, i) => {
+                  s.style.color = i <= index ? "#f5b301" : "#ccc"; // Highlight up to hovered star
+              });
+          });
 
-        // Reset highlight when mouse leaves the stars area
-        star.addEventListener("mouseout", () => {
-            stars.forEach((s, i) => {
-                s.style.color = i < selectedRating ? "#f5b301" : "#ccc"; // Restore highlight up to selectedRating
-            });
-        });
+          // Reset highlight when mouse leaves the stars area
+          star.addEventListener("mouseout", () => {
+              stars.forEach((s, i) => {
+                  s.style.color = i < selectedRating ? "#f5b301" : "#ccc"; // Restore highlight up to selectedRating
+              });
+          });
 
-        // Handle click to set the selected rating and keep it highlighted
-        star.addEventListener("click", () => {
-            selectedRating = index + 1; // Update selectedRating to current star
-            stars.forEach((s, i) => {
-                s.style.color = i < selectedRating ? "#f5b301" : "#ccc"; // Set persistent color up to selected rating
+          // Handle click to set the selected rating and keep it highlighted
+          star.addEventListener("click", () => {
+              selectedRating = index + 1; // Update selectedRating to current star
+              stars.forEach((s, i) => {
+                  s.style.color = i < selectedRating ? "#f5b301" : "#ccc"; // Set persistent color up to selected rating
+              });
+          });
+      });
+  });
+  function confirmDelete(reviewId) {
+      Swal.fire({
+          title: 'Are you sure?',
+          text: 'This review will be permanently deleted.',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes, delete it!',
+          cancelButtonText: 'No, keep it',
+          reverseButtons: true
+      }).then((result) => {
+          if (result.isConfirmed) {
+              // Submit the specific form based on the review ID
+              document.querySelector(`form[action='/delete_review/${reviewId}/']`).submit();
+          } else {
+              // If canceled, do nothing
+              return false;
+          }
+      });
+  }
+  function validateReviewForm() {
+      // Get all radio buttons with the name "rating"
+      const ratingRadios = document.querySelectorAll('input[name="rating"]');
+      let ratingSelected = false;
+
+      // Check if any radio button is checked
+      for (let i = 0; i < ratingRadios.length; i++) {
+          if (ratingRadios[i].checked) {
+              ratingSelected = true;
+              break;
+          }
+      }
+
+      // If no rating is selected, show an alert and prevent form submission
+      if (!ratingSelected) {
+          Swal.fire({
+              icon: 'error',
+              title: 'Please select a rating',
+              text: 'You need to select a rating before submitting your review.',
+          });
+          return false; // Prevent form submission
+      }
+
+      // If a rating is selected, allow form submission
+      return true;
+  }
+
+  function addToCart(bookId) {
+            var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
+
+            if (!isAuthenticated) {
+                // Trigger SweetAlert for non-authenticated users
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Not Logged In',
+                    text: 'Please log in to add items to your cart.',
+                });
+                return;  // Stop execution if not authenticated
+            }
+
+            // Proceed with adding to cart for authenticated users
+            $.ajax({
+                url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function(response) {
+                    // Trigger SweetAlert for successful addition
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Item added to cart.',
+                        confirmButtonText: 'OK'
+                    });
+                    // Update the cart count dynamically
+                    $(".cart-count").text('(' + response.cart_item_count + ')');
+                },
+                error: function(xhr) {
+                    // Simply ignore errors, allowing multiple additions
+                    // Optionally, you could log the error to the console
+                    console.error('Error adding item to cart:', xhr);
+                }
             });
-        });
-    });
-});
-function confirmDelete(reviewId) {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: 'This review will be permanently deleted.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, keep it',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Submit the specific form based on the review ID
-            document.querySelector(`form[action='/delete_review/${reviewId}/']`).submit();
-        } else {
-            // If canceled, do nothing
-            return false;
         }
-    });
-}
-function validateReviewForm() {
-    // Get all radio buttons with the name "rating"
-    const ratingRadios = document.querySelectorAll('input[name="rating"]');
-    let ratingSelected = false;
+  function toggleWishlist(bookId) {
+      var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+      if (!isAuthenticated) {
+          Swal.fire({
+              icon: 'warning',
+              title: 'Not Logged In',
+              text: 'Please log in to add items to your wishlist.',
+          });
+          return;
+      }
 
-    // Check if any radio button is checked
-    for (let i = 0; i < ratingRadios.length; i++) {
-        if (ratingRadios[i].checked) {
-            ratingSelected = true;
-            break;
-        }
-    }
-
-    // If no rating is selected, show an alert and prevent form submission
-    if (!ratingSelected) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Please select a rating',
-            text: 'You need to select a rating before submitting your review.',
-        });
-        return false; // Prevent form submission
-    }
-
-    // If a rating is selected, allow form submission
-    return true;
-}
-
+      $.ajax({
+          url: "{% url 'toggle_wishlist' 0 %}".replace('0', bookId),
+          method: "POST",
+          headers: { "X-CSRFToken": "{{ csrf_token }}" },
+          success: function(response) {
+              const button = document.querySelector(`.wishlist[data-id="${bookId}"]`);
+              if (response.status === "added") {
+                  button.classList.add("wishlisted");
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Added to Wishlist!',
+                      text: 'The book has been added to your wishlist.',
+                      confirmButtonText: 'OK'
+                  });
+              } else if (response.status === "removed") {
+                  button.classList.remove("wishlisted");
+                  Swal.fire({
+                      icon: 'info',
+                      title: 'Removed from Wishlist',
+                      text: 'The book has been removed from your wishlist.',
+                      confirmButtonText: 'OK'
+                  });
+              }
+          },
+          error: function(xhr) {
+              console.error("Error toggling wishlist:", xhr);
+              Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Something went wrong. Please try again.',
+              });
+          }
+      });
+  }
 </script>
 {% endblock %}

@@ -6,7 +6,9 @@ category }}{% endblock %} {% block extra_css %}
 <div class="books-container">
   {% if books %} {% for book in books %}
   <div class="book-card">
-    <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+    <a href="{% url 'product_detail' book.pk %}">
+      <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+    </a>
     <div class="book-info">
       <h3>{{ book.title }}</h3>
 

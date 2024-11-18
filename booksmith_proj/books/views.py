@@ -11,9 +11,16 @@ from django.contrib.auth.decorators import login_required
 def landing_page(request):
     books = list(Book.objects.all())
     featured_book = random.choice(books) if books else None
-    recommended_books = Book.objects.filter(recommended=True).exclude(
-        id__in=request.user.profile.bought_books.values('id')
-    ).order_by('?')[:4]
+
+    if request.user.is_authenticated:
+        # Exclude books that the user has already bought
+        recommended_books = Book.objects.filter(recommended=True).exclude(
+            id__in=request.user.profile.bought_books.values('id')
+        ).order_by('?')[:4]
+    else:
+        # For unauthenticated users, recommend random books
+        recommended_books = Book.objects.filter(recommended=True).order_by('?')[:4]
+
     best_sellers = Book.objects.filter(bestseller=True).order_by('?')  # Fetch best sellers
 
     # Fetch distinct category names
@@ -33,6 +40,7 @@ def landing_page(request):
     }
 
     return render(request, 'landing_page.html', context)
+
 
 
 def search_books(request):

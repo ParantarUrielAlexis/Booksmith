@@ -186,7 +186,7 @@ def checkout(request):
     return redirect('login')
 
 
-
+@login_required
 def profile_view(request):
     user = request.user
     # Combined books for display

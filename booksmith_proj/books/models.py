@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 
 class Book(models.Model):
     title = models.CharField(max_length=100)
-    category = models.CharField(max_length=30, default=None, blank=False)
-    author = models.CharField(max_length=50)
     description = models.CharField(max_length=500, default=None, blank=True)
     price = models.FloatField(null=True, blank=True, validators=[MinValueValidator(0)])
     discount_percent = models.FloatField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
@@ -16,6 +14,8 @@ class Book(models.Model):
     recommended = models.BooleanField(default=False)
     pdf_file = models.FileField(upload_to='pdf_files/', null=True, blank=True)  # Store PDF files
 
+    author = models.ForeignKey('Author', on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True)
 
     def discounted_price(self):
         if self.price is None:
@@ -25,6 +25,18 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+class Author(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
+class Category(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
 
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='reviews')

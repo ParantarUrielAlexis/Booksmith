@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Book, Review
+from .models import Book, Review, Category, Author
 from accounts.models import CartItem, Profile
 from django.db.models import Q
 from .forms import ReviewForm
@@ -7,12 +7,17 @@ import random
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 
+
 def landing_page(request):
     books = list(Book.objects.all())
     featured_book = random.choice(books) if books else None
-    recommended_books = Book.objects.filter(recommended=True).order_by('?')[:4]
+    recommended_books = Book.objects.filter(recommended=True).exclude(
+        id__in=request.user.profile.bought_books.values('id')
+    ).order_by('?')[:4]
     best_sellers = Book.objects.filter(bestseller=True).order_by('?')  # Fetch best sellers
-    categories = Book.objects.values_list('category', flat=True).distinct()
+
+    # Fetch distinct category names
+    categories = Category.objects.values_list('name', flat=True).distinct()
 
     cart_item_count = 0
     if request.user.is_authenticated:
@@ -29,9 +34,12 @@ def landing_page(request):
 
     return render(request, 'landing_page.html', context)
 
+
 def search_books(request):
     query = request.GET.get('q')
-    search_results = Book.objects.filter(Q(title__icontains=query) | Q(author__icontains=query)) if query else []
+    search_results = Book.objects.filter(
+        Q(title__icontains=query) | Q(author__name__icontains=query)
+    ) if query else []
     return render(request, 'search_results.html', {'search_results': search_results, 'query': query})
 
 def product_detail(request, book_id):
@@ -84,8 +92,14 @@ def delete_review(request, review_id):
     # If the user is not the owner, redirect to product detail
     return redirect('product_detail', book_id=review.book.id)
 
-def category_books(request, category):
-    books = Book.objects.filter(category=category)  # Filter books by the category
+def category_books(request, category_name):
+    # Get the category object using category_name, or return 404 if not found
+    category = get_object_or_404(Category, name=category_name)
+
+    # Filter books by the category
+    books = Book.objects.filter(category=category)
+
+    # Render the books for the given category
     return render(request, 'category_books.html', {'books': books, 'category': category})
 
 

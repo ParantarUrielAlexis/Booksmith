@@ -17,6 +17,9 @@
     <div class="content">
       <h1 class="name">{{ book.title }}</h1>
 
+      <!-- Display the author -->
+      <h3 class="author">by {{ book.author.name }}</h3>
+
       <!-- Price logic with discount -->
       {% if book.discount_percent > 0 %}
       <div class="price">
@@ -50,13 +53,15 @@
         >
           <i class="fas fa-heart"></i> Wishlist
         </button>
-        {% endif %} {% endif %}
+        {% endif %}
+        {% endif %}
       </div>
 
       <div class="description">{{ book.description }}</div>
     </div>
   </div>
 </div>
+
 
 <div class="title-review">
   <h1>User Reviews</h1>

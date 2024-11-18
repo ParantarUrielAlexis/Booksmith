@@ -324,6 +324,14 @@
   font-size: 22px;
 }
 
+.author {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
 .reviews {
   margin: 20px auto;
   padding: 15px;

@@ -1,8 +1,10 @@
 # myapp/context_processors.py
-from .models import Book
+from .models import Book, Category
 
 def categories_processor(request):
-    categories = Book.objects.values_list('category', flat=True).distinct()
+    # Fetch distinct category names from the Category model
+    categories = Category.objects.values_list('name', flat=True).distinct()
+
     return {
         'categories': categories
     }

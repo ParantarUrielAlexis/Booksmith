@@ -72,12 +72,6 @@
   - Reply feature allows for engaging discussions about books.
   - Dynamic display of profile images in the review section based on who posted the review.
 
-- **Purchase System**:
-
-  - Secure payment integration with Stripe for accessing premium books.
-  - Payment history and invoice tracking available for users.
-  - Streamlined checkout process for a smooth purchasing experience.
-
 - **Cart Management**:
 
   - Easily add, update, or remove books from the shopping cart.

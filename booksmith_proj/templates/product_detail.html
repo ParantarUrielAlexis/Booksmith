@@ -132,27 +132,32 @@
   {% endfor %}
 </div>
 {% if user.is_authenticated %}
-<div class="title-review">
-  <h1>Rate this book</h1>
-</div>
-<form method="post" class="review-form" onsubmit="return validateReviewForm()">
-  {% csrf_token %}
-  <div class="rating">
-    <div class="stars">
-      {% for i in "12345" %}
-      <!-- comment for formatting -->
-      <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" {% if form.rating.value|stringformat:"i" == i %}checked{%endif %} />
-      <!-- comment for formatting -->
-      <label for="star{{ i }}" title="{{ i }} star" class="star">&#9733;</label>
-      {% endfor %}
+  {% if user_has_bought %}
+    <div class="title-review">
+      <h1>Rate this book</h1>
     </div>
-  </div>
-  <div class="comment">{{ form.comment }}</div>
-  <button type="submit">Submit Review</button>
-</form>
+    <form method="post" class="review-form" onsubmit="return validateReviewForm()">
+      {% csrf_token %}
+      <div class="rating">
+        <div class="stars">
+          {% for i in "12345" %}
+          <!-- comment for formatting -->
+          <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" {% if form.rating.value|stringformat:"i" == i %}checked{%endif %} />
+          <!-- comment for formatting -->
+          <label for="star{{ i }}" title="{{ i }} star" class="star">&#9733;</label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="comment">{{ form.comment }}</div>
+      <button type="submit">Submit Review</button>
+    </form>
+  {% else %}
+    <p class="alert alert-info">Only users who have purchased this book can leave a review.</p>
+  {% endif %}
 {% else %}
-<p>Please <a href="{% url 'login' %}">log in</a> to write a review.</p>
+  <p>Please <a href="{% url 'login' %}">log in</a> to write a review.</p>
 {% endif %}
+
 
 <div class="title">Similar Products</div>
 <div class="listProduct">

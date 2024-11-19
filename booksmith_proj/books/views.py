@@ -50,6 +50,8 @@ def search_books(request):
     ) if query else []
     return render(request, 'search_results.html', {'search_results': search_results, 'query': query})
 
+from django.contrib import messages
+
 def product_detail(request, book_id):
     # Fetch the book based on the provided book ID
     cart_item_count = 0
@@ -62,27 +64,26 @@ def product_detail(request, book_id):
 
     form = ReviewForm()
 
+    # Check if the user has purchased the book
+    user_has_bought = request.user.is_authenticated and book in request.user.profile.bought_books.all()
+
     # Handle review form submission
     if request.method == "POST":
         if request.user.is_authenticated:
-            form = ReviewForm(request.POST)
-            if form.is_valid():
-                review = form.save(commit=False)
-                review.book = book
-                review.user = request.user
-                review.save()
-                return redirect("product_detail", book_id=book.id)
+            if user_has_bought:
+                form = ReviewForm(request.POST)
+                if form.is_valid():
+                    review = form.save(commit=False)
+                    review.book = book
+                    review.user = request.user
+                    review.save()
+                    return redirect("product_detail", book_id=book.id)
+            else:
+                messages.error(request, "You can only review books you have purchased.")
         else:
             return redirect("login")  # Redirect unauthenticated users to login page
     else:
         form = ReviewForm()
-
-    average_rating = None
-    if reviews.exists():
-        total_rating = sum([review.rating for review in reviews if review.rating is not None])
-        rating_count = sum([1 for review in reviews if review.rating is not None])
-        if rating_count > 0:
-            average_rating = round(total_rating / rating_count, 1)
 
     # Pass book, reviews, and similar_books to the template
     context = {
@@ -91,7 +92,7 @@ def product_detail(request, book_id):
         'form': form,
         'similar_books': similar_books,
         'cart_item_count': cart_item_count,
-        'average_rating': average_rating,
+        'user_has_bought': user_has_bought,
     }
     return render(request, 'product_detail.html', context)
 

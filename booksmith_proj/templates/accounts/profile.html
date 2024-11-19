@@ -47,6 +47,16 @@
       <button class="btn purchased-btn" disabled>
         <i class="fas fa-check"></i> Purchased
       </button>
+      <div class="hover-buttons">
+        <a href="{% url 'read_book' book.id %}" class="btn hover-btn read-btn"
+          >Read</a
+        >
+        <a
+          href="{% url 'product_detail' book.id %}"
+          class="btn hover-btn review-btn"
+          >Review</a
+        >
+      </div>
     </div>
     {% endfor %} {% else %}
     <p>No books purchased yet.</p>

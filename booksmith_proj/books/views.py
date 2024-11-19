@@ -77,6 +77,13 @@ def product_detail(request, book_id):
     else:
         form = ReviewForm()
 
+    average_rating = None
+    if reviews.exists():
+        total_rating = sum([review.rating for review in reviews if review.rating is not None])
+        rating_count = sum([1 for review in reviews if review.rating is not None])
+        if rating_count > 0:
+            average_rating = round(total_rating / rating_count, 1)
+
     # Pass book, reviews, and similar_books to the template
     context = {
         'book': book,
@@ -84,6 +91,7 @@ def product_detail(request, book_id):
         'form': form,
         'similar_books': similar_books,
         'cart_item_count': cart_item_count,
+        'average_rating': average_rating,
     }
     return render(request, 'product_detail.html', context)
 

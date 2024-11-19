@@ -20,6 +20,22 @@
       <!-- Display the author -->
       <h3 class="author">by {{ book.author.name }}</h3>
 
+      <div class="average-rating">
+        {% if average_rating > 0 %}
+        <div class="stars">
+          {% for i in "12345" %}
+          <span
+            class="star {% if average_rating >= i|add:0 %}highlighted{% endif %}"
+            >&#9733;</span
+          >
+          {% endfor %}
+        </div>
+        <small>({{ average_rating|floatformat:1 }} out of 5 stars)</small>
+        {% else %}
+        <p>No ratings yet.</p>
+        {% endif %}
+      </div>
+
       <!-- Price logic with discount -->
       {% if book.discount_percent > 0 %}
       <div class="price">
@@ -71,7 +87,7 @@
   <div class="review-item">
     <div class="review-header">
       <img
-        class="review-profile"
+        class="review-profile profile-picture"
         src="{% if review.user.profile.image %}{{ review.user.profile.image.url }}{% else %}{% static 'images/default_avatar.png' %}{% endif %}"
         alt="{{ review.user.username }}'s profile picture"
         class="profile-picture"

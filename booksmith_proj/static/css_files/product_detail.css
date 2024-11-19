@@ -412,7 +412,7 @@
   align-items: center; /* Vertically aligns the stars and username */
 }
 .reviews .review-header .delete-btn {
-  margin-left: 1220px;
+  margin-left: 1170px;
 }
 
 .reviews .review-header p {
@@ -487,10 +487,11 @@ h3 {
   justify-content: left;
   text-align: left;
 }
-.reviews .review-profile {
-  position: relative;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
+.review-profile {
+  object-fit: cover;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%; /* This makes the image circular */
   margin-right: 10px;
 }
+

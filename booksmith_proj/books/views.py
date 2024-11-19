@@ -64,6 +64,12 @@ def product_detail(request, book_id):
 
     form = ReviewForm()
 
+    average_rating = None
+    if reviews.exists():
+        total_rating = sum([review.rating for review in reviews if review.rating is not None])
+        rating_count = sum([1 for review in reviews if review.rating is not None])
+        if rating_count > 0:
+            average_rating = round(total_rating / rating_count, 1)
     # Check if the user has purchased the book
     user_has_bought = request.user.is_authenticated and book in request.user.profile.bought_books.all()
 
@@ -92,6 +98,7 @@ def product_detail(request, book_id):
         'form': form,
         'similar_books': similar_books,
         'cart_item_count': cart_item_count,
+        'average_rating': average_rating,
         'user_has_bought': user_has_bought,
     }
     return render(request, 'product_detail.html', context)

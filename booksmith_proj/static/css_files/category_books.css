@@ -1,9 +1,13 @@
 .books-container {
+  width: 100%;
+  max-width: 1500px;
   display: flex;
-  justify-content: center;
+  justify-content: center; /* Centers items horizontally */
+  align-items: center; /* Centers items vertically */
   gap: 50px;
   flex-wrap: wrap;
-  margin-top: 20px;
+  margin: 20px auto; /* Centers the container horizontally */
+  height: 100%; /* Ensure the height aligns with the parent container */
 }
 
 .book-card {

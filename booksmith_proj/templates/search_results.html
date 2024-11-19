@@ -2,7 +2,7 @@
 {%endblock %} {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css_files/search_results.css' %}" />
 {% endblock %} {% block content %}
-<h2>Search Results for "{{ query }}"</h2>
+<br /><br />
 <div class="books-container">
   {% if search_results %} {% for book in search_results %}
   <div class="book-card">
@@ -22,11 +22,57 @@
       {% endif %}
 
       <br /><br />
-      <button>Add To Cart</button>
+      <button onclick="addToCart({{ book.id }})" class="btn add-to-cart-btn">
+        Add To Cart
+      </button>
     </div>
   </div>
   {% endfor %} {% else %}
   <p>No books found matching your search.</p>
   {% endif %}
 </div>
-{% endblock %}
+{% endblock %} {% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+  function addToCart(bookId) {
+            var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
+
+            if (!isAuthenticated) {
+                // Trigger SweetAlert for non-authenticated users
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Not Logged In',
+                    text: 'Please log in to add items to your cart.',
+                });
+                return;  // Stop execution if not authenticated
+            }
+
+            // Proceed with adding to cart for authenticated users
+            $.ajax({
+                url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                success: function(response) {
+                    // Trigger SweetAlert for successful addition
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Item added to cart.',
+                        confirmButtonText: 'OK'
+                    });
+                    // Update the cart count dynamically
+                    $(".cart-count").text('(' + response.cart_item_count + ')');
+                },
+                error: function(xhr) {
+                    // Simply ignore errors, allowing multiple additions
+                    // Optionally, you could log the error to the console
+                    console.error('Error adding item to cart:', xhr);
+                }
+            });
+        }
+</script>
+{%endblock%}

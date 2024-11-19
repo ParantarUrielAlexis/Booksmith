@@ -6,6 +6,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from .views import profile_view, update_profile
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+
 
 urlpatterns = [
     path('signup/', views.signup,name='signup'),

@@ -89,10 +89,11 @@
             </button>
             <div class="profile-dropdown-content">
               <a href="{% url 'profile_view' %}">Profile</a>
-              <form method="POST" action="{% url 'logout' %}">
+              <a href="{% url 'logout' %}">Log-out</a>
+              <!-- <form method="POST" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="logout-btn">Log Out</button>
-              </form>
+              </form> -->
             </div>
           </div>
           {% else %}

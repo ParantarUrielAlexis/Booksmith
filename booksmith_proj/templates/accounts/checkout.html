@@ -2,8 +2,6 @@
 {%endblock%} {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css_files/checkout.css' %}" />
 {% endblock %} {% block content %}
-
-<h1>Checkout</h1>
 <div class="checkout-container">
   <div class="left-side">
     <div class="payment-method">
@@ -71,7 +69,11 @@
     <form action="{% url 'confirm_payment' %}" method="POST">
       {% csrf_token %}
       <!-- Payment method, user details, and other inputs -->
-      <button class="btn confirm-payment-btn" type="submit" onclick="validatePayment(event)">
+      <button
+        class="btn confirm-payment-btn"
+        type="submit"
+        onclick="validatePayment(event)"
+      >
         Confirm Payment
       </button>
     </form>
@@ -213,117 +215,127 @@
     );
   }
   function validatePayment(event) {
-  let isValid = true; // Flag to check overall validity
+    let isValid = true; // Flag to check overall validity
 
-  // Validate the input fields in the visible payment details form
-  const visibleForm = $('.payment-details:visible, .payment-details2:visible');
-  const inputs = visibleForm.find('input[type="text"]');
+    // Validate the input fields in the visible payment details form
+    const visibleForm = $(
+      ".payment-details:visible, .payment-details2:visible"
+    );
+    const inputs = visibleForm.find('input[type="text"]');
 
-  // Check if all required fields are filled
-  inputs.each(function () {
-    if ($(this).val().trim() === '') {
-      isValid = false;
-      Swal.fire({
-        icon: 'warning',
-        title: 'Incomplete Payment Details',
-        text: 'Please fill out all required fields in the payment form.',
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#d33',
-      });
-      event.preventDefault();
-      return false; // Exit the loop if any field is empty
-    }
-  });
-
-  // If any field is empty, stop further validation
-  if (!isValid) {
-    return;
-  }
-
-  // Get the selected payment method
-  const selectedPayment = $('input[name="payment"]:checked').val();
-
-  // Additional validation for GCash specific fields
-  if (selectedPayment === 'gcash') {
-    const gcashAccountName = visibleForm.find('input[name="card_name"]').val().trim();
-    const gcashNumber = visibleForm.find('input[name="card_number"]').val().trim();
-
-    // Validate that the account name does not contain any numbers
-    const nameContainsNumbers = /\d/.test(gcashAccountName);
-    if (nameContainsNumbers) {
-      isValid = false;
-      Swal.fire({
-        icon: 'warning',
-        title: 'Invalid Account Name',
-        text: 'The GCash account name should not contain numbers.',
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#d33',
-      });
-      event.preventDefault();
-      return; // Stop further validation if the account name is invalid
-    }
-
-    // Validate that the GCash number is exactly 11 digits
-    if (gcashNumber.length !== 11 || !/^\d+$/.test(gcashNumber)) {
-      isValid = false;
-      Swal.fire({
-        icon: 'warning',
-        title: 'Invalid GCash Number',
-        text: 'Please Input a Valid GCash Number.',
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#d33',
-      });
-      event.preventDefault();
-      return; // Stop further validation if the GCash number is invalid
-    }
-  }
-
-  // Additional validation for PayPal-specific fields
-  if (selectedPayment === 'paypal') {
-    const paypalEmail = visibleForm.find('input[name="paypal_email"]').val().trim();
-
-    // Validate that the PayPal email is in a correct email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(paypalEmail)) {
-      isValid = false;
-      Swal.fire({
-        icon: 'warning',
-        title: 'Invalid PayPal Email',
-        text: 'Please provide a valid PayPal email address.',
-        confirmButtonText: 'OK',
-        confirmButtonColor: '#d33',
-      });
-      event.preventDefault();
-      return; // Stop further validation if the PayPal email is invalid
-    }
-  }
-
-  // Check if the terms checkbox is checked
-  const termsCheckbox = $("#terms-checkbox2");
-
-  if (!termsCheckbox.is(":checked")) {
-    isValid = false;
-    Swal.fire({
-      icon: 'warning',
-      title: 'Terms Agreement Required',
-      text: 'Please agree to the terms and services before confirming payment.',
-      confirmButtonText: 'OK',
-      confirmButtonColor: '#3085d6',
+    // Check if all required fields are filled
+    inputs.each(function () {
+      if ($(this).val().trim() === "") {
+        isValid = false;
+        Swal.fire({
+          icon: "warning",
+          title: "Incomplete Payment Details",
+          text: "Please fill out all required fields in the payment form.",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#d33",
+        });
+        event.preventDefault();
+        return false; // Exit the loop if any field is empty
+      }
     });
-    event.preventDefault();
-    return; // Stop submission if terms are not agreed
+
+    // If any field is empty, stop further validation
+    if (!isValid) {
+      return;
+    }
+
+    // Get the selected payment method
+    const selectedPayment = $('input[name="payment"]:checked').val();
+
+    // Additional validation for GCash specific fields
+    if (selectedPayment === "gcash") {
+      const gcashAccountName = visibleForm
+        .find('input[name="card_name"]')
+        .val()
+        .trim();
+      const gcashNumber = visibleForm
+        .find('input[name="card_number"]')
+        .val()
+        .trim();
+
+      // Validate that the account name does not contain any numbers
+      const nameContainsNumbers = /\d/.test(gcashAccountName);
+      if (nameContainsNumbers) {
+        isValid = false;
+        Swal.fire({
+          icon: "warning",
+          title: "Invalid Account Name",
+          text: "The GCash account name should not contain numbers.",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#d33",
+        });
+        event.preventDefault();
+        return; // Stop further validation if the account name is invalid
+      }
+
+      // Validate that the GCash number is exactly 11 digits
+      if (gcashNumber.length !== 11 || !/^\d+$/.test(gcashNumber)) {
+        isValid = false;
+        Swal.fire({
+          icon: "warning",
+          title: "Invalid GCash Number",
+          text: "Please Input a Valid GCash Number.",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#d33",
+        });
+        event.preventDefault();
+        return; // Stop further validation if the GCash number is invalid
+      }
+    }
+
+    // Additional validation for PayPal-specific fields
+    if (selectedPayment === "paypal") {
+      const paypalEmail = visibleForm
+        .find('input[name="paypal_email"]')
+        .val()
+        .trim();
+
+      // Validate that the PayPal email is in a correct email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(paypalEmail)) {
+        isValid = false;
+        Swal.fire({
+          icon: "warning",
+          title: "Invalid PayPal Email",
+          text: "Please provide a valid PayPal email address.",
+          confirmButtonText: "OK",
+          confirmButtonColor: "#d33",
+        });
+        event.preventDefault();
+        return; // Stop further validation if the PayPal email is invalid
+      }
+    }
+
+    // Check if the terms checkbox is checked
+    const termsCheckbox = $("#terms-checkbox2");
+
+    if (!termsCheckbox.is(":checked")) {
+      isValid = false;
+      Swal.fire({
+        icon: "warning",
+        title: "Terms Agreement Required",
+        text: "Please agree to the terms and services before confirming payment.",
+        confirmButtonText: "OK",
+        confirmButtonColor: "#3085d6",
+      });
+      event.preventDefault();
+      return; // Stop submission if terms are not agreed
+    }
+
+    // If validation passes, allow the form to be submitted
+    if (!isValid) {
+      event.preventDefault();
+    }
   }
 
-  // If validation passes, allow the form to be submitted
-  if (!isValid) {
-    event.preventDefault();
-  }
-}
-
-// Attach validatePayment function to the form submission event
-$(document).ready(function () {
-  $('.confirm-payment-btn').on('click', validatePayment);
-});
-
+  // Attach validatePayment function to the form submission event
+  $(document).ready(function () {
+    $(".confirm-payment-btn").on("click", validatePayment);
+  });
 </script>
 {% endblock %}

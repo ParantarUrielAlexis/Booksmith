@@ -225,7 +225,7 @@
   margin-top: 30px;
   padding: 0 20px;
   justify-items: center; /* Centers the items horizontally */
-  align-items: center; /* Centers the items vertically */
+
   max-width: 1200px; /* Optional: Limit the maximum width of the grid */
   margin-left: auto; /* Centers the grid container */
   margin-right: auto; /* Centers the grid container */
@@ -461,19 +461,7 @@
   color: #f5b301; /* Highlighted color for stars (yellow or gold) */
 }
 
-button[type="submit"] {
-  background-color: #007bff; /* Bootstrap primary color */
-  color: #fff; /* White text */
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer;
-  transition: background-color 0.3s; /* Smooth transition for hover effect */
-}
-
-button[type="submit"]:hover {
-  background-color: #0056b3; /* Darker blue on hover */
-}
+/*  */
 
 a {
   color: #007bff; /* Link color */
@@ -494,4 +482,3 @@ h3 {
   border-radius: 50%; /* This makes the image circular */
   margin-right: 10px;
 }
-

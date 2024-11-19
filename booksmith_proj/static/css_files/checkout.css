@@ -1,261 +1,282 @@
-html, body{
-    height: 100%;
-    margin: 0;
-}
-body{
-    display: flex;
-    flex-direction: column;
-}
 .checkout-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 h1 {
-    font-size: 32px;
-    font-weight: bold;
-    color: #333;
-    text-align: center;
-    margin-bottom: 30px;
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 /* Payment Section */
 
-
-.payment-method, .payment-details {
-    flex: 1;
-    margin-right: 20px;
-    margin-top: 30px;
+.payment-method,
+.payment-details {
+  flex: 1;
+  margin-right: 20px;
+  margin-top: 30px;
 }
-.payment-method, .payment-details2 {
-    margin-top: 30px;
-    flex: 1;
-    margin-right: 20px;
+.payment-method,
+.payment-details2 {
+  margin-top: 30px;
+  flex: 1;
+  margin-right: 20px;
 }
-
 
 .payment-method {
-    margin-right: 40px;
+  margin-right: 40px;
 }
 
-.gcash-logo{
-    width: 45px;
-    height: 35px;
+.gcash-logo {
+  width: 45px;
+  height: 35px;
 }
-.payment-method h3, .payment-details h3 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 20px;
+.payment-method h3,
+.payment-details h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
-.payment-method h3, .payment-details2 h3 {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 20px;
+.payment-method h3,
+.payment-details2 h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
 
 .payment-method form {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .payment-method label {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 .payment-method input[type="radio"] {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .payment-logo {
-    width: 100px;
-    height: auto;
+  width: 100px;
+  height: auto;
 }
 
 /* Payment Details */
 .payment-details form input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    font-size: 24px;
-    margin-bottom: 15px;
-    margin-top: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  width: 100%;
+  padding: 10px;
+  font-size: 24px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 .payment-details2 form input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .card-info {
-    display: flex;
-    gap: 15px;
+  display: flex;
+  gap: 15px;
 }
 
 .card-info input {
-    width: calc(50% - 10px);
+  width: calc(50% - 10px);
 }
 
 .confirm-link {
-    font-weight: bold;
-    color: #007bff;
-    cursor: pointer;
+  font-weight: bold;
+  color: #007bff;
+  cursor: pointer;
 }
 
 .confirm-link:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 /* Order Summary */
 .order-summary {
-    padding: 20px;
-    margin-bottom: 40px;
+  padding: 20px;
+  margin-bottom: 40px;
 }
 
 .summary-item {
-    display: flex;
-    justify-content: space-between;
-    font-size: 24px;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 17px;
+  font-weight: 550;
+  margin-bottom: 10px;
 }
 .summary-item ul.price-list {
-    list-style-type: none;  
-    margin-bottom: 20px;
-    padding: 0;             
-    margin: 0;              
+  list-style-type: none;
+  margin-bottom: 20px;
+  padding: 0;
+  margin: 0;
 }
 .summary-item ul.price-list li {
-    margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
-.right-side{
-    display: flex;
-    flex-direction: column;
-    width: 40%;
+.right-side {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
 }
 .cart-summary {
-    margin-top: 100px;
-    padding: 20px;
-    font-size: 20px;
+  padding: 20px;
+  font-size: 20px;
 }
 
-
 .cart-summary ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 20px;
+  margin: 0; /* Ensure no extra margin or padding */
+  max-height: 500px; /* Set a maximum height for the scrollable area */
+  overflow-y: auto; /* Enable vertical scrolling */
+
+  background-color: #f9f9f9; /* Optional: Background for better visibility */
+}
+
+.cart-summary ul::-webkit-scrollbar {
+  width: 8px; /* Adjust scrollbar width */
+}
+
+.cart-summary ul::-webkit-scrollbar-track {
+  background: #c9c8c8; /* Scrollbar track color */
+}
+
+.cart-summary ul::-webkit-scrollbar-thumb {
+  background: #9e9e9e; /* Scrollbar thumb color */
+  border-radius: 4px; /* Rounded corners */
+}
+
+.cart-summary ul::-webkit-scrollbar-thumb:hover {
+  background: #8b8b8b; /* Hover color for scrollbar thumb */
 }
 
 .cart-summary-item {
-    display: flex;
-    align-items: flex-start; /* Align content to the top */
-    margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start; /* Align content to the top */
+  margin-bottom: 20px;
 }
 
 .cart-summary-image {
-    width: 70px;
-    height: 110px;
-    border-radius: 10px;
-    margin-right: 15px;
+  width: 120px;
+  height: 140px;
+  border-radius: 10px;
+  object-fit: cover;
+  object-position: center;
+  margin-right: 20px;
 }
 
 .cart-summary-details {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-.header-title{
-    font-size: 20px;
-    margin-bottom: 20px;
-    text-align: center;
-    padding: 5px;
-    background-color: rgb(208, 208, 208);
-}
-.cart-summary-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px; /* Add space between price and buttons */
+.header-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 5px;
+  background-color: #f4f4f9;
 }
 
-.edit-btn, .remove-btn {
-    background-color: #f1f1f1;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
+.cart-summary-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px; /* Add space between price and buttons */
+}
+
+.edit-btn,
+.remove-btn {
+  background-color: #f1f1f1;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .remove-btn {
-    background-color: #ff4d4d;
-    color: #fff;
+  background-color: #bd2000;
+  color: #fff;
 }
 
 .remove-btn:hover {
-    background-color: #ff1a1a;
+  background-color: #cf2300;
 }
 
 .edit-btn:hover {
-    background-color: #ddd;
+  background-color: #ddd;
 }
 
 /* Confirm Payment Button */
 .confirm-payment-btn {
-    display: block;
-    width: 100%;
-    
-    background-color: #ff4d4d;
-    color: #fff;
-    padding: 15px;
-    text-align: center;
-    font-size: 18px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    margin-top: 40px;
+  display: block;
+  width: 100%;
+
+  background-color: #bd2000;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+  font-size: 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  margin-top: 40px;
 }
 
 .confirm-payment-btn:hover {
-    background-color: #0056b3;
+  background-color: #cc2301;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-    .payment-section {
-        flex-direction: column;
-    }
+  .payment-section {
+    flex-direction: column;
+  }
 
-    .payment-method, .payment-details {
-        margin-right: 0;
-    }
+  .payment-method,
+  .payment-details {
+    margin-right: 0;
+  }
 
-    .card-info {
-        flex-direction: column;
-    }
+  .card-info {
+    flex-direction: column;
+  }
 
-    .cart-summary-item {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .cart-summary-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .cart-summary-image {
-        margin-bottom: 10px;
-    }
+  .cart-summary-image {
+    margin-bottom: 10px;
+  }
 }
-footer{
-    margin-top: 100px; 
-    background-color: #ff1a1a;
-    padding: 15px;
+footer {
+  margin-top: 100px;
+  background-color: #bd2000;
+  padding: 15px;
 }
-.quantity{
-    color: grey;
+.quantity {
+  color: grey;
 }

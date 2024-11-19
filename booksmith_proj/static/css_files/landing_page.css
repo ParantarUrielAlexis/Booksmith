@@ -390,7 +390,6 @@ svg {
   display: flex;
   justify-content: center; /* Center image horizontally */
   align-items: center; /* Center image vertically */
-
   position: relative;
   padding: 20px;
   box-sizing: border-box;
@@ -400,9 +399,9 @@ svg {
 
 .full-image {
   width: 100%;
-  height: 65vh;
   border-radius: 20px;
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
 }
 
 .discover-bar {

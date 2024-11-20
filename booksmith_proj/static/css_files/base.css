@@ -140,13 +140,7 @@
   gap: 10px;
   margin-right: 20px; /* Ensures it's aligned with the right edge */
 }
-.logout-btn {
-  margin-left: 100px;
-  padding: 5px 10px;
-  border: none;
-  cursor: pointer;
-  font-size: 10px;
-}
+
 .login-btn,
 .signup-btn {
   padding: 5px 10px;
@@ -299,6 +293,33 @@
 
 .profile-dropdown:hover .profile-dropdown-content {
   display: block;
+}
+
+.dropdown-link,
+.logout-btn {
+  display: block;
+  width: 100%; /* Full width for consistency */
+  text-align: left; /* Align text to the left */
+  font-size: 15px; /* Ensure font sizes match */
+  font-family: Arial, sans-serif; /* Ensure consistent font family */
+  padding: 10px 15px; /* Add padding for clickable area */
+  color: black; /* Text color */
+  background-color: transparent; /* No background initially */
+  border: none; /* Remove default button styles for the logout button */
+  text-decoration: none; /* Remove underline from links */
+  cursor: pointer; /* Pointer cursor for buttons */
+  transition: background-color 0.3s; /* Smooth hover effect */
+}
+
+.dropdown-link:hover,
+.logout-btn:hover {
+  background-color: #f4f4f9; /* Light gray background on hover */
+  border-radius: 4px; /* Smooth edges */
+}
+
+.logout-form {
+  margin: 0; /* Remove any default margin */
+  padding: 0; /* Remove any default padding */
 }
 
 /* Cart Icon */

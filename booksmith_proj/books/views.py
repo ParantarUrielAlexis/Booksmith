@@ -73,6 +73,8 @@ def product_detail(request, book_id):
     # Check if the user has purchased the book
     user_has_bought = request.user.is_authenticated and book in request.user.profile.bought_books.all()
 
+    # Check if the user has already reviewed the book
+    user_has_reviewed = request.user.is_authenticated and book.reviews.filter(user=request.user).exists()
     # Handle review form submission
     if request.method == "POST":
         if request.user.is_authenticated:
@@ -100,6 +102,7 @@ def product_detail(request, book_id):
         'cart_item_count': cart_item_count,
         'average_rating': average_rating,
         'user_has_bought': user_has_bought,
+        'user_has_reviewed': user_has_reviewed,
     }
     return render(request, 'product_detail.html', context)
 

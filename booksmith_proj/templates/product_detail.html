@@ -82,9 +82,9 @@
 <div class="title-review">
   <h1>User Reviews</h1>
 </div>
-<div class="reviews">
+<div class="reviews limited-height" id="reviews-container">
   {% for review in reviews %}
-  <div class="review-item">
+  <div class="review-item {% if forloop.counter > 3 %}hidden-review{% endif %}">
     <div class="review-header">
       <img
         class="review-profile profile-picture"
@@ -131,32 +131,39 @@
   <p>No reviews yet. Be the first to review this book!</p>
   {% endfor %}
 </div>
+<button id="toggle-reviews-btn" class="btn">Show More ▼</button>
+
 {% if user.is_authenticated %}
   {% if user_has_bought %}
-    <div class="title-review">
-      <h1>Rate this book</h1>
-    </div>
-    <form method="post" class="review-form" onsubmit="return validateReviewForm()">
-      {% csrf_token %}
-      <div class="rating">
-        <div class="stars">
-          {% for i in "12345" %}
-          <!-- comment for formatting -->
-          <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" {% if form.rating.value|stringformat:"i" == i %}checked{%endif %} />
-          <!-- comment for formatting -->
-          <label for="star{{ i }}" title="{{ i }} star" class="star">&#9733;</label>
-          {% endfor %}
-        </div>
+    {% if user_has_reviewed %}
+      <p class="alert alert-info">You have already reviewed this book.</p>
+    {% else %}
+      <div class="title-review">
+        <h1>Rate this book</h1>
       </div>
-      <div class="comment">{{ form.comment }}</div>
-      <button type="submit">Submit Review</button>
-    </form>
+      <form method="post" class="review-form" onsubmit="return validateReviewForm()">
+        {% csrf_token %}
+        <div class="rating">
+          <div class="stars">
+            {% for i in "12345" %}
+            <!-- comment for formatting -->
+            <input type="radio" name="rating" id="star{{ i }}" value="{{ i }}" {% if form.rating.value|stringformat:"i" == i %}checked{%endif %} />
+            <!-- comment for formatting -->
+            <label for="star{{ i }}" title="{{ i }} star" class="star">&#9733;</label>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="comment">{{ form.comment }}</div>
+        <button type="submit">Submit Review</button>
+      </form>
+    {% endif %}
   {% else %}
     <p class="alert alert-info">Only users who have purchased this book can leave a review.</p>
   {% endif %}
 {% else %}
   <p>Please <a href="{% url 'login' %}">log in</a> to write a review.</p>
 {% endif %}
+
 
 
 <div class="title">Similar Products</div>
@@ -197,6 +204,25 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+  document.addEventListener("DOMContentLoaded", () => {
+      const toggleButton = document.getElementById("toggle-reviews-btn");
+      const reviewsContainer = document.getElementById("reviews-container");
+
+      toggleButton.addEventListener("click", () => {
+          // Toggle the class to expand or collapse the review section
+          reviewsContainer.classList.toggle("expanded-height");
+          reviewsContainer.classList.toggle("limited-height");
+
+          // Change button text based on the state
+          if (reviewsContainer.classList.contains("expanded-height")) {
+              toggleButton.textContent = "Show Less ▲";
+          } else {
+              toggleButton.textContent = "Show More ▼";
+          }
+      });
+  });
+
+
   document.addEventListener("DOMContentLoaded", () => {
       const stars = document.querySelectorAll(".stars label.star");
       let selectedRating = 0; // Store the selected rating
@@ -266,9 +292,19 @@
           });
           return false; // Prevent form submission
       }
+      // If a rating is selected, show success alert and submit form
+      Swal.fire({
+          icon: 'success',
+          title: 'Review Submitted',
+          text: 'Thank you for your feedback!',
+          confirmButtonText: 'OK'
+      }).then(() => {
+          // Submit the form after user clicks 'OK'
+          document.querySelector('.review-form').submit();
+      });
 
       // If a rating is selected, allow form submission
-      return true;
+      return false;
   }
 
   function addToCart(bookId) {
@@ -354,5 +390,6 @@
           }
       });
   }
+
 </script>
 {% endblock %}

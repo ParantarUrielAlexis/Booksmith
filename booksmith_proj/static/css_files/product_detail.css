@@ -340,6 +340,8 @@
   background-color: #f9f9f9; /* Light background for contrast */
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  transition: max-height 0.5s ease;
+  overflow: hidden;
 }
 
 .review-item {
@@ -481,4 +483,15 @@ h3 {
   width: 30px;
   border-radius: 50%; /* This makes the image circular */
   margin-right: 10px;
+}
+
+/* Hide extra reviews initially */
+.hidden-review {
+  display: none;
+}
+.limited-height {
+  max-height: 400px; /* Adjust to your preferred default height */
+}
+.expanded-height {
+  max-height: none;
 }

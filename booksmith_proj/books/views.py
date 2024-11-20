@@ -13,10 +13,21 @@ def landing_page(request):
     featured_book = random.choice(books) if books else None
 
     if request.user.is_authenticated:
-        # Exclude books that the user has already bought
-        recommended_books = Book.objects.filter(recommended=True).exclude(
-            id__in=request.user.profile.bought_books.values('id')
-        ).order_by('?')[:4]
+        # Check if the user has bought any books
+        bought_books = request.user.profile.bought_books.all()
+
+        if bought_books.exists():
+            # Get authors and categories of books the user has bought
+            authors = bought_books.values_list('author', flat=True)
+            categories = bought_books.values_list('category', flat=True)
+
+            # Recommend books by the same author or category, excluding already bought books
+            recommended_books = Book.objects.filter(
+                Q(author__in=authors) | Q(category__in=categories)
+            ).exclude(id__in=bought_books.values('id')).distinct()[:4]
+        else:
+            # If no books are purchased, recommend random books
+            recommended_books = Book.objects.filter(recommended=True).order_by('?')[:4]
     else:
         # For unauthenticated users, recommend random books
         recommended_books = Book.objects.filter(recommended=True).order_by('?')[:4]
@@ -60,7 +71,9 @@ def product_detail(request, book_id):
 
     book = get_object_or_404(Book, pk=book_id)
     reviews = book.reviews.filter(parent__isnull=True)  # Get only top-level reviews (no replies)
-    similar_books = Book.objects.exclude(pk=book_id)[:4]  # Get similar books
+    similar_books = Book.objects.filter(
+        Q(author=book.author) | Q(category=book.category)
+    ).exclude(pk=book.pk).distinct()[:4]
 
     form = ReviewForm()
 

@@ -18,6 +18,7 @@
       <h1 class="name">{{ book.title }}</h1>
 
       <!-- Display the author -->
+      <h3 class="author">{{ book.category}}</h3>
       <h3 class="author">by {{ book.author.name }}</h3>
 
       <div class="average-rating">
@@ -165,7 +166,7 @@
 {% endif %}
 
 
-
+<br><br><br><br><br><br>
 <div class="title">Similar Products</div>
 <div class="listProduct">
   {% for similar_book in similar_books %}

@@ -12,6 +12,8 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from .forms import ProfileUpdateForm
 from .utils import convert_pdf_to_html
+from .models import Payment
+from decimal import Decimal
 
 # Create your views here.
 def home(request):
@@ -151,52 +153,58 @@ def cart_view(request):
 
 @login_required
 def checkout(request):
-    # Ensure the cart is not empty before proceeding
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
+        
+        # If no items in the cart, show a warning message and redirect to the cart page
         if not cart_items.exists():
-            # If the cart is empty, show a warning message and redirect to the cart page
             messages.warning(request, "Your cart is empty. Please add items before checking out.")
             return redirect('cart')
 
-        # Handle POST request for payment submission
-        if request.method == 'POST':
-            payment_method = request.POST.get('payment')
-            card_name = request.POST.get('card_name')
-            card_number = request.POST.get('card_number')
-            expiry = request.POST.get('expiry')
-            cvv = request.POST.get('cvv')
+        # Initialize total price and savings as Decimals
+        total_price = Decimal('0.00')
+        total_saved = Decimal('0.00')
 
-            # Add logic here for processing the payment
-            # Redirect to success page after payment processing
-            return redirect('payment_success')
-
-        # Initialize total price
-        total_price = 0
-
-        # Loop through each cart item to calculate the total price
         for item in cart_items:
-            # Calculate the price considering discounts
+            original_price = item.book.price
             if item.book.discount_percent > 0:
-                price_per_unit = item.book.discounted_price()  # Get discounted price
+                price_per_unit = Decimal(item.book.discounted_price())  # Ensure it's a Decimal
+                savings = (Decimal(original_price) - price_per_unit) * Decimal(item.quantity)  # Convert to Decimal
+                total_saved += savings
             else:
-                price_per_unit = item.book.price  # Use the original price if no discount
+                price_per_unit = Decimal(original_price)  # Convert to Decimal
 
-            # Calculate the total price for the item based on quantity
-            item.new_price = price_per_unit * item.quantity
-            total_price += item.new_price  # Add this item's price to the total
+            item.new_price = price_per_unit * Decimal(item.quantity)  # Ensure this is Decimal
+            total_price += item.new_price  # Add as Decimal
 
-        # Prepare context with cart items and total price
+        # Create a payment record (assuming this is only a dummy payment process for now)
+        payment = Payment.objects.create(
+            user=request.user,
+            order_total=total_price,
+            total_saved=total_saved,
+            payment_method='gcash',  # Assuming default payment method as 'gcash'
+            payment_status='Pending',
+            transaction_id='',
+            paypal_email=None,  # Set None as we're using 'gcash'
+            gcash_number=None  # Set None as we're not processing payment details in this example
+        )
+
+        # Update payment status to 'Completed' after creation
+        payment.payment_status = 'Completed'
+        payment.save()
+
+        # Prepare context to pass to the template
         context = {
             'cart_items': cart_items,
             'total_price': total_price,
-            'cart_item_count': cart_items.count()
+            'total_saved': total_saved,
+            'cart_item_count': cart_items.count(),
         }
 
         return render(request, 'accounts/checkout.html', context)
 
-    # Redirect to login page if user is not authenticated
     return redirect('login')
+
 
 
 

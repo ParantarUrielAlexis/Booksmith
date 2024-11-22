@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from books.models import Book
 from django.utils import timezone
+from django.conf import settings
+from decimal import Decimal
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -32,3 +34,35 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} of {self.book.title}"
+    
+class PaymentMethod(models.TextChoices):
+    GCASH = 'gcash', 'GCash'
+    PAYPAL = 'paypal', 'PayPal'
+
+
+class Payment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # Link to user
+    order_total = models.DecimalField(max_digits=10, decimal_places=2)  # The total price for the order
+    total_saved = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))  # Total savings from discount
+    payment_method = models.CharField(
+        max_length=10,
+        choices=PaymentMethod.choices,
+        default=PaymentMethod.GCASH
+    )
+    payment_status = models.CharField(
+        max_length=20,
+        choices=[('Pending', 'Pending'), ('Completed', 'Completed'), ('Failed', 'Failed')],
+        default='Pending'
+    )
+    transaction_id = models.CharField(max_length=100, blank=True, null=True)  # For PayPal/GCash transaction ID
+    payment_date = models.DateTimeField(auto_now_add=True)
+    
+    # For PayPal or GCash payment details
+    paypal_email = models.EmailField(max_length=255, blank=True, null=True)
+    gcash_number = models.CharField(max_length=20, blank=True, null=True)
+
+    def __str__(self):
+        return f"Payment {self.id} by {self.user.username} - {self.payment_status}"
+
+    def get_total_payment(self):
+        return self.order_total - self.total_saved  # Calculate the final payment after savings

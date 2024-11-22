@@ -14,12 +14,8 @@
   <h3 align="center">BookSmith</h3>
   <p align="center">
     A platform where users pay to access and review a wide range of books! <br />
-    <a href="https://github.com/your_username/booksmith"><strong>Explore the docs »</strong></a>
+    <a href="https://docs.google.com/document/d/10Cw3C3ilcSdRM_LInJp07nwLXJp7G9ItukQ31gas7rg/edit?usp=sharingh"><strong>Documentary</strong></a>
   </p>
-  <br />
-  <a href="https://github.com/your_username/booksmith">View Demo</a> ·
-  <a href="https://github.com/your_username/booksmith/issues/new?labels=bug&template=bug-report.md">Report Bug</a> ·
-  <a href="https://github.com/your_username/booksmith/issues/new?labels=enhancement&template=feature-request.md">Request Feature</a>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -42,8 +38,6 @@
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
-
-![BookSmith Screen Shot][product-screenshot]
 
 **BookSmith** is a comprehensive platform that brings book enthusiasts together, offering an extensive library of books, review functionalities, and personalized recommendations. The platform is designed to cater to a wide audience with diverse reading preferences, ensuring an intuitive and seamless user experience.
 
@@ -131,18 +125,25 @@ pip install django
    git clone https://github.com/your_username/booksmith.git
    ```
 2. Install the required dependencies
+
    ```sh
    pip install -r requirements.txt
+
    ```
-3. Set up the database
+
+3. Change Directory
+   ```sh
+   cd booksmith_proj
+   ```
+4. Set up the database
    ```sh
    python manage.py migrate
    ```
-4. Create a superuser (optional for admin access)
+5. Create a superuser (optional for admin access)
    ```sh
    python manage.py createsuperuser
    ```
-5. Run the development server
+6. Run the development server
    ```sh
    python manage.py runserver
    ```
@@ -196,12 +197,6 @@ Don't forget to give the project a star! Thanks again!
 ## Top Contributors:
 
 [![Contributor 1](https://contrib.rocks/image?repo=ParantarUrielAlexis/Booksmith)](https://github.com/ParantarUrielAlexis/Booksmith/graphs/contributors)
-
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 ## Contact
 

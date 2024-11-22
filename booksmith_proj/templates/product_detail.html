@@ -83,9 +83,9 @@
 <div class="title-review">
   <h1>User Reviews</h1>
 </div>
-<div class="reviews limited-height" id="reviews-container">
+<div class="reviews" id="reviews-container">
   {% for review in reviews %}
-  <div class="review-item {% if forloop.counter > 3 %}hidden-review{% endif %}">
+  <div class="review-item">
     <div class="review-header">
       <img
         class="review-profile profile-picture"
@@ -133,6 +133,7 @@
   {% endfor %}
 </div>
 <button id="toggle-reviews-btn" class="btn">Show More ▼</button>
+
 
 {% if user.is_authenticated %}
   {% if user_has_bought %}
@@ -206,22 +207,44 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-      const toggleButton = document.getElementById("toggle-reviews-btn");
-      const reviewsContainer = document.getElementById("reviews-container");
+    const toggleButton = document.getElementById("toggle-reviews-btn");
+    const reviewsContainer = document.getElementById("reviews-container");
+    let isExpanded = false;
 
-      toggleButton.addEventListener("click", () => {
-          // Toggle the class to expand or collapse the review section
-          reviewsContainer.classList.toggle("expanded-height");
-          reviewsContainer.classList.toggle("limited-height");
+    toggleButton.addEventListener("click", () => {
+        // Toggle the expanded state
+        isExpanded = !isExpanded;
 
-          // Change button text based on the state
-          if (reviewsContainer.classList.contains("expanded-height")) {
-              toggleButton.textContent = "Show Less ▲";
-          } else {
-              toggleButton.textContent = "Show More ▼";
-          }
-      });
-  });
+        if (isExpanded) {
+            // Show all reviews
+            const hiddenReviews = document.querySelectorAll(".review-item.hidden-review");
+            hiddenReviews.forEach(review => review.classList.remove("hidden-review"));
+
+            // Change button text
+            toggleButton.textContent = "Show Less ▲";
+        } else {
+            // Limit to the first 3 reviews if "Show Less" is clicked
+            const allReviews = document.querySelectorAll(".review-item");
+            allReviews.forEach((review, index) => {
+                if (index >= 3) {
+                    review.classList.add("hidden-review");
+                }
+            });
+
+            // Change button text
+            toggleButton.textContent = "Show More ▼";
+        }
+    });
+
+    // Initially hide reviews beyond the first 3
+    const allReviews = document.querySelectorAll(".review-item");
+    allReviews.forEach((review, index) => {
+        if (index >= 3) {
+            review.classList.add("hidden-review");
+        }
+    });
+});
+
 
 
   document.addEventListener("DOMContentLoaded", () => {

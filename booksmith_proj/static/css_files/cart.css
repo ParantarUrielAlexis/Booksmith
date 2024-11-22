@@ -53,8 +53,8 @@ li.cart-item:last-child {
 
 .cart-item {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr; /* Adjust column widths */
-  gap: 20px;
+  grid-template-columns: 1.72fr 1fr 1fr; /* Adjust column widths */
+  gap: 125px;
   align-items: center;
   padding: 10px 0; /* Add consistent spacing */
   border-bottom: 1px solid #eee; /* Optional divider between items */

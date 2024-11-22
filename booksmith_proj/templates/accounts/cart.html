@@ -36,9 +36,16 @@
                         <button class="btn-quantity" onclick="updateCart({{ item.book.id }}, 'increase')">+</button>
                     </div>
                     <div class="item-actions">
-                        <span class="item-price">${{ item.book.price|floatformat:2 }}</span>
-                        <button class="btn-remove" onclick="removeFromCart({{ item.book.id }})">Remove</button>
+                        {% if item.book.discount_percent > 0 %}
+                            <span class="item-price">
+                                <span class="discounted-price">${{ item.book.discounted_price|floatformat:2 }}</span>
+                            </span>
+                        {% else %}
+                            <span class="item-price">${{ item.book.price|floatformat:2 }}</span>
+                        {% endif %}
+                        <button class="btn-remove" onclick="removeFromCart({{ item.book.id }})">X</button>
                     </div>
+                    
                 </li>
                 {% endfor %}
             </ul>
@@ -55,16 +62,23 @@
                 <ul class="price-list">
                     {% for item in cart_items %}
                     <li>
-                        <p>${{ item.new_price|floatformat:2 }}</p>
+                        <p>
+                            {% if item.book.discount_percent > 0 %}
+                                ${{ item.book.discounted_price|floatformat:2 }}
+                            {% else %}
+                                ${{ item.book.price|floatformat:2 }}
+                            {% endif %}
+                        </p>
                     </li>
                     {% endfor %}
                 </ul>
-            </div>
+            </div>            
             <hr>
             <div class="summary-item">
                 <span>Order Total</span>
                 <span>${{ total_price|floatformat:2 }}</span>
-            </div>
+            </div>         
+            
             <button class="btn checkout-btn {% if not cart_items %}disabled{% endif %}"
                     onclick="if({% if cart_items %}true{% else %}false{% endif %}) window.location.href='{% url 'checkout' %}'"
                     {% if not cart_items %}disabled{% endif %}>

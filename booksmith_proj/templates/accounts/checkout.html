@@ -44,12 +44,6 @@
       <form>
         <input
           type="text"
-          name="card_name"
-          placeholder="Enter Account Name"
-          required
-        />
-        <input
-          type="text"
           name="card_number"
           placeholder="Enter Gcash Number"
           required
@@ -82,22 +76,23 @@
   <div class="right-side">
     <div class="order-summary">
       <div class="header-title">
-        <h3>Order Summary</h3>
+          <h3>Order Summary</h3>
       </div>
       <div class="summary-item">
-        <span>Subtotal</span>
-        <ul class="price-list">
-          {% for item in cart_items %}
-          <li>${{ item.new_price|floatformat:2 }}</li>
-          {% endfor %}
-        </ul>
+          <span>Subtotal</span>
+          <ul class="price-list">
+              {% for item in cart_items %}
+              <li>${{ item.new_price|floatformat:2 }}</li>
+              {% endfor %}
+          </ul>
       </div>
       <hr />
       <div class="summary-item">
-        <span>Order Total</span>
-        <span>${{ total_price|floatformat:2 }}</span>
+          <span>Order Total</span>
+          <span>${{ total_price|floatformat:2 }}</span>
       </div>
     </div>
+  
 
     <div class="cart-summary">
       <div class="header-title">
@@ -116,7 +111,9 @@
               >{{ item.book.title }}
               <span class="quantity">(x{{ item.quantity }})</span></span
             >
-            <span>${{ item.book.price|floatformat:2 }}</span>
+            <span class="original-price">${{ item.book.price|floatformat:2 }}</span>
+
+            <span class="discounted-price">${{ item.book.discounted_price|floatformat:2 }}</span>
             <div class="cart-summary-actions">
               <button
                 class="btn edit-btn"
@@ -249,29 +246,10 @@
 
     // Additional validation for GCash specific fields
     if (selectedPayment === "gcash") {
-      const gcashAccountName = visibleForm
-        .find('input[name="card_name"]')
-        .val()
-        .trim();
       const gcashNumber = visibleForm
         .find('input[name="card_number"]')
         .val()
         .trim();
-
-      // Validate that the account name does not contain any numbers
-      const nameContainsNumbers = /\d/.test(gcashAccountName);
-      if (nameContainsNumbers) {
-        isValid = false;
-        Swal.fire({
-          icon: "warning",
-          title: "Invalid Account Name",
-          text: "The GCash account name should not contain numbers.",
-          confirmButtonText: "OK",
-          confirmButtonColor: "#d33",
-        });
-        event.preventDefault();
-        return; // Stop further validation if the account name is invalid
-      }
 
       // Validate that the GCash number is exactly 11 digits
       if (gcashNumber.length !== 11 || !/^\d+$/.test(gcashNumber)) {

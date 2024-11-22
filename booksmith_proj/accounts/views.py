@@ -120,11 +120,16 @@ def cart_view(request):
 
         # Loop through each cart item to calculate new price
         for item in cart_items:
-            # Condition to check if the user wants more than 1
-            if item.quantity > 1:
-                new_price = item.book.price * item.quantity
+            # Calculate the price considering discounts
+            if item.book.discount_percent > 0:
+                # Use discounted price if there's a discount
+                price_per_unit = item.book.discounted_price()
             else:
-                new_price = item.book.price
+                # Use the original price if no discount
+                price_per_unit = item.book.price
+
+            # Condition to check if the user wants more than 1
+            new_price = price_per_unit * item.quantity
 
             # Add this new price to the total
             total_price += new_price
@@ -140,6 +145,7 @@ def cart_view(request):
         return render(request, 'accounts/cart.html', context)
     else:
         return redirect('login')
+
 
 
 
@@ -170,8 +176,15 @@ def checkout(request):
 
         # Loop through each cart item to calculate the total price
         for item in cart_items:
-            item.new_price = item.book.price * item.quantity
-            total_price += item.new_price  # Add to total price
+            # Calculate the price considering discounts
+            if item.book.discount_percent > 0:
+                price_per_unit = item.book.discounted_price()  # Get discounted price
+            else:
+                price_per_unit = item.book.price  # Use the original price if no discount
+
+            # Calculate the total price for the item based on quantity
+            item.new_price = price_per_unit * item.quantity
+            total_price += item.new_price  # Add this item's price to the total
 
         # Prepare context with cart items and total price
         context = {
@@ -184,6 +197,7 @@ def checkout(request):
 
     # Redirect to login page if user is not authenticated
     return redirect('login')
+
 
 
 @login_required
@@ -272,16 +286,26 @@ def update_cart_quantity(request, book_id, action):
 
         cart_item.save()
 
-        # Recalculate the total price after the update
-        total_price = sum(item.book.price * item.quantity for item in CartItem.objects.filter(user=request.user))
+        # Calculate the subtotal by summing discounted prices when available
+        subtotal = sum(
+            (
+                item.book.discounted_price() if item.book.discount_percent > 0 else item.book.price
+            ) * item.quantity
+            for item in CartItem.objects.filter(user=request.user)
+        )
+
+        # Use subtotal as the order total for now if there are no additional fees or calculations
+        total_price = subtotal
 
         return JsonResponse({
             'message': f'Quantity {action}d successfully!',
             'new_quantity': cart_item.quantity,
+            'subtotal': subtotal,
             'total_price': total_price
         })
 
     return JsonResponse({'error': 'User not authenticated.'}, status=403)
+
 
 
 

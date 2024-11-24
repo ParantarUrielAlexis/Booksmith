@@ -1,5 +1,5 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Read
-{{book.title}}{% endblock %} {% block extra_css %}
+{% extends 'base.html' %} {% load static %} {% block title %}Read {{ book.title
+}}{% endblock %} {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css_files/readbook.css' %}" />
 {% endblock %} {% block content %}
 <h1>{{ book.title }}</h1>
@@ -13,13 +13,20 @@
   <!-- Pagination Controls -->
   <div class="reader-navigation">
     <button id="prev-btn" class="btn" onclick="prevPage()">Previous</button>
-    <span id="page-counter"
-      >Page <span id="current-page">1</span> of
-      <span id="total-pages">1</span></span
-    >
+    <label for="page-input">Page</label>
+    <input
+      type="number"
+      id="page-input"
+      min="1"
+      value="1"
+      onkeydown="if(event.key === 'Enter') jumpToPage()"
+    />
+    <span>of <span id="total-pages">1</span></span>
     <button id="next-btn" class="btn" onclick="nextPage()">Next</button>
   </div>
 </div>
 
+<br /><br /><br />
+
 <script src="{% static 'js_files/pagination.js' %}"></script>
-{% endblock %} // pagination.js
+{% endblock %}

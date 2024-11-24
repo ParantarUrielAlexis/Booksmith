@@ -1,11 +1,15 @@
 const contentContainer = document.getElementById("book-content");
-let currentPage = 1;
-const pageSize = 500; // Character count per page (adjust as necessary)
-let totalPages = Math.ceil(contentContainer.innerText.length / pageSize);
+const pageInput = document.getElementById("page-input");
+const prevButton = document.getElementById("prev-btn");
+const nextButton = document.getElementById("next-btn");
+
+let currentPage = parseInt(localStorage.getItem("currentPage"), 10) || 1; // Restore saved page or default to 1
+const pageSize = 700; // Characters per page
+let totalPages;
 
 // Update page counter display
 function updatePageCounter() {
-  document.getElementById("current-page").textContent = currentPage;
+  pageInput.value = currentPage; // Update the input field
   document.getElementById("total-pages").textContent = totalPages;
 }
 
@@ -20,9 +24,12 @@ function showPage(page) {
     .getAttribute("data-full-content")
     .slice(start, end);
 
+  // Save the current page to localStorage
+  localStorage.setItem("currentPage", currentPage);
+
   // Disable buttons at boundaries
-  document.getElementById("prev-btn").disabled = page === 1;
-  document.getElementById("next-btn").disabled = page === totalPages;
+  prevButton.disabled = page === 1;
+  nextButton.disabled = page === totalPages;
 
   updatePageCounter();
 }
@@ -43,6 +50,21 @@ function prevPage() {
   }
 }
 
+// Jump to a specific page via input
+function jumpToPage() {
+  const inputPage = parseInt(pageInput.value, 10);
+
+  if (inputPage >= 1 && inputPage <= totalPages) {
+    currentPage = inputPage;
+    showPage(currentPage);
+  } else {
+    alert(
+      `Invalid page number. Please enter a number between 1 and ${totalPages}.`
+    );
+    pageInput.value = currentPage; // Reset input to the current page
+  }
+}
+
 // Initialize pagination and set up keyboard navigation
 document.addEventListener("DOMContentLoaded", () => {
   // Store the entire book content in a data attribute for easy slicing
@@ -51,8 +73,10 @@ document.addEventListener("DOMContentLoaded", () => {
     contentContainer.innerText
   );
 
-  // Initialize pagination
+  // Calculate total pages
   totalPages = Math.ceil(contentContainer.innerText.length / pageSize);
+
+  // Display the saved or default page
   showPage(currentPage);
 
   // Add keyboard navigation

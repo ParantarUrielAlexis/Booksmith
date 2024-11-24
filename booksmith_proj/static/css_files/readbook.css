@@ -18,6 +18,7 @@
   flex-grow: 1; /* Take up available vertical space */
   overflow: auto; /* Enable scrolling if content overflows */
   padding: 15px;
+  height: 80vh;
   font-size: 20px;
   line-height: 1.5;
 }
@@ -54,7 +55,57 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 0; /* Add padding for spacing from content */
+  gap: 10px;
+  font-family: Arial, sans-serif;
+  padding: 15px;
+}
+
+.reader-navigation .btn {
+  background-color: #bd2000;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 80px; /* Set a fixed width */
+  text-align: center;
+}
+
+.reader-navigation .btn:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
+
+.reader-navigation .btn:hover:enabled {
+  background-color: #a00000;
+}
+
+.reader-navigation input#page-input {
+  width: 50px;
+  padding: 5px;
+  text-align: center;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+.reader-navigation input#page-input:focus {
+  outline: none;
+  border-color: #bd2000;
+  box-shadow: 0 0 5px rgba(189, 32, 0, 0.5);
+}
+
+.reader-navigation label {
+  font-size: 14px;
+  color: #333;
+}
+
+.reader-navigation span {
+  font-size: 14px;
+  color: #555;
 }
 
 /* new code for paged.js */

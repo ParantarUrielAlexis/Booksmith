@@ -58,9 +58,7 @@
         >
       </div>
     </div>
-    {% endfor %} {% else %}
-    <p>No books purchased yet.</p>
-    {% endif %}
+    {% endfor %} {% else %} {% endif %}
 
     <!-- Display Wishlisted Books (Excluding Purchased Ones) -->
     {% if user.profile.wishlist.all %}
@@ -78,9 +76,7 @@
         <i class="fas fa-heart"></i> Wishlisted
       </button>
     </div>
-    {% endif %} {% endfor %} {% else %}
-    <p>No books wishlisted yet.</p>
-    {% endif %}
+    {% endif %} {% endfor %} {% else %} {% endif %}
   </div>
 </section>
 

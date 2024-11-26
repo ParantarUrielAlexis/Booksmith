@@ -79,3 +79,17 @@
 .book-info button:hover {
   background-color: #d62828;
 }
+
+.purchased-icon {
+  color: rgb(1, 172, 1);
+  font-weight: bold;
+}
+
+.purchased-icon i {
+  margin-right: 5px;
+  color: rgb(1, 172, 1);
+}
+
+.wishlist-btn.wishlisted i {
+  color: #ff7171; /* Color when item is wishlisted */
+}

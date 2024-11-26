@@ -20,9 +20,31 @@ category }}{% endblock %} {% block extra_css %}
       <p>${{ book.price|floatformat:2 }}</p>
       {% endif %}
 
+      <!-- Display "Purchased" icon if the book has been bought -->
+      {% if book in request.user.profile.bought_books.all %}
+      <span class="purchased-icon">
+        <i class="fas fa-check-circle"></i> Purchased
+      </span>
+      {% else %}
+
       <button onclick="addToCart({{ book.id }})" class="btn add-to-cart-btn">
         Add To Cart
       </button>
+      {% endif %}
+
+      <!-- Wishlist Button with toggle functionality -->
+      {% if book not in request.user.profile.bought_books.all %}
+      <button
+        class="btn wishlist-btn {% if book in request.user.profile.wishlist.all %}wishlisted{% endif %}"
+        onclick="toggleWishlist({{ book.id }})"
+        data-id="{{ book.id }}"
+      >
+        <!-- Heart icon with a filled state when wishlisted -->
+        <i
+          class="fas fa-heart {% if book in request.user.profile.wishlist.all %}filled{% endif %}"
+        ></i>
+      </button>
+      {% endif %}
     </div>
   </div>
   {% endfor %} {% else %}
@@ -71,6 +93,58 @@ category }}{% endblock %} {% block extra_css %}
                         console.error('Error adding item to cart:', xhr);
                     }
                 });
+  }
+  function toggleWishlist(bookId) {
+    var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+
+    if (!isAuthenticated) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Not Logged In',
+        text: 'Please log in to add items to your wishlist.',
+      });
+      return;
+    }
+
+    $.ajax({
+      url: "{% url 'toggle_wishlist' 0 %}".replace('0', bookId),
+      method: "POST",
+      headers: {
+        "X-CSRFToken": "{{ csrf_token }}",
+      },
+      success: function(response) {
+        const button = document.querySelector(`.wishlist-btn[data-id="${bookId}"]`);
+
+        // Toggle the wishlisted state
+        if (response.status === "added") {
+          button.classList.add("wishlisted");
+          button.querySelector("i").classList.add("filled");  // Add filled class to the heart icon
+          Swal.fire({
+            icon: 'success',
+            title: 'Added to Wishlist!',
+            text: 'The book has been added to your wishlist.',
+            confirmButtonText: 'OK'
+          });
+        } else if (response.status === "removed") {
+          button.classList.remove("wishlisted");
+          button.querySelector("i").classList.remove("filled");  // Remove filled class
+          Swal.fire({
+            icon: 'info',
+            title: 'Removed from Wishlist',
+            text: 'The book has been removed from your wishlist.',
+            confirmButtonText: 'OK'
+          });
+        }
+      },
+      error: function(xhr) {
+        console.error("Error toggling wishlist:", xhr);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Something went wrong. Please try again.',
+        });
+      },
+    });
   }
 </script>
 {%endblock%}

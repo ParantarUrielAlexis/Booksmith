@@ -79,6 +79,11 @@ svg {
 .slider .list .item.active p:nth-child(3) {
   animation-duration: 0.3s;
 }
+
+a.btn hover-btn read-btn {
+  text-decoration: none;
+}
+
 .arrows {
   position: absolute;
   top: 30%;

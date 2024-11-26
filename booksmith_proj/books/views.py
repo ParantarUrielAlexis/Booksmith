@@ -10,7 +10,10 @@ from django.contrib.auth.decorators import login_required
 
 def landing_page(request):
     books = list(Book.objects.all())
-    featured_book = random.choice(books) if books else None
+
+    available_books = [book for book in books if book not in request.user.profile.bought_books.all()]
+    featured_book = random.choice(available_books) if available_books else None
+
 
     if request.user.is_authenticated:
         # Check if the user has bought any books
@@ -21,16 +24,22 @@ def landing_page(request):
             authors = bought_books.values_list('author', flat=True)
             categories = bought_books.values_list('category', flat=True)
 
-            # Recommend books by the same author or category, excluding already bought books
+            # Recommend books by the same author or category, excluding already bought and best-seller books
             recommended_books = Book.objects.filter(
                 Q(author__in=authors) | Q(category__in=categories)
-            ).exclude(id__in=bought_books.values('id')).distinct()[:4]
+            ).exclude(
+                Q(id__in=bought_books.values('id')) | Q(bestseller=True)
+            ).distinct()[:4]
         else:
-            # If no books are purchased, recommend random books
-            recommended_books = Book.objects.filter(recommended=True).order_by('?')[:4]
+            # If no books are purchased, recommend random books excluding best sellers
+            recommended_books = Book.objects.filter(
+                recommended=True
+            ).exclude(bestseller=True).order_by('?')[:4]
     else:
-        # For unauthenticated users, recommend random books
-        recommended_books = Book.objects.filter(recommended=True).order_by('?')[:4]
+        # For unauthenticated users, recommend random books excluding best sellers
+        recommended_books = Book.objects.filter(
+            recommended=True
+        ).exclude(bestseller=True).order_by('?')[:4]
 
     best_sellers = Book.objects.filter(bestseller=True).order_by('?')  # Fetch best sellers
 
@@ -56,9 +65,12 @@ def landing_page(request):
 
 def search_books(request):
     query = request.GET.get('q')
-    search_results = Book.objects.filter(
-        Q(title__icontains=query) | Q(author__name__icontains=query)
-    ) if query else []
+    # Get search results for books containing the query in their title
+    search_results = Book.objects.filter(Q(title__icontains=query)) if query else []
+
+    # Order the search results so that purchased books come first
+    search_results = sorted(search_results, key=lambda x: x in request.user.profile.bought_books.all(), reverse=False)
+
     return render(request, 'search_results.html', {'search_results': search_results, 'query': query})
 
 from django.contrib import messages
@@ -138,6 +150,9 @@ def category_books(request, category_name):
 
     # Filter books by the category
     books = Book.objects.filter(category=category)
+
+    # Order books so that purchased books come first
+    books = sorted(books, key=lambda x: x in request.user.profile.bought_books.all(), reverse=False)
 
     # Render the books for the given category
     return render(request, 'category_books.html', {'books': books, 'category': category})

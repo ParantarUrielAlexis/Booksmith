@@ -8,65 +8,67 @@
     <!-- Loop through best sellers and display each book -->
     {% for book in best_sellers %}
     <div class="item {% if forloop.first %}active{% endif %}">
-      <img src="{{ book.image_url }}" alt="{{ book.title }}" />
-      <div class="content">
-        <p>{{ book.category }}</p>
-        <br />
-        <h2>{{ book.title }}</h2>
-        <br />
-        <p>{{ book.description }}</p>
-        <br /><br />
-        <!-- Price section with a span for highlighting -->
-        {% if book.discount_percent > 0 %}
-        <p><s>${{ book.price|floatformat:2 }}</s></p>
-        <br /><br />
-        <p>
-          <span class="highlight-price"
-            >${{ book.discounted_price|floatformat:2 }}</span
-          >
-          <span class="discount-percent"
-            >{{ book.discount_percent|floatformat:2 }}% off</span
-          >
-        </p>
-        {% else %}
-        <p>
-          <span class="highlight-price">${{ book.price|floatformat:2 }}</span>
-        </p>
-        {% endif %}
+        <img src="{{ book.image_url }}" alt="{{ book.title }}" />
+        <div class="content">
+            <p>{{ book.category }}</p>
+            <br />
+            <h2>{{ book.title }}</h2>
+            <br />
+            <p>{{ book.description }}</p>
+            <br /><br />
+            <!-- Price section with a span for highlighting -->
+            {% if book.discount_percent > 0 %}
+            <p><s>${{ book.price|floatformat:2 }}</s></p>
+            <br /><br />
+            <p>
+                <span class="highlight-price">${{ book.discounted_price|floatformat:2 }}</span>
+                <span class="discount-percent">{{ book.discount_percent|floatformat:2 }}% off</span>
+            </p>
+            {% else %}
+            <p>
+                <span class="highlight-price">${{ book.price|floatformat:2 }}</span>
+            </p>
+            {% endif %}
 
-        <!-- Buttons below price -->
-        <div class="price-buttons">
-          <button class="btn add-to-cart" onclick="addToCart({{ book.id }})">
-            Add to Cart
-          </button>
-          <button
-            class="btn see-details"
-            onclick="window.location.href='{% url 'product_detail' book.pk %}'"
-          >
-            See Details
-          </button>
+            <!-- Buttons below price -->
+            <div class="price-buttons">
+                <!-- Only show Add to Cart if the book has not been purchased -->
+                {% if user.is_authenticated and book not in user.profile.bought_books.all %}
+                <button class="btn add-to-cart" onclick="addToCart({{ book.id }})">
+                    Add to Cart
+                </button>
+                {% endif %}
+                
+                <button
+                    class="btn see-details"
+                    onclick="window.location.href='{% url 'product_detail' book.pk %}'"
+                >
+                    See Details
+                </button>
 
-          {% if user.is_authenticated %}
-          <!-- comment for formatting -->
-          {% if book not in user.profile.bought_books.all %}
-          <button
-            class="btn wishlist-btn {% if book in user.profile.wishlist.all %}wishlisted{% endif %}"
-            onclick="toggleWishlist({{ book.id }})"
-            data-id="{{ book.id }}"
-          >
-            <i class="fas fa-heart"></i>
-          </button>
-          {% else %}
-          <!-- Icon and label indicating the book has been purchased -->
-          <span class="already-bought">
-            <i class="fas fa-check-circle"></i> Purchased
-          </span>
-          {% endif %} {% endif %}
+                {% if user.is_authenticated %}
+                <!-- Wishlist button or purchased indicator -->
+                {% if book not in user.profile.bought_books.all %}
+                <button
+                    class="btn wishlist-btn {% if book in user.profile.wishlist.all %}wishlisted{% endif %}"
+                    onclick="toggleWishlist({{ book.id }})"
+                    data-id="{{ book.id }}"
+                >
+                    <i class="fas fa-heart"></i>
+                </button>
+                {% else %}
+                <!-- Icon and label indicating the book has been purchased -->
+                <span class="already-bought">
+                    <i class="fas fa-check-circle"></i> Purchased
+                </span>
+                {% endif %}
+                {% endif %}
+            </div>
         </div>
-      </div>
     </div>
     {% endfor %}
-  </div>
+</div>
+
 
   <!-- Button Arrows -->
   <div class="arrows">
@@ -178,10 +180,12 @@
         {% endif %}
       </div>
       <div class="buttons">
-        <!-- Add to Cart Button -->
+        <!-- Add to Cart Button only if the book is not bought -->
+        {% if featured_book not in user.profile.bought_books.all %}
         <button class="btn-buy" onclick="addToCart({{ featured_book.id }})">
           Add to Cart
         </button>
+        {% endif %}
 
         <!-- See Details Button -->
         <button
@@ -201,109 +205,109 @@
 <script src="{% static 'js_files/landing_page.js' %}"></script>
 
 <script>
-      function addToCart(bookId) {
-    var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
-
-    if (!isAuthenticated) {
-        // Trigger SweetAlert for non-authenticated users
-        Swal.fire({
-            icon: 'warning',
-            title: 'Not Logged In',
-            text: 'Please log in to add items to your cart.',
-        });
-        return;  // Stop execution if not authenticated
-    }
-
-    // Proceed with adding to cart for authenticated users
-    $.ajax({
-        url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
-        method: "POST",
-        headers: {
-            "X-CSRFToken": "{{ csrf_token }}"
-        },
-        success: function(response) {
-            if (response.error === 'already_in_cart') {
-                // Trigger SweetAlert for already in cart
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Item Already in Cart',
-                    text: 'This item is already in your cart.',
-                    confirmButtonText: 'OK'
-                });
-            } else {
-                // Trigger SweetAlert for successful addition
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Item added to cart.',
-                    confirmButtonText: 'OK'
-                });
-                // Update the cart count dynamically
-                $(".cart-count").text('(' + response.cart_item_count + ')');
-            }
-        },
-        error: function(xhr) {
-            // Handle error cases if any
-            console.error('Error adding item to cart:', xhr);
-        }
-    });
-}
-
-
-      function toggleWishlist(bookId) {
-      var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
-
+        function addToCart(bookId) {
+      var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
 
       if (!isAuthenticated) {
+          // Trigger SweetAlert for non-authenticated users
           Swal.fire({
               icon: 'warning',
               title: 'Not Logged In',
-              text: 'Please log in to add items to your wishlist.',
+              text: 'Please log in to add items to your cart.',
           });
-          return;
+          return;  // Stop execution if not authenticated
       }
 
-
-
+      // Proceed with adding to cart for authenticated users
       $.ajax({
-          url: "{% url 'toggle_wishlist' 0 %}".replace('0', bookId),
+          url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
           method: "POST",
           headers: {
-              "X-CSRFToken": "{{ csrf_token }}",
+              "X-CSRFToken": "{{ csrf_token }}"
           },
           success: function(response) {
-              const button = document.querySelector(`.wishlist-btn[data-id="${bookId}"]`);
-
-              if (response.status === "added") {
-                  button.classList.add("wishlisted");
+              if (response.error === 'already_in_cart') {
+                  // Trigger SweetAlert for already in cart
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Item Already in Cart',
+                      text: 'This item is already in your cart.',
+                      confirmButtonText: 'OK'
+                  });
+              } else {
+                  // Trigger SweetAlert for successful addition
                   Swal.fire({
                       icon: 'success',
-                      title: 'Added to Wishlist!',
-                      text: 'The book has been added to your wishlist.',
+                      title: 'Success!',
+                      text: 'Item added to cart.',
                       confirmButtonText: 'OK'
                   });
-              } else if (response.status === "removed") {
-                  button.classList.remove("wishlisted");
-                  Swal.fire({
-                      icon: 'info',
-                      title: 'Removed from Wishlist',
-                      text: 'The book has been removed from your wishlist.',
-                      confirmButtonText: 'OK'
-                  });
+                  // Update the cart count dynamically
+                  $(".cart-count").text('(' + response.cart_item_count + ')');
               }
-
-
           },
           error: function(xhr) {
-              console.error("Error toggling wishlist:", xhr);
-              Swal.fire({
-                  icon: 'error',
-                  title: 'Error',
-                  text: 'Something went wrong. Please try again.',
-              });
-          },
+              // Handle error cases if any
+              console.error('Error adding item to cart:', xhr);
+          }
       });
   }
+
+
+        function toggleWishlist(bookId) {
+        var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
+
+
+        if (!isAuthenticated) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Not Logged In',
+                text: 'Please log in to add items to your wishlist.',
+            });
+            return;
+        }
+
+
+
+        $.ajax({
+            url: "{% url 'toggle_wishlist' 0 %}".replace('0', bookId),
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}",
+            },
+            success: function(response) {
+                const button = document.querySelector(`.wishlist-btn[data-id="${bookId}"]`);
+
+                if (response.status === "added") {
+                    button.classList.add("wishlisted");
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Added to Wishlist!',
+                        text: 'The book has been added to your wishlist.',
+                        confirmButtonText: 'OK'
+                    });
+                } else if (response.status === "removed") {
+                    button.classList.remove("wishlisted");
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Removed from Wishlist',
+                        text: 'The book has been removed from your wishlist.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+
+
+            },
+            error: function(xhr) {
+                console.error("Error toggling wishlist:", xhr);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Something went wrong. Please try again.',
+                });
+            },
+        });
+    }
 </script>
 
 {% endblock %}

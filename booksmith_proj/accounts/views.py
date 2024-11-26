@@ -17,7 +17,8 @@ from decimal import Decimal
 
 # Create your views here.
 def home(request):
-    return render(request, "landing_page")
+
+    return render(request, 'landing_page.html')
 
 
 def signup(request):
@@ -26,8 +27,6 @@ def signup(request):
         username = request.POST['username']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
-        gender = request.POST.get('gender')  # Get gender from the form
-        birthdate = request.POST.get('birthdate')  # Get birthdate from the form
 
         # Check if the username or email already exists
         if User.objects.filter(username=username).exists():
@@ -46,10 +45,6 @@ def signup(request):
             # Create the User
             myuser = User.objects.create_user(username=username, email=email, password=pass1)
             myuser.save()
-
-            # Check if the profile already exists to avoid duplicate creation
-            if not Profile.objects.filter(user=myuser).exists():
-                Profile.objects.create(user=myuser, gender=gender, birthdate=birthdate)
 
             # Display a success message when the user and profile are created successfully
             messages.success(request, "Successfully Registered.")
@@ -222,31 +217,19 @@ def profile_view(request):
 
 
 def add_to_cart(request, book_id):
-    if request.user.is_authenticated:
-        try:
-            book = Book.objects.get(id=book_id)  # Get the book based on the ID
-        except Book.DoesNotExist:
-            return JsonResponse({'error': 'Book not found.'}, status=404)
+    if not request.user.is_authenticated:
+        return JsonResponse({"error": "not_authenticated"}, status=401)
 
-        # Check if the cart item already exists for the user and this book
-        cart_item, created = CartItem.objects.get_or_create(
-            user=request.user,
-            book=book,
-            defaults={'quantity': 1}  # Set default quantity if a new cart item is created
-        )
+    book = get_object_or_404(Book, pk=book_id)
+    existing_cart_item = CartItem.objects.filter(user=request.user, book=book).first()
 
-        if not created:
-            # If the cart item already exists, increase the quantity
-            cart_item.quantity += 1
-            cart_item.save()
+    if existing_cart_item:
+        return JsonResponse({"error": "already_in_cart"}, status=200)
 
-        # Calculate the updated cart item count
-        cart_item_count = CartItem.objects.filter(user=request.user).count()
+    # If not already in cart, add the item
+    CartItem.objects.create(user=request.user, book=book)
 
-        # Return a success message along with the updated cart count
-        return JsonResponse({'message': 'Item added to cart!', 'cart_item_count': cart_item_count})
-
-    return JsonResponse({'error': 'User is not authenticated.'}, status=403)
+    return JsonResponse({"success": "added_to_cart", "cart_item_count": CartItem.objects.filter(user=request.user).count()})
 
 
 def remove_from_cart(request, book_id):

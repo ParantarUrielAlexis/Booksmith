@@ -29,11 +29,7 @@
                         </div>
                     </div>
                     <div class="item-quantity">
-                        <button class="btn-quantity"
-                                onclick="updateCart({{ item.book.id }}, 'decrease')"
-                                {% if item.quantity == 1 %}disabled{% endif %}>-</button>
                         <span>{{ item.quantity }}</span>
-                        <button class="btn-quantity" onclick="updateCart({{ item.book.id }}, 'increase')">+</button>
                     </div>
                     <div class="item-actions">
                         {% if item.book.discount_percent > 0 %}

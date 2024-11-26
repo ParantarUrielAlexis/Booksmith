@@ -11,9 +11,7 @@ from django.contrib.auth.decorators import login_required
 def landing_page(request):
     books = list(Book.objects.all())
 
-    available_books = [book for book in books if book not in request.user.profile.bought_books.all()]
-    featured_book = random.choice(available_books) if available_books else None
-
+    featured_book = random.choice(books)
 
     if request.user.is_authenticated:
         # Check if the user has bought any books
@@ -65,13 +63,21 @@ def landing_page(request):
 
 def search_books(request):
     query = request.GET.get('q')
+
     # Get search results for books containing the query in their title
     search_results = Book.objects.filter(Q(title__icontains=query)) if query else []
 
-    # Order the search results so that purchased books come first
-    search_results = sorted(search_results, key=lambda x: x in request.user.profile.bought_books.all(), reverse=False)
+    # Order the search results so that purchased books come first (only for authenticated users)
+    if request.user.is_authenticated:
+        bought_books = request.user.profile.bought_books.all()
+        search_results = sorted(
+            search_results,
+            key=lambda x: x in bought_books,
+            reverse=True  # Purchased books first
+        )
 
     return render(request, 'search_results.html', {'search_results': search_results, 'query': query})
+
 
 from django.contrib import messages
 
@@ -151,8 +157,14 @@ def category_books(request, category_name):
     # Filter books by the category
     books = Book.objects.filter(category=category)
 
-    # Order books so that purchased books come first
-    books = sorted(books, key=lambda x: x in request.user.profile.bought_books.all(), reverse=False)
+    # Order books so that purchased books come first (only for authenticated users)
+    if request.user.is_authenticated:
+        bought_books = request.user.profile.bought_books.all()
+        books = sorted(
+            books,
+            key=lambda x: x in bought_books,
+            reverse=True  # Purchased books first
+        )
 
     # Render the books for the given category
     return render(request, 'category_books.html', {'books': books, 'category': category})

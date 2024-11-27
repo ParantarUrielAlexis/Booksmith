@@ -333,43 +333,52 @@
   }
 
   function addToCart(bookId) {
-            var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
+      var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};  // Pass authenticated status
 
-            if (!isAuthenticated) {
-                // Trigger SweetAlert for non-authenticated users
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Not Logged In',
-                    text: 'Please log in to add items to your cart.',
-                });
-                return;  // Stop execution if not authenticated
-            }
+      if (!isAuthenticated) {
+          // Trigger SweetAlert for non-authenticated users
+          Swal.fire({
+              icon: 'warning',
+              title: 'Not Logged In',
+              text: 'Please log in to add items to your cart.',
+          });
+          return;  // Stop execution if not authenticated
+      }
 
-            // Proceed with adding to cart for authenticated users
-            $.ajax({
-                url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": "{{ csrf_token }}"
-                },
-                success: function(response) {
-                    // Trigger SweetAlert for successful addition
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: 'Item added to cart.',
-                        confirmButtonText: 'OK'
-                    });
-                    // Update the cart count dynamically
-                    $(".cart-count").text('(' + response.cart_item_count + ')');
-                },
-                error: function(xhr) {
-                    // Simply ignore errors, allowing multiple additions
-                    // Optionally, you could log the error to the console
-                    console.error('Error adding item to cart:', xhr);
-                }
-            });
-        }
+      // Proceed with adding to cart for authenticated users
+      $.ajax({
+          url: "{% url 'add_to_cart' 0 %}".replace('0', bookId),
+          method: "POST",
+          headers: {
+              "X-CSRFToken": "{{ csrf_token }}"
+          },
+          success: function(response) {
+              if (response.error === 'already_in_cart') {
+                  // Trigger SweetAlert for already in cart
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Item Already in Cart',
+                      text: 'This item is already in your cart.',
+                      confirmButtonText: 'OK'
+                  });
+              } else {
+                  // Trigger SweetAlert for successful addition
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Success!',
+                      text: 'Item added to cart.',
+                      confirmButtonText: 'OK'
+                  });
+                  // Update the cart count dynamically
+                  $(".cart-count").text('(' + response.cart_item_count + ')');
+              }
+          },
+          error: function(xhr) {
+              // Handle error cases if any
+              console.error('Error adding item to cart:', xhr);
+          }
+      });
+  }
   function toggleWishlist(bookId) {
       var isAuthenticated = {{ user.is_authenticated|yesno:"true,false" }};
       if (!isAuthenticated) {

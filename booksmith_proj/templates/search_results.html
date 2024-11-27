@@ -12,53 +12,57 @@
 <div class="books-container">
   {% if search_results %}
     {% for book in search_results %}
-    <div class="book-card">
-      <a href="{% url 'product_detail' book.pk %}">
-        <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
-      </a>
-      <div class="book-info">
-        <h3>{{ book.title }}</h3>
-        <br />
-        
-        <!-- Check if the book has a discount -->
-        {% if book.discount_percent > 0 %}
-        <p><s>${{ book.price|floatformat:2 }}</s></p>
-        <br /><br />
-        <p>${{ book.discounted_price|floatformat:2 }}</p>
-        {% else %}
-        <p>${{ book.price|floatformat:2 }}</p>
-        <br />
-        {% endif %}
+      <div class="book-card">
+        <a href="{% url 'product_detail' book.pk %}">
+          <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+        </a>
+        <div class="book-info">
+          <h3>{{ book.title }}</h3>
+          <br />
+          
+          <!-- Check if the book has a discount -->
+          {% if book.discount_percent > 0 %}
+            <p><s>${{ book.price|floatformat:2 }}</s></p>
+            <br /><br />
+            <p>${{ book.discounted_price|floatformat:2 }}</p>
+          {% else %}
+            <p>${{ book.price|floatformat:2 }}</p>
+            <br />
+          {% endif %}
 
-        <br /><br />
+          <br /><br />
 
-        <!-- Display "Purchased" icon if the book has been bought -->
-        {% if book in request.user.profile.bought_books.all %}
-        <span class="purchased-icon">
-          <i class="fas fa-check-circle"></i> Purchased
-        </span>
-        {% else %}
-        <!-- Display Add to Cart button if the book has not been bought -->
-        <button onclick="addToCart({{ book.id }})" class="btn add-to-cart-btn">
-          Add To Cart
-        </button>
-        {% endif %}
+          {% if request.user.is_authenticated %}
+            <!-- Display "Purchased" icon if the book has been bought -->
+            {% if book in request.user.profile.bought_books.all %}
+              <span class="purchased-icon">
+                <i class="fas fa-check-circle"></i> Purchased
+              </span>
+            {% else %}
+              <!-- Display Add to Cart button if the book has not been bought -->
+              <button onclick="addToCart({{ book.id }})" class="btn add-to-cart-btn">
+                Add To Cart
+              </button>
+            {% endif %}
 
-        <!-- Wishlist Button with toggle functionality -->
-        {% if book not in request.user.profile.bought_books.all %}
-        <button class="btn wishlist-btn {% if book in request.user.profile.wishlist.all %}wishlisted{% endif %}" 
-          onclick="toggleWishlist({{ book.id }})" data-id="{{ book.id }}">
-          <!-- Heart icon with a filled state when wishlisted -->
-          <i class="fas fa-heart {% if book in request.user.profile.wishlist.all %}filled{% endif %}"></i>
-        </button>
-        {% endif %}
+            <!-- Wishlist Button with toggle functionality -->
+            {% if book not in request.user.profile.bought_books.all %}
+              <button class="btn wishlist-btn 
+              {% if book in request.user.profile.wishlist.all %}wishlisted{% endif %}" 
+                onclick="toggleWishlist({{ book.id }})" data-id="{{ book.id }}">
+                <!-- Heart icon with a filled state when wishlisted -->
+                <i class="fas fa-heart {% if book in request.user.profile.wishlist.all %}filled{% endif %}"></i>
+              </button>
+            {% endif %}
+          {% endif %}
+        </div>
       </div>
-    </div>
     {% endfor %}
   {% else %}
     <p>No books found matching your search.</p>
   {% endif %}
 </div>
+
 {% endblock %}
 
 {% block extra_js %}

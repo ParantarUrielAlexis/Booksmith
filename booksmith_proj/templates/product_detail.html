@@ -18,7 +18,7 @@
       <h1 class="name">{{ book.title }}</h1>
 
       <!-- Display the author -->
-      <h3 class="author">{{ book.category}}</h3>
+      <h3 class="author">{{ book.category }}</h3>
       <h3 class="author">by {{ book.author.name }}</h3>
 
       <div class="average-rating">
@@ -26,9 +26,7 @@
         <div class="stars">
           {% for i in "12345" %}
           <span
-            class="star {% if average_rating >= i|add:0 %}highlighted{% endif %}"
-            >&#9733;</span
-          >
+            class="star {% if average_rating >= i|add:0 %}highlighted{% endif %}">&#9733;</span>
           {% endfor %}
         </div>
         <small>({{ average_rating|floatformat:1 }} out of 5 stars)</small>
@@ -41,9 +39,7 @@
       {% if book.discount_percent > 0 %}
       <div class="price">
         <s class="original-price">${{ book.price|floatformat:2 }}</s>
-        <span class="discounted-price"
-          >${{ book.discounted_price|floatformat:2 }}</span
-        >
+        <span class="discounted-price">${{ book.discounted_price|floatformat:2 }}</span>
       </div>
       {% else %}
       <div class="price">${{ book.price|floatformat:2 }}</div>
@@ -51,26 +47,29 @@
 
       <div class="buttons">
         {% csrf_token %}
-        <button class="btn add-to-cart" onclick="addToCart({{ book.id }})">
-          Add to Cart
-        </button>
-
         {% if user.is_authenticated %}
-        <!-- Check if the book is purchased -->
-        {% if book in user.profile.bought_books.all %}
-        <span class="already-bought">
-          <i class="fas fa-check-circle"></i> Purchased
-        </span>
-        {% else %}
-        <button
-          type="button"
-          class="wishlist {% if book in user.profile.wishlist.all %}wishlisted{% endif %}"
-          onclick="toggleWishlist({{ book.id }})"
-          data-id="{{ book.id }}"
-        >
-          <i class="fas fa-heart"></i> Wishlist
-        </button>
-        {% endif %}
+          <!-- Check if the book is already purchased -->
+          {% if book in user.profile.bought_books.all %}
+          <span class="already-bought">
+            <i class="fas fa-check-circle"></i> Purchased
+          </span>
+          {% else %}
+          <!-- Add to Cart Button -->
+          <button class="btn add-to-cart" onclick="addToCart({{ book.id }})">
+            Add to Cart
+          </button>
+
+          <!-- Wishlist Button -->
+          <button
+            type="button"
+            class="wishlist {% if book in user.profile.wishlist.all %}wishlisted{% endif %}"
+            onclick="toggleWishlist({{ book.id }})"
+            data-id="{{ book.id }}"
+          >
+            <i class="fas fa-heart"></i> Wishlist
+          </button>
+          {% endif %}
+        
         {% endif %}
       </div>
 
@@ -78,6 +77,8 @@
     </div>
   </div>
 </div>
+
+
 
 
 <div class="title-review">

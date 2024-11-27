@@ -94,48 +94,57 @@
   </p>
   <div class="books-container">
     {% for book in recommended_books %}
-    <div class="book-card">
-      <a href="{% url 'product_detail' book.pk %}">
-        <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
-      </a>
-      <div class="book-info">
-        <h3>{{ book.title }}</h3>
-        {% if book.discount_percent > 0 %}
-        <p><s>${{ book.price|floatformat:2 }}</s></p>
-        <p>${{ book.discounted_price|floatformat:2 }}</p>
-        {% else %}
-        <p>${{ book.price|floatformat:2 }}</p>
-        {% endif %}
-        <br /><br />
+      <div class="book-card">
+        <a href="{% url 'product_detail' book.pk %}">
+          <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+        </a>
+        <div class="book-info">
+          <h3>{{ book.title }}</h3>
 
-        <!-- Add to Cart and Wishlist buttons side by side -->
-        <div class="buttons-container">
-          <button class="btn add-to-cart" onclick="addToCart({{ book.id }})">
-            Add to Cart
-          </button>
+          <!-- Show discounted or regular price -->
+          {% if book.discount_percent > 0 %}
+            <p><s>${{ book.price|floatformat:2 }}</s></p>
+            <p>${{ book.discounted_price|floatformat:2 }}</p>
+          {% else %}
+            <p>${{ book.price|floatformat:2 }}</p>
+          {% endif %}
 
-          <!-- Wishlist Button with checkmark if purchased -->
-          <button
-            class="btn wishlist-btn {% if book in user.profile.bought_books.all %}bought{% elif book in user.profile.wishlist.all %}wishlisted{% endif %}"
-            onclick="toggleWishlist({{ book.id }})"
-            data-id="{{ book.id }}"
-          >
-            {% if book in user.profile.bought_books.all %}
-            <i class="fas fa-check-circle"></i>
-            <!-- Checkmark if bought -->
-            {% else %}
-            <i
-              class="fas fa-heart {% if book in user.profile.wishlist.all %}wishlisted{% endif %}"
-            ></i>
-            <!-- Heart for wishlist -->
-            {% endif %}
-          </button>
+          <br /><br />
+
+          <!-- Add to Cart and Wishlist buttons (only if authenticated) -->
+          {% if request.user.is_authenticated %}
+            <div class="buttons-container">
+              {% if book not in request.user.profile.bought_books.all %}
+                <!-- Add to Cart button -->
+                <button class="btn add-to-cart" onclick="addToCart({{ book.id }})">
+                  Add to Cart
+                </button>
+              {% endif %}
+
+              <!-- Wishlist Button -->
+              <button
+                class="btn wishlist-btn 
+                {% if book in request.user.profile.bought_books.all %}bought{% 
+                elif book in request.user.profile.wishlist.all %}wishlisted{% endif %}"
+                onclick="toggleWishlist({{ book.id }})"
+                data-id="{{ book.id }}"
+              >
+                {% if book in request.user.profile.bought_books.all %}
+                  <i class="fas fa-check-circle"></i> <!-- Checkmark if bought -->
+                {% else %}
+                  <i
+                    class="fas fa-heart {% if book in request.user.profile.wishlist.all %}wishlisted{% endif %}"
+                  ></i> <!-- Heart for wishlist -->
+                {% endif %}
+              </button>
+            </div>
+          {% endif %}
         </div>
       </div>
-    </div>
     {% endfor %}
   </div>
 </div>
+
 
 <div class="container-feature">
   <div class="header-title">

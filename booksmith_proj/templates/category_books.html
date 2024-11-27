@@ -4,53 +4,60 @@ category }}{% endblock %} {% block extra_css %}
 {% endblock %} {% block content %}
 
 <div class="books-container">
-  {% if books %} {% for book in books %}
-  <div class="book-card">
-    <a href="{% url 'product_detail' book.pk %}">
-      <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
-    </a>
-    <div class="book-info">
-      <h3>{{ book.title }}</h3>
+  {% if books %}
+    {% for book in books %}
+      <div class="book-card">
+        <a href="{% url 'product_detail' book.pk %}">
+          <img src="{{ book.thumbnail_image_url }}" alt="{{ book.title }}" />
+        </a>
+        <div class="book-info">
+          <h3>{{ book.title }}</h3>
 
-      <!-- Check if the book has a discount -->
-      {% if book.discount_percent > 0 %}
-      <p><s>${{ book.price|floatformat:2 }}</s></p>
-      <p>${{ book.discounted_price|floatformat:2 }}</p>
-      {% else %}
-      <p>${{ book.price|floatformat:2 }}</p>
-      {% endif %}
+          <!-- Check if the book has a discount -->
+          {% if book.discount_percent > 0 %}
+            <p><s>${{ book.price|floatformat:2 }}</s></p>
+            <p>${{ book.discounted_price|floatformat:2 }}</p>
+          {% else %}
+            <p>${{ book.price|floatformat:2 }}</p>
+          {% endif %}
 
-      <!-- Display "Purchased" icon if the book has been bought -->
-      {% if book in request.user.profile.bought_books.all %}
-      <span class="purchased-icon">
-        <i class="fas fa-check-circle"></i> Purchased
-      </span>
-      {% else %}
+          <!-- Display "Purchased" icon if the book has been bought -->
+          {% if request.user.is_authenticated and book in request.user.profile.bought_books.all %}
+            <span class="purchased-icon">
+              <i class="fas fa-check-circle"></i> Purchased
+            </span>
+          {% endif %}
 
-      <button onclick="addToCart({{ book.id }})" class="btn add-to-cart-btn">
-        Add To Cart
-      </button>
-      {% endif %}
+          <!-- Add to Cart Button: Show only if user is authenticated -->
+          {% if request.user.is_authenticated %}
+            {% if book not in request.user.profile.bought_books.all %}
+              <button onclick="addToCart({{ book.id }})" class="btn add-to-cart-btn">
+                Add To Cart
+              </button>
+            {% endif %}
+          {% endif %}
 
-      <!-- Wishlist Button with toggle functionality -->
-      {% if book not in request.user.profile.bought_books.all %}
-      <button
-        class="btn wishlist-btn {% if book in request.user.profile.wishlist.all %}wishlisted{% endif %}"
-        onclick="toggleWishlist({{ book.id }})"
-        data-id="{{ book.id }}"
-      >
-        <!-- Heart icon with a filled state when wishlisted -->
-        <i
-          class="fas fa-heart {% if book in request.user.profile.wishlist.all %}filled{% endif %}"
-        ></i>
-      </button>
-      {% endif %}
-    </div>
-  </div>
-  {% endfor %} {% else %}
-  <p>No books available in this category.</p>
+          <!-- Wishlist Button with toggle functionality -->
+          {% if request.user.is_authenticated and book not in request.user.profile.bought_books.all %}
+            <button
+              class="btn wishlist-btn {% if book in request.user.profile.wishlist.all %}wishlisted{% endif %}"
+              onclick="toggleWishlist({{ book.id }})"
+              data-id="{{ book.id }}"
+            >
+              <!-- Heart icon with a filled state when wishlisted -->
+              <i
+                class="fas fa-heart {% if book in request.user.profile.wishlist.all %}filled{% endif %}"
+              ></i>
+            </button>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No books available in this category.</p>
   {% endif %}
 </div>
+
 {% endblock %} {% block extra_js %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

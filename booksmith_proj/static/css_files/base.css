@@ -1,8 +1,15 @@
+@font-face {
+  font-family: "Satoshi";
+  src: url("fonts/Satoshi-Bold.ttf") format("truetype");
+  font-weight: 700; /* Adjust if needed */
+  font-style: normal;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Satoshi-Bold", Arial, sans-serif;
+  font-family: "Satoshi";
 }
 
 /* Outer container to center the navbar */

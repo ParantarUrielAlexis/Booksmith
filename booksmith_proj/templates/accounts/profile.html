@@ -12,7 +12,7 @@
     <!-- Profile content -->
     <div class="image">
       <img
-        src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default_avatar.png' %}{% endif %}"
+        src="{% if user.profile.image %}{{ user.profile.image.url }}{% else %}{% static 'images/default-pic.png' %}{% endif %}"
         alt="Profile Picture"
         class="profile-img"
       />

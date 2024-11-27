@@ -90,7 +90,7 @@
     <div class="review-header">
       <img
         class="review-profile profile-picture"
-        src="{% if review.user.profile.image %}{{ review.user.profile.image.url }}{% else %}{% static 'images/default_avatar.png' %}{% endif %}"
+        src="{% if review.user.profile.image %}{{ review.user.profile.image.url }}{% else %}{% static 'images/default-pic.png' %}{% endif %}"
         alt="{{ review.user.username }}'s profile picture"
         class="profile-picture"
       />

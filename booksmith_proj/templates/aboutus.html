@@ -1,81 +1,77 @@
 {% extends 'base.html' %} {% load static %} {% block title %}About Us
+<!-- for formatting -->
 {%endblock%} {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css_files/aboutus.css' %}" />
 {% endblock %} {% block content %}
-<h2
-  style="
-    justify-content: right;
-    text-align: right;
-    padding: 30px;
-    margin-right: 170px;
-    font-size: 35px;
-    margin-top: 60px;
-  "
->
-  About Us
-</h2>
-<h2
-  style="
-    padding: 10px;
-    font-size: 60px;
-    font-family: Arial, sans-serif;
-    justify-content: center;
-    text-align: center;
-  "
->
-  BookSmith
-</h2>
-<h3
-  style="
-    padding: 15px;
-    justify-content: center;
-    text-align: center;
-    color: rgb(145, 145, 145);
-  "
->
-  "Forging Stories One Page at a Time"
-</h3>
-<div class="description">
-  <p>Welcome to BookSmith, your go-to destination for free online reading!</p>
-  <br />
-  <p>
-    At BookSmith, we understand the value of a great read. Our mission is to
-    provide a platform where book lovers can access a diverse selection of
-    titles, from timeless classics to the latest bestsellers all for a
-    reasonable price. Whether you’re looking to dive into a captivating novel or
-    explore insightful non-fiction, BookSmith has something for everyone.
-  </p>
-  <br />
-  <h3><strong>Founders</strong></h3>
-</div>
-<div class="founders">
-  <img src="{% static 'images/lance.jpg' %}" alt="Lance" />
-  <img src="{% static 'images/uriel.jpg' %}" alt="Uriel" />
-</div>
-<div class="names">
-  <h2>Lance Antor</h2>
-  <h2>Uriel Parantar</h2>
-</div>
-<div class="description-founder">
-  <p>
-    BookSmith was founded by Lance Antor and Uriel Parantar, who believe in the
-    power of stories to inspire and educate. With a vision to create a premium
-    reading experience, we established BookSmith to connect readers with
-    high-quality literature that enriches lives.
-  </p>
-  <br />
-  <h3><strong>Vision</strong></h3>
-</div>
-<div class="description2">
-  <p>
-    We believe that reading should be a rewarding experience. By providing a
-    platform where readers can discover and enjoy quality literature, we aim to
-    foster a culture of reading and lifelong learning.
-  </p>
-  <br />
-  <p>
-    Thank you for choosing BookSmith as your reading companion. Happy reading!
-  </p>
-  <br />
+<div class="about-us-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to <span class="brand">Booksmith</span></h1>
+      <p class="tagline">"Forging Stories One Page at a Time"</p>
+    </div>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="mission">
+    <div class="container">
+      <h2>Our Mission</h2>
+      <p>
+        At <span class="brand">Booksmith</span>, we believe in the
+        transformative power of stories. Our mission is to connect readers with
+        books that inspire, educate, and entertain—curating a platform that
+        celebrates the joy of reading.
+      </p>
+      <p>
+        Whether you're diving into the latest bestseller or revisiting a
+        timeless classic, our goal is to make your reading experience seamless,
+        affordable, and fulfilling.
+      </p>
+    </div>
+  </section>
+
+  <!-- Founders Section -->
+  <section class="founders">
+    <div class="container">
+      <h2>Meet the Founders</h2>
+      <div class="founders-grid">
+        <div class="founder">
+          <img src="{% static 'images/lance.jpg' %}" alt="Lance Antor" />
+          <h3>Lance Antor</h3>
+          <p>
+            Lance is a visionary who believes in the magic of storytelling. His
+            passion for connecting people with great literature inspired the
+            creation of Booksmith.
+          </p>
+        </div>
+        <div class="founder">
+          <img src="{% static 'images/uriel.jpg' %}" alt="Uriel Parantar" />
+          <h3>Uriel Parantar</h3>
+          <p>
+            Uriel is a creative force dedicated to enriching the reading
+            experience. He brings innovative ideas to the platform, ensuring
+            every reader feels valued.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vision Section -->
+  <section class="vision">
+    <div class="container">
+      <h2>Our Vision</h2>
+      <p>
+        To foster a community of passionate readers who value the written word
+        and its ability to create connection and understanding. By delivering
+        high-quality literature and an exceptional platform, we aim to cultivate
+        a love for books in every home.
+      </p>
+      <p>
+        Thank you for making <span class="brand">Booksmith</span> your reading
+        companion. Let’s forge stories together!
+      </p>
+    </div>
+  </section>
 </div>
 {% endblock %}

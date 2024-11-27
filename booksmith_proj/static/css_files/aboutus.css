@@ -1,42 +1,137 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
+/* General Styling */
+
+h1,
+h2,
+h3 {
+  margin-bottom: 20px;
+  color: #bd2000;
 }
-.description{
-    padding: 10px;
-    font-size: 17px;
-    margin-left: 200px;
-    margin-top: 70px;
-    width: 75%;
+
+p {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: black;
 }
-.founders{
-    margin-left: 200px;
-    padding: 10px;
+
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.05);
 }
-.founders img{
-    width: 400px;
-    height: 400px;
-    margin-right: 220px;
+
+/* Hero Section */
+.hero {
+  background: #f5f5f5;
+  color: white;
+  text-align: center;
+  padding: 100px 20px;
 }
-.names{
-    display: flex;
-    padding: 10px;
-    margin-left: 320px;
-    gap: 500px;
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
 }
-.description-founder{
-    padding: 10px;
-    font-size: 17px;
-    margin-left: 200px;
-    margin-top: 20px;
-    width: 75%;
+
+.hero-content h1 {
+  font-size: 50px;
+  margin-bottom: 10px;
 }
-.description2{
-    padding: 10px;
-    font-size: 17px;
-    margin-left: 200px;
-    margin-top: 10px;
-    width: 75%;
+
+.hero-content .tagline {
+  font-size: 24px;
+  font-style: italic;
+}
+
+/* Mission Section */
+.mission {
+  background: white;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.mission h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.mission p {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+/* Founders Section */
+.founders {
+  background: #f5f5f5;
+  padding: 50px 20px;
+}
+
+.founders-grid {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.founder {
+  text-align: center;
+  max-width: 300px;
+}
+
+.founder img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.founder h3 {
+  margin-bottom: 10px;
+}
+
+.founder p {
+  font-size: 16px;
+  color: #666;
+}
+
+/* Vision Section */
+.vision {
+  background: white;
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.vision h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.vision p {
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+/* Branding */
+.brand {
+  color: #bd2000;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .founders-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-content h1 {
+    font-size: 36px;
+  }
+
+  .hero-content .tagline {
+    font-size: 18px;
+  }
 }

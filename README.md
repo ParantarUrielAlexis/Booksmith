@@ -14,7 +14,6 @@
   <h3 align="center">BookSmith</h3>
   <p align="center">
     A platform where users pay to access and review a wide range of books! <br />
-    <a href="https://docs.google.com/document/d/10Cw3C3ilcSdRM_LInJp07nwLXJp7G9ItukQ31gas7rg/edit?usp=sharingh"><strong>Documentary</strong></a>
   </p>
 </div>
 
@@ -26,12 +25,11 @@
     <li><a href="#features">Features</a></li>
     <li><a href="#built-with">Built With</a></li>
     <li><a href="#getting-started">Getting Started</a></li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
+    <li><a href="#documentary">Documentary</a></li>
   </ol>
 </details>
 
@@ -221,3 +219,9 @@ We would like to express our gratitude to the following resources and people who
 - **[Contrib.rocks](https://contrib.rocks/)**: For tracking top contributors to the project.
 
 Special thanks to all contributors who have helped improve this project!
+
+## Documentary
+
+<p>
+   <a href="BookSmith_GanttChart.xlsx" download>Gantt Chart</a>
+</p>

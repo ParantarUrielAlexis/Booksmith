@@ -174,6 +174,10 @@ Special thanks to all contributors who have helped improve this project!
 
 <p>
    <a href="BookSmith_GanttChart.xlsx" download>Gantt Chart</a>
+   <br>
+   <a href="Booksmith.pdf" download>Figma</a>
+   <br>
+   <a href="ERD.pdf" download>Entity-Relationship-Diagram(ERD)</a>
 </p>
 
 ## Developers

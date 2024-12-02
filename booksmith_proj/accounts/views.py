@@ -208,10 +208,12 @@ def profile_view(request):
     user = request.user
     # Combined books for display
     all_books = user.profile.wishlist.all() | user.profile.bought_books.all()
-
+    cart_item_count = 0
+    cart_item_count = CartItem.objects.filter(user=request.user).count()
     context = {
         'user': user,
         'all_books': all_books,
+        'cart_item_count': cart_item_count,
     }
     return render(request, 'accounts/profile.html', context)
 

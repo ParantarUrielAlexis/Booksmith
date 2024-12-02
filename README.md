@@ -51,35 +51,14 @@
 
 ## Features
 
-- **User Profiles**:
-
-  - Users can create and manage personal profiles.
-  - Includes customizable profile images, detailed bios, and a list of purchased books.
-  - Ability to update personal details and manage preferences.
-
-- **Book Reviews**:
-
-  - Read, write, and reply to book reviews.
-  - Users can rate books and share their thoughts.
-  - Reply feature allows for engaging discussions about books.
-  - Dynamic display of profile images in the review section based on who posted the review.
-
-- **Cart Management**:
-
-  - Easily add, update, or remove books from the shopping cart.
-  - Real-time cart updates to reflect changes instantly.
-  - Visual indicators for items added or removed from the cart.
-
-- **Personalized Recommendations**:
-
-  - Intelligent book suggestions based on user preferences and past purchases.
-  - Tailored recommendations to match unique reading interests.
-  - Ability to explore similar books or genres based on reading history.
-
-- **Responsive Design**:
-  - Fully optimized for various devices including desktops, tablets, and smartphones.
-  - Adaptive layout for a seamless experience on any screen size.
-  - Consistent and user-friendly interface for both mobile and desktop views.
+- **Search & Filter** - Users can search for books by title, author, or genre and refine results using advanced filters for easier navigation.
+- **Signin/Signup** - A secure registration and login system allows users to create accounts or log in using email and password.
+- **Cart Management** - Users can add books to their cart, view selected items, modify quantities, and remove books before proceeding to checkout.
+- **Checkout** - A streamlined checkout process with payment integration ensures a seamless purchase experience for users.
+- **Book Reading** - Provides a simple and convenient digital reading experience, allowing users to access and read books they have purchased directly on the platform.
+- **Wishlist Feature** - Allows users to save books for future reference or purchase, enhancing convenience and planning.
+- **Notificatiion Feature** - Keeps users updated with personalized notifications about discounts, new arrivals, or book recommendations.
+- **Update Profile** - Empowers users to manage their profile by updating personal information, profile pictures, and preferences.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -146,35 +125,6 @@ pip install django
    python manage.py runserver
    ```
 
-### Roadmap
-
-The BookSmith platform is continuously evolving. Below is the roadmap of planned features and improvements:
-
-1. **Quarter 4 2024**:
-
-   - Add support for **multiple languages** for international users.
-   - Integrate **social media login** (Google, Facebook).
-   - Improve **personalized book recommendations** using machine learning.
-
-2. **Quarter 1 2025**:
-
-   - **Mobile app development** for iOS and Android.
-   - Implement a **subscription model** for exclusive book access.
-   - Introduce **author profiles** to allow authors to interact with readers.
-
-3. **Quarter 2 2025**:
-
-   - Enhance **review system** with voting (upvote/downvote).
-   - Add **audiobook support** to allow users to listen to their favorite books.
-   - Introduce **book clubs** where users can join and participate in discussions.
-
-4. **Future**:
-   - Expand the **payment system** to support multiple currencies.
-   - Add a **community forum** for users to discuss books and share recommendations.
-   - Implement **offline reading** for users to access books without an internet connection.
-
-We welcome feedback and contributions. If you have any ideas or suggestions, please feel free to contribute or open an issue.
-
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -225,3 +175,10 @@ Special thanks to all contributors who have helped improve this project!
 <p>
    <a href="BookSmith_GanttChart.xlsx" download>Gantt Chart</a>
 </p>
+
+## Developers
+
+| Name                  | Handsome Faces                                                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------------------- |
+| Uriel Alexis Paranter | <img src="booksmith_proj/static/images/uriel.jpg" alt="Uriel Alexis Paranter" width="100" height="100"> |
+| Lynnon Lance Antor    | <img src="booksmith_proj/static/images/lance.jpg" alt="Lynnon Lance Antor" width="100" height="100">    |

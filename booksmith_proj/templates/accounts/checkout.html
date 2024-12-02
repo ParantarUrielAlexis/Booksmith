@@ -256,12 +256,12 @@
         .trim();
 
       // Validate that the GCash number is exactly 11 digits
-      if (gcashNumber.length !== 11 || !/^\d+$/.test(gcashNumber)) {
+      if (gcashNumber.length !== 11 || !/^\d+$/.test(gcashNumber) || !gcashNumber.startsWith("09")) {
         isValid = false;
         Swal.fire({
           icon: "warning",
           title: "Invalid GCash Number",
-          text: "Please Input a Valid GCash Number.",
+          text: "Please Input a Valid GCash Number starting with '09'.",
           confirmButtonText: "OK",
           confirmButtonColor: "#d33",
         });
@@ -310,8 +310,23 @@
     }
 
     // If validation passes, allow the form to be submitted
+    if (isValid) {
+        event.preventDefault();
+
+        Swal.fire({
+        icon: 'success',
+        title: 'Purchase Successful',
+        text: 'Thank you for purchasing!',
+        confirmButtonText: 'OK',
+        confirmButtonColor: "#28a745",
+      }).then((result) => {
+        if(result.isConfirmed){
+         $("form").submit(); // This triggers the form submission after the SweetAlert is closed
+        }
+      });
+    }
     if (!isValid) {
-      event.preventDefault();
+     event.preventDefault();
     }
   }
 

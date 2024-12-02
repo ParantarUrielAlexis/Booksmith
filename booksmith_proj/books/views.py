@@ -64,11 +64,14 @@ def landing_page(request):
 def search_books(request):
     query = request.GET.get('q')
 
+    cart_item_count = 0
+
     # Get search results for books containing the query in their title
     search_results = Book.objects.filter(Q(title__icontains=query)) if query else []
 
     # Order the search results so that purchased books come first (only for authenticated users)
     if request.user.is_authenticated:
+        cart_item_count = CartItem.objects.filter(user=request.user).count()
         bought_books = request.user.profile.bought_books.all()
         search_results = sorted(
             search_results,
@@ -76,7 +79,7 @@ def search_books(request):
             reverse=True  # Purchased books first
         )
 
-    return render(request, 'search_results.html', {'search_results': search_results, 'query': query})
+    return render(request, 'search_results.html', {'search_results': search_results, 'query': query, 'cart_item_count': cart_item_count})
 
 
 from django.contrib import messages
@@ -156,10 +159,11 @@ def category_books(request, category_name):
 
     # Filter books by the category
     books = Book.objects.filter(category=category)
-
+    cart_item_count = 0
     # Order books so that purchased books come first (only for authenticated users)
     if request.user.is_authenticated:
         bought_books = request.user.profile.bought_books.all()
+        cart_item_count = CartItem.objects.filter(user=request.user).count()
         books = sorted(
             books,
             key=lambda x: x in bought_books,
@@ -167,7 +171,7 @@ def category_books(request, category_name):
         )
 
     # Render the books for the given category
-    return render(request, 'category_books.html', {'books': books, 'category': category})
+    return render(request, 'category_books.html', {'books': books, 'category': category, 'cart_item_count': cart_item_count})
 
 
 @login_required

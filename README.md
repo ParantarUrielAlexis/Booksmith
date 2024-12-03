@@ -51,14 +51,14 @@
 
 ## Features
 
-- **Search & Filter** - Users can search for books by title, author, or genre and refine results using advanced filters for easier navigation.
+- **Search & Filter** - Users can search for books by title for easier navigation.
 - **Signin/Signup** - A secure registration and login system allows users to create accounts or log in using email and password.
 - **Cart Management** - Users can add books to their cart, view selected items, modify quantities, and remove books before proceeding to checkout.
 - **Checkout** - A streamlined checkout process with payment integration ensures a seamless purchase experience for users.
 - **Book Reading** - Provides a simple and convenient digital reading experience, allowing users to access and read books they have purchased directly on the platform.
 - **Wishlist Feature** - Allows users to save books for future reference or purchase, enhancing convenience and planning.
-- **Notificatiion Feature** - Keeps users updated with personalized notifications about discounts, new arrivals, or book recommendations.
-- **Update Profile** - Empowers users to manage their profile by updating personal information, profile pictures, and preferences.
+- **Notificatiion Feature** - Keeps users updated with personalized notifications about discounts.
+- **Update Profile** - Empowers users to manage their profile by updating profile picture.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

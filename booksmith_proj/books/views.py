@@ -39,7 +39,7 @@ def landing_page(request):
             recommended=True
         ).exclude(bestseller=True).order_by('?')[:4]
 
-    best_sellers = Book.objects.filter(bestseller=True).order_by('?')  # Fetch best sellers
+    best_sellers = Book.objects.filter(bestseller=True).order_by('?')[:7]  # Fetch best sellers
 
     # Fetch distinct category names
     categories = Category.objects.values_list('name', flat=True).distinct()
@@ -76,7 +76,7 @@ def search_books(request):
         search_results = sorted(
             search_results,
             key=lambda x: x in bought_books,
-            reverse=True  # Purchased books first
+            reverse=False  # Purchased books first
         )
 
     return render(request, 'search_results.html', {'search_results': search_results, 'query': query, 'cart_item_count': cart_item_count})
@@ -167,7 +167,7 @@ def category_books(request, category_name):
         books = sorted(
             books,
             key=lambda x: x in bought_books,
-            reverse=True  # Purchased books first
+            reverse=False # Purchased books first
         )
 
     # Render the books for the given category

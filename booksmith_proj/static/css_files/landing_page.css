@@ -12,7 +12,7 @@ svg {
 /* css slider */
 .slider {
   /* adjust here for height of slider */
-  height: 80vh;
+  height: 100vh;
   margin-bottom: 100px;
   position: relative;
 }

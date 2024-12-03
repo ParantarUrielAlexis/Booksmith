@@ -18,19 +18,19 @@
         </a>
         <div class="book-info">
           <h3>{{ book.title }}</h3>
-          <br />
+          
           
           <!-- Check if the book has a discount -->
           {% if book.discount_percent > 0 %}
             <p><s>${{ book.price|floatformat:2 }}</s></p>
-            <br /><br />
+            <br />
             <p>${{ book.discounted_price|floatformat:2 }}</p>
           {% else %}
             <p>${{ book.price|floatformat:2 }}</p>
             <br />
           {% endif %}
 
-          <br /><br />
+          <br />
 
           {% if request.user.is_authenticated %}
             <!-- Display "Purchased" icon if the book has been bought -->

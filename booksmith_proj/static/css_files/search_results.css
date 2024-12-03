@@ -1,11 +1,13 @@
 .books-container {
+  width: 80%;
+  max-width: 1500px;
   display: flex;
   justify-content: center; /* Centers items horizontally */
   align-items: center; /* Centers items vertically */
   gap: 50px;
-  flex-wrap: wrap;
-  margin: auto; /* Centers the container horizontally within its parent */
-  height: 100%; /* Adjust height to match the parent's */
+  flex-wrap: wrap; /* Wrap items to the next row */
+  margin: 20px auto; /* Centers the container horizontally */
+  height: 100%; /* Ensure the height aligns with the parent container */
 }
 
 .book-card {
@@ -15,6 +17,11 @@
   overflow: hidden;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.book-card:hover {
+  transform: scale(1.05);
 }
 
 .book-card img {

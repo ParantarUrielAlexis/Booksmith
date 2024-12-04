@@ -30,7 +30,7 @@ class Profile(models.Model):
 class CartItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cart_items")  # Add related_name
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="cart_items")  # Add related_name
-    quantity = models.PositiveIntegerField(default=1)
+    quantity = models.PositiveIntegerField(default=1, editable=False)
 
     def __str__(self):
         return f"{self.quantity} of {self.book.title}"

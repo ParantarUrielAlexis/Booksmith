@@ -29,7 +29,7 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
-    <li><a href="#documentary">Documentary</a></li>
+    <li><a href="#documentary">Documentation</a></li>
   </ol>
 </details>
 
@@ -171,7 +171,7 @@ We would like to express our gratitude to the following resources and people who
 
 Special thanks to all contributors who have helped improve this project!
 
-## Documentary
+## Documentation
 
 <p>
    <a href="BookSmith_GanttChart.xlsx" download>Gantt Chart</a>

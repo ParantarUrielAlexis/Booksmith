@@ -156,3 +156,8 @@ li.cart-item:last-child {
 .item-quantity{
   margin-left: 15px;
 }
+.original-price2 {
+  color: #888; 
+  text-decoration: line-through;
+  font-size: 0.9rem;
+}

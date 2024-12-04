@@ -282,7 +282,7 @@ footer {
 }
 
 .original-price2 {
-  color: #888; /* Light gray to show it's discounted */
+  color: #888; 
   text-decoration: line-through;
-  font-size: 1.2rem;
+  font-size: 0.9rem;
 }

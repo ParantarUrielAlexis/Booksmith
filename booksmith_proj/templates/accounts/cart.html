@@ -32,12 +32,15 @@
                         <span>{{ item.quantity }}</span>
                     </div>
                     <div class="item-actions">
-                        {% if item.book.discount_percent > 0 %}
-                            <span class="item-price">
-                                <span class="discounted-price">${{ item.book.discounted_price|floatformat:2 }}</span>
-                            </span>
+                        {% if item.book.discounted_price and item.book.discounted_price < item.book.price %}
+                            <div class="item-price">
+                                <span class="original-price2" style="display: block;">${{ item.book.price|floatformat:2 }}</span>
+                                <span class="discounted-price" style="display: block;">${{ item.book.discounted_price|floatformat:2 }}</span>
+                            </div>
                         {% else %}
-                            <span class="item-price">${{ item.book.price|floatformat:2 }}</span>
+                            <div class="item-price">
+                                <span class="original-price">${{ item.book.price|floatformat:2 }}</span>
+                            </div>
                         {% endif %}
                         <button class="btn-remove" onclick="removeFromCart({{ item.book.id }})">X</button>
                     </div>
@@ -60,15 +63,17 @@
                     <li>
                         <p>
                             {% if item.book.discount_percent > 0 %}
-                                ${{ item.book.discounted_price|floatformat:2 }}
+                                <span class="original-price2" style="display: block;">${{ item.book.price|floatformat:2 }}</span>
+                                <span class="discounted-price" style="display: block;">${{ item.book.discounted_price|floatformat:2 }}</span>
                             {% else %}
-                                ${{ item.book.price|floatformat:2 }}
+                                <span class="original-price">${{ item.book.price|floatformat:2 }}</span>
                             {% endif %}
                         </p>
                     </li>
                     {% endfor %}
                 </ul>
-            </div>            
+            </div>
+                      
             <hr>
             <div class="summary-item">
                 <span>Order Total</span>

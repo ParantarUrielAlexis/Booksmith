@@ -79,13 +79,25 @@
           <h3>Order Summary</h3>
       </div>
       <div class="summary-item">
-          <span>Subtotal</span>
-          <ul class="price-list">
-              {% for item in cart_items %}
-              <li>${{ item.new_price|floatformat:2 }}</li>
-              {% endfor %}
-          </ul>
-      </div>
+        <span>Subtotal</span>
+        <ul class="price-list">
+            {% for item in cart_items %}
+            <li>
+                {% if item.book.discount_percent > 0 %}
+                    <div class="price-container">
+                        <span class="original-price2" style="text-decoration: line-through; display: block;">
+                            ${{ item.book.price|floatformat:2 }}
+                        </span>
+                        <span class="discounted-price">${{ item.new_price|floatformat:2 }}</span>
+                    </div>
+                {% else %}
+                    <span class="original-price">${{ item.new_price|floatformat:2 }}</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
       <hr />
       <div class="summary-item">
           <span>Order Total</span>

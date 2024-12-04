@@ -280,7 +280,8 @@ footer {
 .quantity {
   color: grey;
 }
-.original-price {
+
+.original-price2 {
   color: #888; /* Light gray to show it's discounted */
   text-decoration: line-through;
   font-size: 1.2rem;

@@ -111,13 +111,26 @@
             class="cart-summary-image"
           />
           <div class="cart-summary-details">
-            <span
-              >{{ item.book.title }}
-              <span class="quantity">(x{{ item.quantity }})</span></span
-            >
-            <span class="original-price">${{ item.book.price|floatformat:2 }}</span>
-
-            <span class="discounted-price">${{ item.book.discounted_price|floatformat:2 }}</span>
+            <span>
+              {{ item.book.title }}
+              <span class="quantity">(x{{ item.quantity }})</span>
+            </span>
+    
+            {% if item.book.discounted_price and item.book.discounted_price < item.book.price %}
+              <!-- Book has a discount -->
+              <span class="original-price2">
+                ${{ item.book.price|floatformat:2 }}
+              </span>
+              <span class="discounted-price">
+                ${{ item.book.discounted_price|floatformat:2 }}
+              </span>
+            {% else %}
+              <!-- No discount -->
+              <span class="original-price">
+                ${{ item.book.price|floatformat:2 }}
+              </span>
+            {% endif %}
+            
             <div class="cart-summary-actions">
               <button
                 class="btn edit-btn"
@@ -137,6 +150,7 @@
         {% endfor %}
       </ul>
     </div>
+    
   </div>
 </div>
 

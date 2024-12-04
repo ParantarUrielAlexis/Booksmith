@@ -21,19 +21,21 @@
       <h3 class="author">{{ book.category }}</h3>
       <h3 class="author">by {{ book.author.name }}</h3>
 
-      <div class="average-rating">
+      <div class="new-average-rating">
         {% if average_rating > 0 %}
-        <div class="stars">
-          {% for i in "12345" %}
-          <span
-            class="star {% if average_rating >= i|add:0 %}highlighted{% endif %}">&#9733;</span>
-          {% endfor %}
+        <div class="new-rating-container">
+          <div class="new-stars">
+            {% for i in "12345" %}
+            <span class="new-star {% if average_rating >= i|add:0 %}new-highlighted{% endif %}">&#9733;</span>
+            {% endfor %}
+          </div>
+          <large class="new-rating-text">({{ average_rating|floatformat:1 }} out of 5 stars)</large>
         </div>
-        <small>({{ average_rating|floatformat:1 }} out of 5 stars)</small>
         {% else %}
-        <p>No ratings yet.</p>
+        <p class="new-no-ratings">No ratings yet.</p>
         {% endif %}
       </div>
+      
 
       <!-- Price logic with discount -->
       {% if book.discount_percent > 0 %}

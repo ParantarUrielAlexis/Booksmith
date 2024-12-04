@@ -495,3 +495,31 @@ h3 {
 .expanded-height {
   max-height: none;
 }
+.new-rating-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Adjust spacing between stars and text */
+}
+
+.new-stars {
+  display: flex;
+}
+
+.new-star {
+  font-size: 2.4rem; /* Adjust star size */
+  color: gray;
+}
+
+.new-star.new-highlighted {
+  color: gold; /* Highlighted star color */
+}
+
+.new-rating-text {
+  font-size: 1rem; /* Adjust text size */
+  color: #333; /* Text color */
+}
+
+.new-no-ratings {
+  font-style: italic;
+  color: #888;
+}

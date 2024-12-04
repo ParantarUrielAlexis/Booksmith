@@ -69,6 +69,10 @@ def search_books(request):
     # Get search results for books containing the query in their title
     search_results = Book.objects.filter(Q(title__icontains=query)) if query else []
 
+    # search_results = Book.objects.filter(
+    # Q(title__icontains=query) | Q(author__icontains=query) if query else []
+    # )
+
     # Order the search results so that purchased books come first (only for authenticated users)
     if request.user.is_authenticated:
         cart_item_count = CartItem.objects.filter(user=request.user).count()

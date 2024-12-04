@@ -56,6 +56,7 @@
 - **Cart Management** - Users can add books to their cart, view selected items, modify quantities, and remove books before proceeding to checkout.
 - **Checkout** - A streamlined checkout process with payment integration ensures a seamless purchase experience for users.
 - **Book Reading** - Provides a simple and convenient digital reading experience, allowing users to access and read books they have purchased directly on the platform.
+- **Book Reviews** - Enables users to share their feedback on books they've read by leaving written reviews and ratings.
 - **Wishlist Feature** - Allows users to save books for future reference or purchase, enhancing convenience and planning.
 - **Notificatiion Feature** - Keeps users updated with personalized notifications about discounts.
 - **Update Profile** - Empowers users to manage their profile by updating profile picture.

@@ -23,7 +23,7 @@ def home(request):
 
 def signup(request):
     if request.method == "POST":
-        email = request.POST['email']
+        # email = request.POST['email']
         username = request.POST['username']
         pass1 = request.POST['pass1']
         pass2 = request.POST['pass2']
@@ -33,9 +33,9 @@ def signup(request):
             messages.error(request, "Username already exists.")
             return redirect('signup')
 
-        if User.objects.filter(email=email).exists():
-            messages.error(request, "Email already exists.")
-            return redirect('signup')
+        # if User.objects.filter(email=email).exists():
+        #     messages.error(request, "Email already exists.")
+        #     return redirect('signup')
 
         if pass1 != pass2:
             messages.error(request, "Passwords do not match.")
@@ -43,7 +43,7 @@ def signup(request):
 
         try:
             # Create the User
-            myuser = User.objects.create_user(username=username, email=email, password=pass1)
+            myuser = User.objects.create_user(username=username, password=pass1)
             myuser.save()
 
             # Display a success message when the user and profile are created successfully
@@ -150,7 +150,7 @@ def cart_view(request):
 def checkout(request):
     if request.user.is_authenticated:
         cart_items = CartItem.objects.filter(user=request.user)
-        
+
         # If no items in the cart, show a warning message and redirect to the cart page
         if not cart_items.exists():
             messages.warning(request, "Your cart is empty. Please add items before checking out.")

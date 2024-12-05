@@ -172,6 +172,8 @@
 
 <br><br><br><br><br><br><br><br>
 <div class="title">Similar Products</div>
+
+
 <div class="listProduct">
   {% for similar_book in similar_books %}
   <a href="{% url 'product_detail' similar_book.pk %}" class="item">
@@ -204,6 +206,7 @@
   {% endfor %}
   <br><br><br><br>
 </div>
+
 
 {% endblock %} {% block extra_js %}
 <script src="https://cdn.tailwindcss.com"></script>

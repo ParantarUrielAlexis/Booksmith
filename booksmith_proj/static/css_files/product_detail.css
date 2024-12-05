@@ -225,7 +225,6 @@
   margin-top: 30px;
   padding: 0 20px;
   justify-items: center; /* Centers the items horizontally */
-
   max-width: 1200px; /* Optional: Limit the maximum width of the grid */
   margin-left: auto; /* Centers the grid container */
   margin-right: auto; /* Centers the grid container */

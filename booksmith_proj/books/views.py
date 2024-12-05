@@ -11,7 +11,9 @@ from django.contrib.auth.decorators import login_required
 def landing_page(request):
     books = list(Book.objects.all())
 
-    featured_book = random.choice(books)
+
+    books_exclude_for_feature = Book.objects.exclude(category__name="Educational")
+    featured_book = random.choice(books_exclude_for_feature )
 
     if request.user.is_authenticated:
         # Check if the user has bought any books
@@ -22,12 +24,18 @@ def landing_page(request):
             authors = bought_books.values_list('author', flat=True)
             categories = bought_books.values_list('category', flat=True)
 
-            # Recommend books by the same author or category, excluding already bought and best-seller books
-            recommended_books = Book.objects.filter(
-                Q(author__in=authors) | Q(category__in=categories)
+            # Get recommended books based on criteria
+            recommended_books = list(Book.objects.filter(
+            Q(author__in=authors) | Q(category__in=categories)
             ).exclude(
-                Q(id__in=bought_books.values('id')) | Q(bestseller=True)
-            ).distinct()[:4]
+            Q(id__in=bought_books.values('id')) | Q(bestseller=True)
+            ).distinct())
+
+            # Shuffle the list
+            random.shuffle(recommended_books)
+
+            # Slice the first 4 books
+            recommended_books = recommended_books[:4]
         else:
             # If no books are purchased, recommend random books excluding best sellers
             recommended_books = Book.objects.filter(

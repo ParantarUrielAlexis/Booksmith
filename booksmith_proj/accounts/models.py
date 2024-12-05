@@ -4,6 +4,7 @@ from books.models import Book
 from django.utils import timezone
 from django.conf import settings
 from decimal import Decimal
+import uuid;
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -66,3 +67,8 @@ class Payment(models.Model):
 
     def get_total_payment(self):
         return self.order_total - self.total_saved  # Calculate the final payment after savings
+
+    def save(self, *args, **kwargs):
+        if not self.transaction_id:  # Generate transaction ID only if it doesn't exist
+            self.transaction_id = str(uuid.uuid4())  # Generate a unique transaction ID
+        super().save(*args, **kwargs)

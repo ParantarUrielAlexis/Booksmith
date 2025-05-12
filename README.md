@@ -39,15 +39,18 @@
 
 **BookSmith** is a comprehensive platform that brings book enthusiasts together, offering an extensive library of books, review functionalities, and personalized recommendations. The platform is designed to cater to a wide audience with diverse reading preferences, ensuring an intuitive and seamless user experience.
 
-### Why BookSmith?
+### Why Struct Academy?
 
-- **Diverse Book Collection**: Access a wide range of books spanning various genres, catering to different interests—from fiction to non-fiction, academic to leisure reading.
-- **Community-Driven Reviews**: Users can write and share their own reviews, as well as read reviews from other readers, creating an interactive book-loving community.
-- **Secure Payment Integration**: A robust and secure payment system allows users to purchase premium content with confidence.
-- **User-Centric Design**: BookSmith is built with a user-friendly interface that is easy to navigate, ensuring readers can find, review, and purchase books with minimal effort.
-- **Supports Diverse Learning Styles**: Tailored for users who have different reading preferences, with personalized recommendations and easy access to user-generated content.
+- **Gamified Learning**: Reinforce DSA concepts through levels, challenges, and interactive visualizations.
+- **Designed for Beginners**: Tailored for students new to coding and problem-solving.
+- **Curriculum-Driven**: Aligned with core academic data structures and algorithms topics commonly taught in universities.
+- **Play While You Learn**: Encourages engagement by blending education with hands-on games.
+- **Minimal Distractions**: No AI or leaderboard mechanics—focused solely on learning and mastering concepts at your own pace.
+- **Feedback Through Gameplay**: Mistakes are learning opportunities, visualized through interactive errors and hints.
+- **Encourages Mastery**: Replay levels to improve understanding rather than compete for scores.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 
 ## Features
 
